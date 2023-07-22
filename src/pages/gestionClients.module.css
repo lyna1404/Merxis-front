@@ -1,0 +1,22 @@
+.pageTitle{
+    color: var(--dark-violet, #2E2F5B);
+    font-family: Montserrat;
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    padding-left: 5%;
+    padding-top: 48px;
+}
+
+.filter_span{
+    display: flex;
+    justify-content: space-between;
+    width: 90%;
+    padding-left: 5%;
+}
+
+.buttons_span{
+    display: flex;
+    gap:8px;
+}

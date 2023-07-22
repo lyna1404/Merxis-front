@@ -1,0 +1,35 @@
+/* breadcrumb.module.css */
+.breadcrumb {
+  background: var(--light-violet, #505581);
+  padding: 24px 5%;
+  display: flex;
+  align-items: center;
+  margin: 0%;
+}
+
+.breadcrumb-item {
+  margin-right: 4px;
+  display: flex;
+  align-items: center;
+  
+}
+
+.breadcrumb-item a {
+  color: var(--white, #FFF);
+  font-family: Roboto;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+}
+
+.breadcrumb-item.active {
+  color: var(--yellow, #F4D35E);
+  font-family: Roboto;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;}
