@@ -1,0 +1,81 @@
+.primaryButtonY{
+    border-radius: 8px;
+    background: var(--yellow, #F4D35E);
+    color: #FFF;
+    font-family: Montserrat;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    display: inline-flex;
+    padding: 10px;
+    align-items: flex-start;
+    gap: 10px;
+    border-style: none;
+}
+
+.primaryButtonY:hover {
+    cursor: pointer;
+}
+
+.primaryButtonB{
+    border-radius: 8px;
+    background: var(--light-violet, #505581);
+    color: #FFF;
+    font-family: Montserrat;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    display: inline-flex;
+    padding: 10px;
+    align-items: flex-start;
+    gap: 10px;
+    border-style: none;
+}
+
+.primaryButtonB:hover {
+    cursor: pointer;
+}
+
+.secondary{
+    color: var(--light-violet, #505581);
+    font-family: Montserrat;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    text-decoration-line: underline;
+    display: inline-flex;
+    padding: 10px;
+    align-items: flex-start;
+    gap: 10px;
+    border-style: none;
+    text-underline-offset: 4px
+}
+
+.secondary:hover {
+    cursor: pointer;
+}
+
+
+.third{
+    color: var(--white, #FFF);
+    font-family: Montserrat;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    text-decoration-line: underline;
+    display: inline-flex;
+    padding: 10px;
+    align-items: flex-start;
+    gap: 10px;
+    border-style: none;
+    text-underline-offset: 4px;
+    background-color: transparent;
+}
+
+.third:hover {
+    cursor: pointer;
+}

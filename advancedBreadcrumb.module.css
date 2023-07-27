@@ -1,0 +1,64 @@
+/* breadcrumb.module.css */
+.breadcrumb {
+  background: var(--light-violet, #505581);
+  padding: 24px 5%;
+  display: flex;
+  align-items: center;
+  margin: 0%;
+}
+
+.breadcrumb-item {
+  margin-right: 4px;
+  display: flex;
+  align-items: center;
+  
+}
+
+.breadcrumb-item a {
+  color: var(--white, #FFF);
+  font-family: Roboto;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+}
+
+.breadcrumb-item.active {
+  color: var(--yellow, #F4D35E);
+  font-family: Roboto;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;}
+
+.input {
+  border-radius: 4px;
+  border: 1px solid var(--d-4-d-4-d-4-light-grey, #D4D4D4);
+  background: var(--white, #FFF);
+  padding: 8px;
+  font-family: Montserrat;
+  font-style: normal;
+  font-size: 18px;
+  width: 15%;
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap:16px;
+}
+.label_style {
+  color: var(--white, #FFF);
+  font-family: Montserrat;
+  font-size: 18px;
+  font-style: medium;
+  font-weight: 500;
+  line-height: normal;
+  gap: 16px;
+  display: flex;
+}
