@@ -1,7 +1,10 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
-import styles from "./breadcrumb.module.css"; // Import the CSS module
+import styles from "./advancedBreadcrumb.module.css"; // Import the CSS module
 import IconeDroite from "./IconeDroite.jsx"; 
+import buttonStyles from './button.module.css';
+
+
 
 const displayNameMap = {
     home: "Home",
@@ -12,7 +15,8 @@ const displayNameMap = {
     // Add more mappings for other pages if needed
   };
 
-const Breadcrumb = () => {
+const AdvancedBreadcrumb = ({ numDossier }) => {
+
   const location = useLocation();
   console.log(location);
   const pathnames = location.pathname.split("/").filter((x) => x);
@@ -41,10 +45,19 @@ const Breadcrumb = () => {
               <Link to={routeTo}>{displayName}<IconeDroite /></Link>
             </li>
           );
-        })}
+        })}    
+        <div className={styles.container}>
+          <label className={styles.label_style}>N° Dossier:</label>
+          <input className={styles.input}
+            value={numDossier}
+            readOnly={true}
+          />
+          <button className={`${buttonStyles.primaryButtonY}`} children='Enregistrer' />
+          <button className={`${buttonStyles.third}`} children='Documents' />    
+      </div>   
       </ol>
     </nav>
   );
 };
 
-export default Breadcrumb;
+export default AdvancedBreadcrumb;

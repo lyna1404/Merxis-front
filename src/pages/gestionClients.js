@@ -45,6 +45,10 @@ const GestionClients = () => {
       setFilteredData(filteredData);
     };
 
+    const handleReloadClick = () => {
+      window.location.reload(false)
+  };
+
   return (
     <>  
         <Breadcrumb/>
@@ -56,7 +60,7 @@ const GestionClients = () => {
                 { key: 'somme', label: 'Somme' }
             ]} onFilterChange={handleFilterChange} />
             <span className={styles.buttons_span}>
-                <button className={`${buttonStyles.secondary}`} children='Actualiser' />    
+                <button className={`${buttonStyles.secondary}`} onClick={() => handleReloadClick()} children='Actualiser' />    
                 <button className={`${buttonStyles.primaryButtonY}`} children='Nouveau' />
             </span>
             
