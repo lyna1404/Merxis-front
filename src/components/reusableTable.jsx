@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import ReactPaginate from 'react-paginate';
 import styles from './reusableTable.module.css';
 import buttonStyles from './button.module.css';
-import { Link } from 'react-router-dom';
+import { Link,useLocation ,useH} from 'react-router-dom';
 
 
-const ReusableTable = ({ data,headers, itemsPerPage,linkToPage }) => {
+const ReusableTable = ({ data,headers, itemsPerPage }) => {
   const [currentPage, setCurrentPage] = useState(0);
 
   const handlePageClick = ({ selected }) => {
@@ -16,15 +16,14 @@ const ReusableTable = ({ data,headers, itemsPerPage,linkToPage }) => {
   const paginatedData = data.slice(offset, offset + itemsPerPage);
 
 
-
   // Helper function to generate table data cells
   const generateTableData = () => {
     if (paginatedData.length === 0) return null;
 
     return paginatedData.map((item, index) => (
-      <tr key={index}>
+      <tr key={index} >
         {Object.values(item).map((value, index) => (
-          <td key={index}><Link to={linkToPage}>{value}</Link></td>
+          <td key={index}><Link to={`./${item.id}`}>{value}</Link></td>
         ))}
       </tr>
     ));

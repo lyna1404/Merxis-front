@@ -5,8 +5,7 @@ import ReusableTable from '../components/reusableTable';
 import styles from './gestionClients.module.css';
 import buttonStyles from '../components/button.module.css';
 import TableFilter from '../components/tableFilter';
-import DetailsClient from './detailsClient';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+
 
 
 const data = [
@@ -44,7 +43,6 @@ const GestionClients = () => {
       );
       setFilteredData(filteredData);
     };
-
   return (
     <>  
         <Breadcrumb/>
@@ -62,7 +60,7 @@ const GestionClients = () => {
             
         </span>
         
-        <ReusableTable data={filteredData} headers={headers} itemsPerPage={8} linkToPage={'./detailsClient'}/>
+        <ReusableTable data={filteredData} headers={headers} itemsPerPage={8} />
         
     </>
   );

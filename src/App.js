@@ -24,8 +24,8 @@ const App = () => {
       <div>
         <Routes>
           <Route path="/" element={<HomePage />} />
-          <Route path="/gestionClients" element={<GestionClients />} />
-          <Route path="/gestionClients/detailsClient" element={<DetailsClient />} />
+          <Route path="/gestionClients" element={<GestionClients />}/>
+          <Route path="/gestionClients/:slug" element={<DetailsClient />}/>
         </Routes>
       </div>
     </Router>
