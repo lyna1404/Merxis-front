@@ -4,11 +4,13 @@ import styles from "./breadcrumb.module.css";
 import IconeDroite from "./IconeDroite.jsx";
 
 const displayNameMap = {
-  home: "Home",
-  gestionClients: "Gestion des clients",
-  detailsClient: "Détails du client",
-  // Add more mappings for other pages if needed
-};
+    home: "Home",
+    gestionClients: "Gestion des clients",
+    detailsClient: "Détails du client",
+    comptabilite: "Comptabilité",
+    deboursComptabilite: "Liste des debours"
+    // Add more mappings for other pages if needed
+  };
 
 const Breadcrumb = ({ hideParams = false }) => {
   const location = useLocation();

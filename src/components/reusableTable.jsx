@@ -5,7 +5,8 @@ import buttonStyles from './button.module.css';
 import { Link,useLocation ,useH} from 'react-router-dom';
 
 
-const ReusableTable = ({ data,headers, itemsPerPage }) => {
+const ReusableTable = ({ data,headers, itemsPerPage,linkToPage}) => {
+
   const [currentPage, setCurrentPage] = useState(0);
 
   const handlePageClick = ({ selected }) => {
