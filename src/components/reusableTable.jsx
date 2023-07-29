@@ -5,7 +5,7 @@ import buttonStyles from './button.module.css';
 import { Link,useLocation ,useH} from 'react-router-dom';
 
 
-const ReusableTable = ({ data,headers, itemsPerPage,linkToPage}) => {
+const ReusableTable = ({ data,headers, itemsPerPage, addlink}) => {
 
   const [currentPage, setCurrentPage] = useState(0);
 
@@ -24,8 +24,14 @@ const ReusableTable = ({ data,headers, itemsPerPage,linkToPage}) => {
     return paginatedData.map((item, index) => (
       <tr key={index} >
         {Object.values(item).map((value, index) => (
-          <td key={index}><Link to={`./${item.id}`}>{value}</Link></td>
-        ))}
+        <td key={index}>
+          {addlink ? (
+            <Link to={`./${item.id}`}>{value}</Link>
+          ) : (
+            value
+          )}
+        </td>
+      ))}
       </tr>
     ));
   };

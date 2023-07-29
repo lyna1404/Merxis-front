@@ -27,7 +27,7 @@ const App = () => {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/gestionClients" element={<GestionClients />} />
-          <Route path="/gestionClients/detailsClient" element={<DetailsClient />} />
+          <Route path="/gestionClients/:slug" element={<DetailsClient />} />
           <Route path="/comptabilite" element={<Comptabilite/>}/>
           <Route path="/comptabilite/deboursComptabilite" element={<DeboursComptabilite/>}/>
         </Routes>

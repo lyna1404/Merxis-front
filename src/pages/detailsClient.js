@@ -1,43 +1,77 @@
-// HomePage.js
-import React , {useState} from 'react';
+import React , {useState,useEffect} from 'react';
 import Breadcrumb from '../components/breadcrumb';
-import { useParams } from 'react-router-dom';
 import styles from './gestionClients.module.css';
 import buttonStyles from '../components/button.module.css';
 import filterStyles from '../components/tableFilter.module.css';
-import TableFilter from '../components/tableFilter';
 import ReusableTable from '../components/reusableTable';
+import AjoutVersement from './AjoutVersement';
+import { useParams, useNavigate, Navigate } from 'react-router-dom';
 
-const headers = ['Montant', 'Date'];
-const clientData = [
-    {montant: 20.0000, date: '2023-07-26'},
-    {montant: 20.0000, date: '2023-07-26'},
-    {montant: 20.0000, date: '2023-07-26'},
-    {montant: 20.0000, date: '2023-07-26'},
-    {montant: 20.0000, date: '2023-07-26'},
-    {montant: 20.0000, date: '2023-07-26'},
-    {montant: 20.0000, date: '2023-07-26'},
-    {montant: 20.0000, date: '2023-07-26'},
-    {montant: 20.0000, date: '2023-07-26'},
-  ];
 
-const listeRS = [
-                {id : 1, raisonSociale : 'djezzy', sommeDue : 30.000},
-                {id : 2, raisonSociale : 'ooredoo', sommeDue : 40.000},
-            ]
 const DetailsClient = () => {
-    
-    const [selectedClient, setSelectedClient] = useState(listeRS[0]);
-    const [paymentAmount, setPaymentAmount] = useState(selectedClient.sommeDue);
+    let navigate = useNavigate();
+    //entete du tableau des versements
+    const headers = ['Montant (DA)', 'Date'];
 
+    //Exemple d'une historique de versements
+    const clientData = [
+        {montant: 100000, date: '2023-04-26'},
+        {montant: 200000, date: '2023-05-26'},
+        {montant: 300000, date: '2023-02-26'},
+        {montant: 400000, date: '2023-05-25'},
+        {montant: 500000, date: '2023-01-26'},
+        {montant: 6500000, date: '2023-08-26'},
+        {montant: 2040000, date: '2023-04-26'},
+        {montant: 50046000, date: '2023-07-26'},
+        {montant: 6000040, date: '2023-07-24'},
+    ];
+
+    //Liste des clients
+    const listeRS = [
+        {  id: 'Djezzy', somme: 30000},
+        {  id: 'Ooredoo', somme: 40000},
+        {  id: 'Maystro delivery', somme: 50000},
+        {  id: 'adcf', somme: 10000},
+            
+    ]
+    
+    //Recuperer la raison sociale choisie
+    const { slug } = useParams();
+
+    //Trouver la raison sociale à partir de la liste des client existant
+    const rsInitiale = listeRS.find((client) => client.id === slug);
+
+    //Mette à jour le client selectionné à partir de la liste déroulante
+    const [selectedClient, setSelectedClient] = useState(rsInitiale);
+    //Mette à jour la somme due du client selectionné
+    const [paymentAmount, setPaymentAmount] = useState(selectedClient.somme);
+
+    //Mettre à jour l'historique des versements du client
+    const [updatedClientData, setUpdatedClientData] = useState(clientData);
+
+    //Controler le changement du client selectionné
     const handleClientChange = (event) => {
-        const selectedClientId = parseInt(event.target.value);
-        const selectedClient = listeRS.find((client) => client.id === selectedClientId);
-        setSelectedClient(selectedClient);
-        setPaymentAmount(selectedClient.sommeDue);
+        const selectedClientId = event.target.value;
+        navigate(`/gestionClients/${selectedClientId}`)
+        window.location.reload();
+        
     };
 
+    //Controler le fomrulaire d'ajout de versement
+    const [showForm, setShowForm] = useState(false);
+
+    const handleNouveauClick = () => {
+      setShowForm(true);
+    };
+  
+    const handleFormClose = () => {
+      setShowForm(false);
+    };
     
+    //Controler l'ajout d'un versement 
+    const handleAjouter = (data) => {
+        setUpdatedClientData((prevClientData) => [data,...prevClientData]);
+      };
     return (
         <>
             <Breadcrumb hideParams={true} />
@@ -49,27 +83,28 @@ const DetailsClient = () => {
                 <select value={selectedClient.id} onChange={handleClientChange}>
                     {listeRS.map((client) => (
                     <option key={client.id} value={client.id}>
-                        {client.raisonSociale}
+                        {client.id}
                     </option>
                     ))}
                 </select>
                 </div>
-                <label className={filterStyles.label_style}>Somme Due:</label>
+                <label className={filterStyles.label_style}>Somme due (DA):</label>
                 <input
                     type="number"
                     value={paymentAmount}
+                    readOnly = {true}
                 />
             </span>
             
             <span className={styles.buttons_span}>
                 <button className={`${buttonStyles.secondary}`} children='Actualiser' />    
-                <button className={`${buttonStyles.primaryButtonY}`} children='Nouveau' />
+                <button className={`${buttonStyles.primaryButtonY}`} children='Nouveau' onClick={handleNouveauClick} />
+                {showForm && <AjoutVersement onClose={handleFormClose} onAjouter={handleAjouter} />}
             </span>
             </span>
             
             
-            <ReusableTable data={clientData} headers={headers} itemsPerPage={8} />
-            
+            <ReusableTable data={updatedClientData} headers={headers} itemsPerPage={8} addlink={false} />
         </>
        
     );

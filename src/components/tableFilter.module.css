@@ -3,8 +3,9 @@
     align-items: center;
     flex-wrap: wrap;
     gap:16px;
-  }
-  .label_style {
+}
+
+.label_style {
     color: var(--light-violet, #505581);
     font-family: Montserrat;
     font-size: 18px;
@@ -14,11 +15,11 @@
     gap: 16px;
     display: flex;
 }
-  .select-wrapper {
+.select-wrapper {
     margin-right: 10px;
-  }
+}
   
-  input {
+input {
     border-radius: 4px;
     border: 1px solid var(--d-4-d-4-d-4-light-grey, #D4D4D4);
     background: var(--white, #FFF);
@@ -26,14 +27,15 @@
     font-family: Montserrat;
     font-style: normal;
     font-size: 16px;
-  }
-  select::-ms-expand {
+}
+
+select::-ms-expand {
     display: none;
-  }
+}
 input:focus{
     border: 1px solid var(--yellow, #F4D35E);
 }
-  
+
 select {
     border-radius: 4px;
     border: 1px solid var(--d-4-d-4-d-4-light-grey, #D4D4D4);
@@ -42,10 +44,8 @@ select {
     font-family: Montserrat;
     font-style: normal;
     font-size: 16px;
-  }
-  
-  
-  
-  select option:checked{
+}
+   
+select option:checked{
     background-color: #F4D35E;
-  }
+}

@@ -1,4 +1,3 @@
-// HomePage.js
 import React , {useState} from 'react';
 import Breadcrumb from '../components/breadcrumb';
 import ReusableTable from '../components/reusableTable';
@@ -7,34 +6,36 @@ import buttonStyles from '../components/button.module.css';
 import TableFilter from '../components/tableFilter';
 
 
-
+// Exemple de liste de clients
 const data = [
-    { id: 1, raisonSociale: 'Djezzy', somme: 30.000},
-    { id: 2, raisonSociale: 'Ooredoo', somme: 30.000},
-    { id: 3, raisonSociale: 'Maystro delivery', somme: 30.000},
-    { id: 4, raisonSociale: 'adcf', somme: 30.000},
-    { id: 1, raisonSociale: 'Djezzy', somme: 30.000},
-    { id: 2, raisonSociale: 'Ooredoo', somme: 30.000},
-    { id: 3, raisonSociale: 'Maystro delivery', somme: 30.000},
-    { id: 4, raisonSociale: 'adcf', somme: 30.000},
-    { id: 1, raisonSociale: 'Djezzy', somme: 30.000},
-    { id: 2, raisonSociale: 'Ooredoo', somme: 30.000},
-    { id: 3, raisonSociale: 'Maystro delivery', somme: 30.000},
-    { id: 4, raisonSociale: 'adcf', somme: 30.000},
-    { id: 1, raisonSociale: 'Djezzy', somme: 30.000},
-    { id: 2, raisonSociale: 'Ooredoo', somme: 30.000},
-    { id: 3, raisonSociale: 'Maystro delivery', somme: 30.000},
-    { id: 4, raisonSociale: 'adcf', somme: 30.000},
-    { id: 1, raisonSociale: 'Djezzy', somme: 30.000},
-    { id: 2, raisonSociale: 'Ooredoo', somme: 30.000},
-    { id: 3, raisonSociale: 'Maystro delivery', somme: 30.000},
-    { id: 4, raisonSociale: 'adcf', somme: 30.000},
-    // Add more rows as needed
-  ];
-const headers = ['ID', 'Raison Sociale', 'Somme'];
+    {  id: 'Djezzy', somme: 30000},
+    {  id: 'Ooredoo', somme: 30000},
+    {  id: 'Maystro delivery', somme: 30000},
+    {  id: 'adcf', somme: 30000},
+    {  id: 'Djezzy', somme: 30000},
+    {  id: 'Ooredoo', somme: 30000},
+    {  id: 'Maystro delivery', somme: 30000},
+    {  id: 'adcf', somme: 30000},
+    {  id: 'Djezzy', somme: 30000},
+    {  id: 'Ooredoo', somme: 30000},
+    {  id: 'Maystro delivery', somme: 30000},
+    {  id: 'adcf', somme: 30000},
+    {  id: 'Djezzy', somme: 30000},
+    {  id: 'Ooredoo', somme: 30000},
+    {  id: 'Maystro delivery', somme: 30000},
+    {  id: 'adcf', somme: 30000},
+    {  id: 'Djezzy', somme: 30000},
+    {  id: 'Ooredoo', somme: 30000},
+    {  id: 'Maystro delivery', somme: 30000},
+    {  id: 'adcf', somme: 30000},
+
+];
+//Entete du tableau de gestion des clients
+const headers = ['Raison Sociale', 'Somme Due'];
 
 
 const GestionClients = () => {
+
     const [filteredData, setFilteredData] = useState(data);
 
     const handleFilterChange = (columnKey, filterValue) => {
@@ -54,9 +55,8 @@ const GestionClients = () => {
         <h1 className={styles.pageTitle}>Liste des Clients et leurs Sommes Dues</h1>
         <span className={styles.filter_span}>
             <TableFilter columns={[
-                { key: 'id', label: 'ID' },
-                { key: 'raisonSociale', label: 'Raison Sociale' },
-                { key: 'somme', label: 'Somme' }
+                { key: 'id', label: 'Raison Sociale' },
+                { key: 'somme', label: 'Somme Due' }
             ]} onFilterChange={handleFilterChange} />
             <span className={styles.buttons_span}>
                 <button className={`${buttonStyles.secondary}`} onClick={() => handleReloadClick()} children='Actualiser' />    
@@ -65,7 +65,7 @@ const GestionClients = () => {
             
         </span>
         
-        <ReusableTable data={filteredData} headers={headers} itemsPerPage={8} />
+        <ReusableTable data={filteredData} headers={headers} itemsPerPage={8} addlink={true}/>
         
     </>
   );
