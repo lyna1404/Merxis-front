@@ -43,7 +43,7 @@ const Breadcrumb = ({ hideParams = false }) => {
               className={`${styles["breadcrumb-item"]} ${styles.active}`}
               aria-current="page"
             >
-              {item.displayName}
+            {item.displayName}
             </li>
           ) : (
             <li key={item.name} className={styles["breadcrumb-item"]}>

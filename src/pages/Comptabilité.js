@@ -10,15 +10,17 @@ import TableFilter from '../components/tableFilter';
 
 const data = [
     {
+        id : "01",
         numDossier:"01/23",
         rep:"01",
         regDouane:"xxx",
         numFact:"01/23",
         client:"Sarl MERXIS",
         natureMarch:"Alimentation",
-        statutDossier:"Livré",
+        statutDossier:"Livré"
     },
     {
+        id : "02",
         numDossier:"02/23",
         rep:"01",
         regDouane:"xxx",
@@ -28,6 +30,7 @@ const data = [
         statutDossier:"Archivé"
     },
     {
+        id : "03",
         numDossier:"03/23",
         rep:"02",
         regDouane:"xxx",
@@ -37,6 +40,7 @@ const data = [
         statutDossier:"En livraison"
     },
     {
+        id : "04",
         numDossier:"04/23",
         rep:"03",
         regDouane:"xxx",
@@ -45,7 +49,8 @@ const data = [
         natureMarch:"Cosmétiques",
         statutDossier:"En dédouanement"
     },
-    {
+    {   
+        id : "05",
         numDossier:"05/23",
         rep:"03",
         regDouane:"xxx",
@@ -54,7 +59,8 @@ const data = [
         natureMarch:"Alimentation",
         statutDossier:"Livré"
     },
-    {
+    {  
+        id : "06",
         numDossier:"06/23",
         rep:"04",
         regDouane:"xxx",
@@ -64,6 +70,7 @@ const data = [
         statutDossier:"Livré"
     },
     {
+        id : "07",
         numDossier:"07/23",
         rep:"04",
         regDouane:"xxx",
@@ -73,6 +80,7 @@ const data = [
         statutDossier:"Livré"
     },
     {
+        id : "08",
         numDossier:"08/23",
         rep:"05",
         regDouane:"xxx",
@@ -82,6 +90,7 @@ const data = [
         statutDossier:"En dédouanement"
     },
     {
+        id : "09",
         numDossier:"09/23",
         rep:"05",
         regDouane:"xxx",
@@ -91,6 +100,7 @@ const data = [
         statutDossier:"En livraison"
     },
     {
+        id : "10",
         numDossier:"10/23",
         rep:"06",
         regDouane:"xxx",
@@ -101,7 +111,7 @@ const data = [
     }
 ];
 
-const headers = ['N° Dossier', 'N° Repertoire', 'Regime douanier', 'N° Facture', 'Client', 'Nature marchandise', 'Statut dossier'];
+const headers = ['ID Dossier', 'N° Dossier', 'N° Repertoire', 'Regime douanier', 'N° Facture', 'Client', 'Nature marchandise', 'Statut dossier'];
 
 
 function Comptabilite() {
@@ -126,9 +136,9 @@ function Comptabilite() {
       
       <span className={styles.filter_span}>
             <TableFilter columns={[
+                { key: 'id', label: 'ID' },
                 { key: 'numDossier', label: 'N° Dossier' },
                 { key: 'rep', label: 'N° Repertoire' },
-                { key: 'regDouane', label: 'Regime douanier' },
                 { key: 'numFact', label: 'N° Facture' },
                 { key: 'client', label: 'Client' },
                 { key: 'natureMarch', label: 'Nature marchandise' },
@@ -140,7 +150,7 @@ function Comptabilite() {
             
         </span>
         
-        <ReusableTable data={filteredData} headers={headers} itemsPerPage={8} linkToPage={'/comptabilite/deboursComptabilite'}/>
+        <ReusableTable data={filteredData} headers={headers} itemsPerPage={8} addlink={true}/>
 
   </>
   );
