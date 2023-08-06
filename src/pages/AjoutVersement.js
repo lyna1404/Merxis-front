@@ -20,7 +20,7 @@ const AjoutVersement = ({ onClose,onAjouter }) => {
     <div className={styles.formpopup}>
       <form onSubmit={handleSubmit}>
         <h2>Ajout Versement</h2>
-        <div className={styles.fields}>
+        <div className={styles.fields_area}>
             <label className={styles.labelstyle}>Montant
                 <input
                     type="number"
