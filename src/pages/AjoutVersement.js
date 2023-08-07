@@ -1,6 +1,7 @@
 import React , {useState} from 'react';
 import styles from './popupForm.module.css'
 import buttonStyles from '../components/button.module.css'
+import InputField from '../components/InputField';
 
 const AjoutVersement = ({ onClose,onAjouter }) => {
 
@@ -17,25 +18,14 @@ const AjoutVersement = ({ onClose,onAjouter }) => {
     };
 
   return (
-    <div className={styles.formpopup}>
+    <div className={styles.shortformpopup}>
       <form onSubmit={handleSubmit}>
         <h2>Ajout Versement</h2>
-        <div className={styles.fields}>
-            <label className={styles.labelstyle}>Montant
-                <input
-                    type="number"
-                    value={montant}
-                    onChange={(e) => setMontant(e.target.value)}
-                    
-                />
-            </label>
-            <label className={styles.labelstyle}>Date
-                <input
-                    type="date"
-                    value={date}
-                    onChange={(e) => setDate(e.target.value)}
-                />
-            </label>
+        <div className={styles.fields_area}>
+          <InputField display="labelontop" label="Montant" size="extralarge" type="number" value={montant} onChange={(e) => setMontant(e.target.value)} />
+
+          <InputField display="labelontop" label="Date" size="extralarge" type="date" value={date} onChange={(e) => setDate(e.target.value)} />
+
         </div>
         <span className={styles.buttonSpan}>
             <button className={buttonStyles.primaryButtonY} type="submit" >Ajouter</button>
