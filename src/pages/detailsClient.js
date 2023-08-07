@@ -63,6 +63,10 @@ const DetailsClient = () => {
     const handleNouveauClick = () => {
       setShowForm(true);
     };
+
+    const handleReloadClick = () => {
+        window.location.reload(false)
+    };
   
     const handleFormClose = () => {
       setShowForm(false);
@@ -97,7 +101,7 @@ const DetailsClient = () => {
             </span>
             
             <span className={styles.buttons_span}>
-                <button className={`${buttonStyles.secondary}`} children='Actualiser' />    
+                <button className={`${buttonStyles.secondary}`} children='Actualiser' onClick={handleReloadClick} />    
                 <button className={`${buttonStyles.primaryButtonY}`} children='Nouveau' onClick={handleNouveauClick} />
                 {showForm && <AjoutVersement onClose={handleFormClose} onAjouter={handleAjouter} />}
             </span>
