@@ -1,11 +1,11 @@
-import React , {useState,useEffect} from 'react';
+import React , {useState} from 'react';
 import Breadcrumb from '../components/breadcrumb';
 import styles from './gestionClients.module.css';
 import buttonStyles from '../components/button.module.css';
 import filterStyles from '../components/tableFilter.module.css';
 import ReusableTable from '../components/reusableTable';
 import AjoutVersement from './AjoutVersement';
-import { useParams, useNavigate, Navigate } from 'react-router-dom';
+import { useParams, useNavigate} from 'react-router-dom';
 
 
 const DetailsClient = () => {

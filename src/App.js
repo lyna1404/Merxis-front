@@ -8,6 +8,7 @@ import Comptabilite from './pages/Comptabilité';
 import DeboursComptabilite from './pages/deboursComptabilite';
 import './App.css';
 import WebFont from 'webfontloader';
+import NouveauClient from './pages/NouveauClient';
 
 
 
@@ -28,6 +29,7 @@ const App = () => {
           <Route path="/" element={<HomePage />} />
           <Route path="/gestionClients" element={<GestionClients />} />
           <Route path="/gestionClients/:slug" element={<DetailsClient />} />
+          <Route path="/gestionClients/NouveauClient" element={<NouveauClient />} />
           <Route path="/comptabilite" element={<Comptabilite/>}/>
           <Route path="/comptabilite/:slug" element={<DeboursComptabilite/>}/>
         </Routes>
