@@ -1,9 +1,9 @@
   .labelontop {
-    display: flex;
+    display: inline-flex;
     flex-direction: column;
     color: var(--dark-violet, #2E2F5B);
     font-family: Montserrat;
-    font-size: 16px;
+    font-size: 14px;
     font-style: normal;
     font-weight: 400;
     line-height: normal;
@@ -11,12 +11,12 @@
   }
 
   .labelonleft {
-    display: flex;
+    display: inline-flex;
     flex-direction: row;
     align-items: center;
     color: var(--dark-violet, #2E2F5B);
     font-family: Montserrat;
-    font-size: 16px;
+    font-size: 14px;
     font-style: normal;
     font-weight: 400;
     line-height: normal;

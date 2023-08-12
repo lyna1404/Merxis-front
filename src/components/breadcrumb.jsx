@@ -2,13 +2,16 @@ import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import styles from "./breadcrumb.module.css";
 import IconeDroite from "./IconeDroite.jsx";
+import NouveauClient from "../pages/NouveauClient";
 
 const displayNameMap = {
     home: "Home",
     gestionClients: "Gestion des clients",
     detailsClient: "Détails du client",
     comptabilite: "Comptabilité",
-    deboursComptabilite: "Liste des debours"
+    deboursComptabilite: "Liste des debours",
+    NouveauClient: "Nouveau Client"
+
     // Add more mappings for other pages if needed
   };
 

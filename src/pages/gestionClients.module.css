@@ -6,7 +6,7 @@
     font-weight: 600;
     line-height: normal;
     padding-left: 5%;
-    padding-top: 48px;
+    padding-top: 24px;
 }
 
 .filter_span{
@@ -21,3 +21,39 @@
     gap:8px;
 }
 
+.lineOfInputs{
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.cadreInputs{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    width: 100%;
+}
+
+.horizontalLine {
+    border-top: 1px solid #B8B8B8;
+    height: 1px;
+    width: 100%;
+  }
+
+.outerCadre{
+    display: inline-flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+    padding-left: 5%;
+    width:90%;
+}
+.buttonSpan_downpage{
+    display: flex;
+    flex-direction: row-reverse;
+    gap:12px;
+    align-items: center;
+    padding-right: 5%;
+    padding-top: 8px;
+  }

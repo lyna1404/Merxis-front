@@ -48,7 +48,9 @@ const GestionClients = () => {
     const handleReloadClick = () => {
       window.location.reload(false)
   };
-
+    const openNewCLient = () => {
+      window.open("/gestionClients/NouveauClient", '_blank');
+    };
   return (
     <>  
         <Breadcrumb/>
@@ -60,7 +62,7 @@ const GestionClients = () => {
             ]} onFilterChange={handleFilterChange} />
             <span className={styles.buttons_span}>
                 <button className={`${buttonStyles.secondary}`} onClick={() => handleReloadClick()} children='Actualiser' />    
-                <button className={`${buttonStyles.primaryButtonY}`} children='Nouveau' />
+                <button className={`${buttonStyles.primaryButtonY}`} children='Nouveau'  onClick={() => openNewCLient()}/>
             </span>
             
         </span>
