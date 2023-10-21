@@ -52,29 +52,36 @@ const GestionClients = () => {
 
   useEffect(() => {
     axios
-       .get('/api/clients/')
-       .then((response) => {
-          const clients = response.data;
-          console.log(response.data);
-          const extractedClients = clients.map(item => ({
+      .get('/api/clients/')
+      .then((response) => {
+        const clientsData = response.data;
+        console.log(clientsData);
+  
+        if (typeof clientsData === 'object' && clientsData !== null) {
+          const extractedClients = Object.values(clientsData).map(item => ({
             id: item.client_pk,
-            raisonSociale : item.raisonSociale,
+            raisonSociale: item.raisonSociale,
             somme: item.sommeDue
           }));
+  
           setClients(extractedClients);
           setFilteredData(extractedClients);
           setIsLoaded(true);
-       })
-       .catch((error) => {
+        } else {
+          console.error('Response data is not a JSON object:', clientsData);
+        }
+      })
+      .catch((error) => {
         console.log('Error:', error);
-
+  
         if (error.response) {
           console.log('Status Code:', error.response.status);
           console.log('Response Data:', error.response.data);
-        }       
+        }
       });
-    
- }, []);
+  
+  }, []);
+  
 
 
     const handleFilterChange = (columnKey, filterValue) => {
