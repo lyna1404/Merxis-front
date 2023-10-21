@@ -1,61 +1,64 @@
-import React , {useState} from 'react';
+import React , {useState,useEffect} from 'react';
 import Breadcrumb from '../components/breadcrumb';
 import styles from './gestionClients.module.css';
 import buttonStyles from '../components/button.module.css';
 import filterStyles from '../components/tableFilter.module.css';
 import ReusableTable from '../components/reusableTable';
+import AutocompleteInput from '../components/autoCompleteInput';
 import AjoutVersement from './AjoutVersement';
 import { useParams, useNavigate} from 'react-router-dom';
-
+import axios from 'axios';
+import InputField from '../components/InputField';
+import ErrorMessage from '../components/errorMessage';
+import SuccessMessage from '../components/succesMessage';
 
 const DetailsClient = () => {
-    let navigate = useNavigate();
+    const { id } = useParams();
+    console.log(id);
+
+    const [errorMessages, setErrorMessages] = useState({});
+    const [showError, setShowError] = useState(false);
+    const [showSuccess, setShowSuccess] = useState(false);
+    const [isLoaded, setIsLoaded] = useState(false);
+
     //entete du tableau des versements
-    const headers = ['Montant (DA)', 'Date'];
+    const headers = ['Num Versement', 'Date','Montant (DA)'];   
+    useEffect(() => {
+        // Create axios requests for both data fetching
+        const client = axios.get(`/api/clients/${id}/`); // Replace with your other endpoint
+        const versements = axios.get(`/api/clients/${id}/versements/`);
 
-    //Exemple d'une historique de versements
-    const clientData = [
-        {montant: 100000, date: '2023-04-26'},
-        {montant: 200000, date: '2023-05-26'},
-        {montant: 300000, date: '2023-02-26'},
-        {montant: 400000, date: '2023-05-25'},
-        {montant: 500000, date: '2023-01-26'},
-        {montant: 6500000, date: '2023-08-26'},
-        {montant: 2040000, date: '2023-04-26'},
-        {montant: 50046000, date: '2023-07-26'},
-        {montant: 6000040, date: '2023-07-24'},
-    ];
-
-    //Liste des clients
-    const listeRS = [
-        {  id: 'Djezzy', somme: 30000},
-        {  id: 'Ooredoo', somme: 40000},
-        {  id: 'Maystro delivery', somme: 50000},
-        {  id: 'adcf', somme: 10000},
-            
-    ]
+        // Use Promise.all to wait for both requests to complete
+        Promise.all([client, versements])
+          .then((responses) => {
+            const clientResponse = responses[0].data;
+            const versementsResponse = responses[1].data;
+            console.log(clientResponse);
+            console.log(versementsResponse);
+            setSelectedClient(clientResponse);
+            setPaymentAmount(clientResponse.sommeDue)
+            setVersements(versementsResponse);
+            setIsLoaded(true);
+          })
+          .catch((error) => {
+            console.error('Error:', error);
     
-    //Recuperer la raison sociale choisie
-    const { slug } = useParams();
-
+            if (error.response) {
+              console.log('Status Code:', error.response.status);
+              console.log('Response Data:', error.response.data);
+            }       
+          });
+      }, [id]); // Add 'id' as a dependency
+    
     //Trouver la raison sociale à partir de la liste des client existant
-    const rsInitiale = listeRS.find((client) => client.id === slug);
 
     //Mette à jour le client selectionné à partir de la liste déroulante
-    const [selectedClient, setSelectedClient] = useState(rsInitiale);
+    const [selectedClient, setSelectedClient] = useState([]);
+
+
     //Mette à jour la somme due du client selectionné
-    const [paymentAmount, setPaymentAmount] = useState(selectedClient.somme);
-
-    //Mettre à jour l'historique des versements du client
-    const [updatedClientData, setUpdatedClientData] = useState(clientData);
-
-    //Controler le changement du client selectionné
-    const handleClientChange = (event) => {
-        const selectedClientId = event.target.value;
-        navigate(`/gestionClients/${selectedClientId}`)
-        window.location.reload();
-        
-    };
+    const [paymentAmount, setPaymentAmount] = useState();
+    const [versements, setVersements] = useState([]);
 
     //Controler le fomrulaire d'ajout de versement
     const [showForm, setShowForm] = useState(false);
@@ -71,33 +74,60 @@ const DetailsClient = () => {
     const handleFormClose = () => {
       setShowForm(false);
     };
+
+    const handleError = (errors) => {
+        setShowError(true);
+        setErrorMessages(errors);
+      };
+      
+      const handleErrorClose = () => {
+        setShowError(false);
+      };
+      
+      const handleSuccess = () => {
+          setShowSuccess(true);
+        };
+        
+        const handleSuccessClose = () => {
+          setShowSuccess(false);
+          window.location.reload(false);
+        };
+        
     
     //Controler l'ajout d'un versement 
     const handleAjouter = (data) => {
-        setUpdatedClientData((prevClientData) => [data,...prevClientData]);
+        console.log("this is the sent data");
+        console.log(data);
+        setIsLoaded(false);
+        axios
+            .post(`/api/clients/${id}/versements/`, JSON.stringify(data), {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then((response) => {
+                setIsLoaded(true);
+                const clientResponse = response.data;
+                console.log(clientResponse);
+                handleSuccess();
+            })
+            .catch((error) => {
+                setIsLoaded(true);
+                handleError(error.request.response);
+            });
+
       };
     return (
         <>
             <Breadcrumb hideParams={true} />
             <h1 className={styles.pageTitle}>Suivi des Paiements et Versements d’un client</h1>
+            {!isLoaded ? ( // Conditional rendering based on the loading state
+            <div className={styles.loader_container}><span className={styles.loader}></span></div> // Replace with your loader component or CSS
+            ) : (
             <span className={styles.filter_span}>
             <span className={filterStyles.container}>
-                <label className={filterStyles.label_style}>Raison Sociale:</label>
-                <div className={filterStyles.selectWrapper}>
-                <select value={selectedClient.id} onChange={handleClientChange}>
-                    {listeRS.map((client) => (
-                    <option key={client.id} value={client.id}>
-                        {client.id}
-                    </option>
-                    ))}
-                </select>
-                </div>
-                <label className={filterStyles.label_style}>Somme due (DA):</label>
-                <input
-                    type="number"
-                    value={paymentAmount}
-                    readOnly = {true}
-                />
+                <InputField display="labelonleft" label="Raison sociale" size="verylarge" type="text" value={selectedClient.raisonSociale} readOnly = {true} />
+                <InputField display="labelonleft" label="Somme Due (DA)" size="average" type="number" value={paymentAmount} readOnly = {true} />
             </span>
             
             <span className={styles.buttons_span}>
@@ -105,10 +135,13 @@ const DetailsClient = () => {
                 <button className={`${buttonStyles.primaryButtonY}`} children='Nouveau' onClick={handleNouveauClick} />
                 {showForm && <AjoutVersement onClose={handleFormClose} onAjouter={handleAjouter} />}
             </span>
-            </span>
+            </span>)}
             
             
-            <ReusableTable data={updatedClientData} headers={headers} itemsPerPage={8} addlink={false} />
+            <ReusableTable data={versements} headers={headers} itemsPerPage={8} addlink={false} addactions={false} />
+
+            {showError && <ErrorMessage onClose={handleErrorClose} errors={JSON.parse(errorMessages)} />}
+            {showSuccess && <SuccessMessage onClose={handleSuccessClose} />}
         </>
        
     );

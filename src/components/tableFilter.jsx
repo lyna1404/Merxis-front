@@ -17,7 +17,7 @@ const TableFilter = ({ columns, onFilterChange }) => {
 
   return (
     <span className={styles.container}>
-      <label className={styles.label_style}>Filtrer par:</label>
+      <label className={styles.label_style}>Filtrer par :</label>
       <div className={styles.selectWrapper}>
         <select value={selectedColumn} onChange={handleColumnChange}>
           {columns.map((column) => (
@@ -27,12 +27,32 @@ const TableFilter = ({ columns, onFilterChange }) => {
           ))}
         </select>
       </div>
-      <input
-        type="text"
-        value={filterValue}
-        onChange={handleFilterChange}
-        placeholder="Enter filter value"
-      />
+      {columns.map((column) => (
+        column.key === selectedColumn && (
+          column.inputType === 'select' ? (
+            <select
+              key={column.key}
+              value={filterValue}
+              onChange={handleFilterChange}
+            >
+              <option value="">Sélectionnez une option</option>
+              {column.options.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
+          ) : (
+            <input
+              key={column.key}
+              type={column.inputType}
+              value={filterValue}
+              onChange={handleFilterChange}
+              placeholder={`Saisissez une valeur pour ${column.label.toLowerCase()}`}
+            />
+          )
+        )
+      ))}
     </span>
   );
 };

@@ -17,6 +17,7 @@ const AjoutVersement = ({ onClose,onAjouter }) => {
         onClose();
     };
 
+
   return (
     <div className={styles.shortformpopup}>
       <form onSubmit={handleSubmit}>

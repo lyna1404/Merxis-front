@@ -6,7 +6,21 @@
     font-weight: 600;
     line-height: normal;
     padding-left: 5%;
-    padding-top: 24px;
+    padding-top: 18px;
+    margin-top: 12px;
+    margin-bottom: 12px;
+}
+.normalText{
+    color: var(--dark-violet, #2E2F5B);
+    font-family: Montserrat;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    padding-left: 5%;
+    padding-top: 4px;
+    margin-top: 8px;
+
 }
 
 .filter_span{
@@ -57,3 +71,30 @@
     padding-right: 5%;
     padding-top: 8px;
   }
+
+  .loader_container {
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    height: 100vh; /* Optional: To make sure the container covers the full viewport height */
+  }
+  .loader {
+    width: 48px;
+    height: 48px;
+    border: 5px solid #2E2F5B;
+    border-bottom-color: transparent;
+    border-radius: 50%;
+    display: inline-block;
+    box-sizing: border-box;
+    animation: rotation 1s linear infinite;
+    
+    }
+
+    @keyframes rotation {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+    } 

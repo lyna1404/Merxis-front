@@ -8,58 +8,81 @@ import styles from './inputField.module.css'
 // type, value, et onChange are params of html Input tag
 */
 
-const InputField = ({ display,label,size,type,value,onChange }) => {
+const InputField = ({ display,label,size,type,value,onChange,readOnly }) => {
 
     function switchSizeCase() {
-            switch (size) {
+            switch (size){
                 case 'extralarge' : 
                 return   (<input className={styles.extralarge}
                                 type={type}
-                                value={value}
+                                value={value !== null ? value : ''}
                                 onChange={onChange}
+                                readOnly={readOnly}
                           />)
                 case 'verylarge' : 
                     return   (<input className={styles.verylarge}
                                     type={type}
-                                    value={value}
+                                    value={value !== null ? value : ''}
                                     onChange={onChange}
+                                    readOnly={readOnly}
+
                               />)
                 case 'large' : 
                     return   (<input className={styles.large}
                                     type={type}
-                                    value={value}
+                                    value={value !== null ? value : ''}
                                     onChange={onChange}
+                                    readOnly={readOnly}
+
                               />)
                 case 'overaverage' : 
                     return   (<input className={styles.overaverage}
                                     type={type}
-                                    value={value}
+                                    value={value !== null ? value : ''}
                                     onChange={onChange}
+                                    readOnly={readOnly}
+
                               />)
                 case 'average' : 
                     return   (<input className={styles.average}
                                     type={type}
-                                    value={value}
+                                    value={value !== null ? value : ''}
                                     onChange={onChange}
+                                    readOnly={readOnly}
+
                               />)
                 case 'belowaverage' : 
                     return   (<input className={styles.belowaverage}
                                     type={type}
-                                    value={value}
+                                    value={value !== null ? value : ''}
                                     onChange={onChange}
+                                    readOnly={readOnly}
+
                               />)
                 case 'small' : 
                     return   (<input className={styles.small}
                                     type={type}
-                                    value={value}
+                                    value={value !== null ? value : ''}
                                     onChange={onChange}
+                                    readOnly={readOnly}
+
                               />)
                 case 'verysmall' : 
                     return   (<input className={styles.verysmall}
                                     type={type}
-                                    value={value}
+                                    value={value !== null ? value : ''}
                                     onChange={onChange}
+                                    readOnly={readOnly}
+
                               />)
+                default : 
+                return   (<input className={styles.average}
+                                type={type}
+                                value={value !== null ? value : ''}
+                                onChange={onChange}
+                                readOnly={readOnly}
+
+                        />)
     
             }
     }
