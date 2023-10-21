@@ -29,7 +29,7 @@ const ViewClient = () => {
         setIsLoaded(true);
       })
       .catch((error) => {
-        console.error('Error:', error);
+        console.log('Error:', error);
 
         if (error.response) {
           console.log('Status Code:', error.response.status);
