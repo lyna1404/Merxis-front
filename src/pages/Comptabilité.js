@@ -111,7 +111,7 @@ const data = [
     }
 ];
 
-const headers = ['ID Dossier', 'N° Dossier', 'N° Repertoire', 'Regime douanier', 'N° Facture', 'Client', 'Nature marchandise', 'Statut dossier'];
+const headers = ['N° Dossier', 'N° Repertoire', 'Regime douanier', 'N° Facture', 'Client', 'Nature marchandise', 'Statut dossier'];
 
 
 function Comptabilite() {
@@ -136,13 +136,15 @@ function Comptabilite() {
       
       <span className={styles.filter_span}>
             <TableFilter columns={[
-                { key: 'id', label: 'ID' },
-                { key: 'numDossier', label: 'N° Dossier' },
-                { key: 'rep', label: 'N° Repertoire' },
-                { key: 'numFact', label: 'N° Facture' },
-                { key: 'client', label: 'Client' },
-                { key: 'natureMarch', label: 'Nature marchandise' },
-                { key: 'statutDossier', label: 'Statut dossier' },
+                { key: 'numDossier', label: 'N° Dossier', inputType : 'text' },
+                { key: 'rep', label: 'N° Repertoire' ,  inputType : 'text'},
+                { key: 'numFact', label: 'N° Facture' , inputType : 'text' },
+                { key: 'regimeDouanier', label: 'Régime douanier', inputType : 'text' },
+                { key: 'client', label: 'Client' , inputType : 'text'},
+                { key: 'natureMarch', label: 'Nature marchandise' , inputType : 'text'},
+                { key: 'statutDossier', label: 'Statut dossier' , inputType : 'select', options: [
+                    { value: 'Livré', label: 'Livré' },
+                    { value: 'En livraison', label: 'En livraison' }, ]},
             ]} onFilterChange={handleFilterChange} />
             <span className={styles.buttons_span}>
                 <button className={`${buttonStyles.secondary}`}  onClick={() => handleReloadClick()} children='Actualiser' />    

@@ -33,17 +33,53 @@
     gap: 10px;
     border-style: none;
 }
-
+.primaryButtonR{
+    border-radius: 8px;
+    background: var(--red, #d22b2b);
+    color: #FFF;
+    font-family: Montserrat;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    display: inline-flex;
+    padding: 10px;
+    align-items: flex-start;
+    gap: 10px;
+    border-style: none;
+}
+.primaryButtonG{
+    border-radius: 8px;
+    background: var(--red, #0b4c16);
+    color: #FFF;
+    font-family: Montserrat;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    display: inline-flex;
+    padding: 10px;
+    align-items: flex-start;
+    gap: 10px;
+    border-style: none;
+}
+.primaryButtonG:hover {
+    cursor: pointer;
+}
+.primaryButtonR:hover {
+    cursor: pointer;
+}
 .primaryButtonB:hover {
     cursor: pointer;
 }
 
 .secondary{
     color: var(--light-violet, #505581);
+    background-color: transparent;
     font-family: Montserrat;
     font-size: 16px;
     font-style: normal;
-    font-weight: 500;
+    font-weight: 600;
     line-height: normal;
     text-decoration-line: underline;
     display: inline-flex;
@@ -51,13 +87,17 @@
     align-items: flex-start;
     gap: 10px;
     border-style: none;
-    text-underline-offset: 4px
+    text-underline-offset: 4px;
 }
 
 .secondary:hover {
     cursor: pointer;
 }
 
+
+.secondary:hover {
+    cursor: pointer;
+}
 .third{
     color: var(--white, #FFF);
     font-family: Montserrat;

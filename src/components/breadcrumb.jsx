@@ -2,7 +2,6 @@ import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import styles from "./breadcrumb.module.css";
 import IconeDroite from "./IconeDroite.jsx";
-import NouveauClient from "../pages/NouveauClient";
 
 const displayNameMap = {
     home: "Home",
@@ -10,16 +9,16 @@ const displayNameMap = {
     detailsClient: "Détails du client",
     comptabilite: "Comptabilité",
     deboursComptabilite: "Liste des debours",
-    NouveauClient: "Nouveau Client"
+    NouveauClient: "Nouveau Client",
+    ViewClient: "Détails Client",
+    EditClient : "Modification Client"
 
-    // Add more mappings for other pages if needed
   };
 
 const Breadcrumb = ({ hideParams = false }) => {
   const location = useLocation();
   const pathnames = location.pathname.split("/").filter((x) => x);
 
-  // Generate breadcrumb items based on pathnames
   const breadcrumbItems = pathnames.map((name, index) => {
     const routeTo = `/${pathnames.slice(0, index + 1).join("/")}`;
     const displayName = displayNameMap[name] || name;
