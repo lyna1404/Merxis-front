@@ -1,14 +1,14 @@
 {
   "files": {
-    "main.css": "/github.io/Merxis-front/static/css/main.faf0c987.css",
-    "main.js": "/github.io/Merxis-front/static/js/main.1303bd67.js",
-    "static/media/logo_merxis.png": "/github.io/Merxis-front/static/media/logo_merxis.b2a0b7e222ac507adabd.png",
-    "index.html": "/github.io/Merxis-front/index.html",
-    "main.faf0c987.css.map": "/github.io/Merxis-front/static/css/main.faf0c987.css.map",
-    "main.1303bd67.js.map": "/github.io/Merxis-front/static/js/main.1303bd67.js.map"
+    "main.css": "/Merxis-front/static/css/main.faf0c987.css",
+    "main.js": "/Merxis-front/static/js/main.3d66bf6b.js",
+    "static/media/logo_merxis.png": "/Merxis-front/static/media/logo_merxis.b2a0b7e222ac507adabd.png",
+    "index.html": "/Merxis-front/index.html",
+    "main.faf0c987.css.map": "/Merxis-front/static/css/main.faf0c987.css.map",
+    "main.3d66bf6b.js.map": "/Merxis-front/static/js/main.3d66bf6b.js.map"
   },
   "entrypoints": [
     "static/css/main.faf0c987.css",
-    "static/js/main.1303bd67.js"
+    "static/js/main.3d66bf6b.js"
   ]
 }
