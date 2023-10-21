@@ -129,7 +129,7 @@ const GestionClients = () => {
           setClientToDelete(null);
        })
        .catch((error) => {
-          console.error('Delete request error:', error);
+          console.log('Delete request error:', error);
           handleError(error.request.response);
           setClientToDelete(null);
        });
