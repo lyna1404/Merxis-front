@@ -52,7 +52,7 @@ const GestionClients = () => {
 
   useEffect(() => {
     axios
-      .get('/api/clients/')
+      .get('https://merxis.onrender.com/api/clients/')
       .then((response) => {
         const clientsData = response.data;
         console.log(clientsData);
