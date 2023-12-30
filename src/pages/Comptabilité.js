@@ -1,6 +1,6 @@
 
 import { useState } from 'react';
-
+import React from 'react';
 import Breadcrumb from '../components/breadcrumb';
 import ReusableTable from '../components/reusableTable';
 import styles from './Comptabilite.module.css';

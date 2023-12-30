@@ -11,7 +11,8 @@ const displayNameMap = {
     deboursComptabilite: "Liste des debours",
     NouveauClient: "Nouveau Client",
     ViewClient: "Détails Client",
-    EditClient : "Modification Client"
+    EditClient : "Modification Client",
+    facturation: "Facturation"
 
   };
 
