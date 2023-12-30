@@ -1,249 +1,127 @@
 
-import { useState, useRef } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useState, useRef, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import axios from 'axios';
 
-import styles from './Comptabilite.module.css';
+import styles from './gestionClients.module.css';
 import buttonStyles from '../components/button.module.css';
 import AdvancedBreadcrumb from '../components/advancedBreadcrumb'
 import ReusableTable from '../components/reusableTable';
 import TableFilter from '../components/tableFilter';
 import AjoutDebours from './AjoutDebours';
+import { reloadPage , handleFilterChange} from '../Utils/actionUtils';
+import ErrorMessage from '../components/errorMessage';
+import SuccessMessage from '../components/succesMessage';
+import filterStyles from '../components/tableFilter.module.css';
+import InputField from '../components/InputField';
 
 
-const listeDossiers = [
-    {
-        id:"01",
-        numDossier:"01/23",
-        rep:"01",
-        regDouane:"xxx",
-        numFact:"01/23",
-        client:"Sarl MERXIS",
-        natureMarch:"Alimentation",
-        statutDossier:"Livré",
-        deboursPrestations: [{deboursPres:"Magasinage", modePaiement:"Liquide", montantDebours:"1000 DZD", montantPrestations:"/"}, 
-        {deboursPres:"Fret", modePaiement:"Liquide", montantDebours:"10000 DZD", montantPrestations:"/"}, 
-        {deboursPres:"Dedouanement", modePaiement:"Cache", montantDebours:"25000 DZD", montantPrestations:"/"},
-        {deboursPres:"Honoraire", modePaiement:"Cache", montantDebours:"/", montantPrestations:"34000 DZD"},
-        {deboursPres:"Transit", modePaiement:"Virement", montantDebours:"/", montantPrestations:"12000 DZD"},
-        {deboursPres:"Magasinage", modePaiement:"Chèque", montantDebours:"/", montantPrestations:"15000 DZD"},
-        {deboursPres:"Transit", modePaiement:"Chèque", montantDebours:"/", montantPrestations:"23000 DZD"}],
-        montantDebours:"36000 DZD",
-        montantPrestations:"61000 DZD"
-    },
-    {
-        id : "02",
-        numDossier:"02/23",
-        rep:"01",
-        regDouane:"xxx",
-        numFact:"02/23",
-        client:"SARL Merxis",
-        natureMarch:"Electronique",
-        statutDossier:"Archivé",
-        deboursPrestations: [{deboursPres:"Magasinage", modePaiement:"Liquide", montantDebours:"1000 DZD", montantPrestations:"/"}, 
-        {deboursPres:"Fret", modePaiement:"Liquide", montantDebours:"10000 DZD", montantPrestations:"/"}, 
-        {deboursPres:"Dedouanement", modePaiement:"Cache", montantDebours:"25000 DZD", montantPrestations:"/"},
-        {deboursPres:"Honoraire", modePaiement:"Cache", montantDebours:"/", montantPrestations:"34000 DZD"},
-        {deboursPres:"Transit", modePaiement:"Virement", montantDebours:"/", montantPrestations:"12000 DZD"},
-        {deboursPres:"Magasinage", modePaiement:"Chèque", montantDebours:"/", montantPrestations:"15000 DZD"},
-        {deboursPres:"Transit", modePaiement:"Chèque", montantDebours:"/", montantPrestations:"23000 DZD"}],
-        montantDebours:"36000 DZD",
-        montantPrestations:"61000 DZD"
-    },
-    {
-        id : "03",
-        numDossier:"03/23",
-        rep:"02",
-        regDouane:"xxx",
-        numFact:"03/23",
-        client:"SARL Transit Amel",
-        natureMarch:"Electromenager",
-        statutDossier:"En livraison",
-        deboursPrestations: [{deboursPres:"Magasinage", modePaiement:"Liquide", montantDebours:"1000 DZD", montantPrestations:"/"}, 
-        {deboursPres:"Fret", modePaiement:"Liquide", montantDebours:"10000 DZD", montantPrestations:"/"}, 
-        {deboursPres:"Dedouanement", modePaiement:"Cache", montantDebours:"25000 DZD", montantPrestations:"/"},
-        {deboursPres:"Honoraire", modePaiement:"Cache", montantDebours:"/", montantPrestations:"34000 DZD"},
-        {deboursPres:"Transit", modePaiement:"Virement", montantDebours:"/", montantPrestations:"12000 DZD"},
-        {deboursPres:"Magasinage", modePaiement:"Chèque", montantDebours:"/", montantPrestations:"15000 DZD"},
-        {deboursPres:"Transit", modePaiement:"Chèque", montantDebours:"/", montantPrestations:"23000 DZD"}],
-        montantDebours:"36000 DZD",
-        montantPrestations:"61000 DZD"
-    },
-    {
-        id : "04",
-        numDossier:"04/23",
-        rep:"03",
-        regDouane:"xxx",
-        numFact:"04/23",
-        client:"SARL Golden Tulip Hotel Series",
-        natureMarch:"Cosmétiques",
-        statutDossier:"En dédouanement",
-        deboursPrestations: [{deboursPres:"Magasinage", modePaiement:"Liquide", montantDebours:"1000 DZD", montantPrestations:"/"}, 
-        {deboursPres:"Fret", modePaiement:"Liquide", montantDebours:"10000 DZD", montantPrestations:"/"}, 
-        {deboursPres:"Dedouanement", modePaiement:"Cache", montantDebours:"25000 DZD", montantPrestations:"/"},
-        {deboursPres:"Honoraire", modePaiement:"Cache", montantDebours:"/", montantPrestations:"34000 DZD"},
-        {deboursPres:"Transit", modePaiement:"Virement", montantDebours:"/", montantPrestations:"12000 DZD"},
-        {deboursPres:"Magasinage", modePaiement:"Chèque", montantDebours:"/", montantPrestations:"15000 DZD"},
-        {deboursPres:"Transit", modePaiement:"Chèque", montantDebours:"/", montantPrestations:"23000 DZD"}],
-        montantDebours:"36000 DZD",
-        montantPrestations:"61000 DZD"
-
-    },
-    {   
-        id : "05",
-        numDossier:"05/23",
-        rep:"03",
-        regDouane:"xxx",
-        numFact:"05/23",
-        client:"SARL Golden Tulip Hotel Series",
-        natureMarch:"Alimentation",
-        statutDossier:"Livré",
-        deboursPrestations: [{deboursPres:"Magasinage", modePaiement:"Liquide", montantDebours:"1000 DZD", montantPrestations:"/"}, 
-        {deboursPres:"Fret", modePaiement:"Liquide", montantDebours:"10000 DZD", montantPrestations:"/"}, 
-        {deboursPres:"Dedouanement", modePaiement:"Cache", montantDebours:"25000 DZD", montantPrestations:"/"},
-        {deboursPres:"Honoraire", modePaiement:"Cache", montantDebours:"/", montantPrestations:"34000 DZD"},
-        {deboursPres:"Transit", modePaiement:"Virement", montantDebours:"/", montantPrestations:"12000 DZD"},
-        {deboursPres:"Magasinage", modePaiement:"Chèque", montantDebours:"/", montantPrestations:"15000 DZD"},
-        {deboursPres:"Transit", modePaiement:"Chèque", montantDebours:"/", montantPrestations:"23000 DZD"}],
-        montantDebours:"36000 DZD",
-        montantPrestations:"61000 DZD"
-    },
-    {   
-        id : "06",
-        numDossier:"06/23",
-        rep:"04",
-        regDouane:"xxx",
-        numFact:"06/23",
-        client:"ESI",
-        natureMarch:"Meubles",
-        statutDossier:"Livré",
-        deboursPrestations: [{deboursPres:"Magasinage", modePaiement:"Liquide", montantDebours:"1000 DZD", montantPrestations:"/"}, 
-        {deboursPres:"Fret", modePaiement:"Liquide", montantDebours:"10000 DZD", montantPrestations:"/"}, 
-        {deboursPres:"Dedouanement", modePaiement:"Cache", montantDebours:"25000 DZD", montantPrestations:"/"},
-        {deboursPres:"Honoraire", modePaiement:"Cache", montantDebours:"/", montantPrestations:"34000 DZD"},
-        {deboursPres:"Transit", modePaiement:"Virement", montantDebours:"/", montantPrestations:"12000 DZD"},
-        {deboursPres:"Magasinage", modePaiement:"Chèque", montantDebours:"/", montantPrestations:"15000 DZD"},
-        {deboursPres:"Transit", modePaiement:"Chèque", montantDebours:"/", montantPrestations:"23000 DZD"}],
-        montantDebours:"36000 DZD",
-        montantPrestations:"61000 DZD"
-    },
-    {
-        id : "07",
-        numDossier:"07/23",
-        rep:"04",
-        regDouane:"xxx",
-        numFact:"07/23",
-        client:"SARL Green",
-        natureMarch:"Gazon",
-        statutDossier:"Livré",
-        deboursPrestations: [{deboursPres:"Magasinage", modePaiement:"Liquide", montantDebours:"1000 DZD", montantPrestations:"/"}, 
-        {deboursPres:"Fret", modePaiement:"Liquide", montantDebours:"10000 DZD", montantPrestations:"/"}, 
-        {deboursPres:"Dedouanement", modePaiement:"Cache", montantDebours:"25000 DZD", montantPrestations:"/"},
-        {deboursPres:"Honoraire", modePaiement:"Cache", montantDebours:"/", montantPrestations:"34000 DZD"},
-        {deboursPres:"Transit", modePaiement:"Virement", montantDebours:"/", montantPrestations:"12000 DZD"},
-        {deboursPres:"Magasinage", modePaiement:"Chèque", montantDebours:"/", montantPrestations:"15000 DZD"},
-        {deboursPres:"Transit", modePaiement:"Chèque", montantDebours:"/", montantPrestations:"23000 DZD"}],
-        montantDebours:"36000 DZD",
-        montantPrestations:"61000 DZD"
-    },
-    {
-        id : "08",
-        numDossier:"08/23",
-        rep:"05",
-        regDouane:"xxx",
-        numFact:"08/23",
-        client:"SARL Transit Amel",
-        natureMarch:"Alimentation",
-        statutDossier:"En dédouanement",
-        deboursPrestations: [{deboursPres:"Magasinage", modePaiement:"Liquide", montantDebours:"1000 DZD", montantPrestations:"/"}, 
-        {deboursPres:"Fret", modePaiement:"Liquide", montantDebours:"10000 DZD", montantPrestations:"/"}, 
-        {deboursPres:"Dedouanement", modePaiement:"Cache", montantDebours:"25000 DZD", montantPrestations:"/"},
-        {deboursPres:"Honoraire", modePaiement:"Cache", montantDebours:"/", montantPrestations:"34000 DZD"},
-        {deboursPres:"Transit", modePaiement:"Virement", montantDebours:"/", montantPrestations:"12000 DZD"},
-        {deboursPres:"Magasinage", modePaiement:"Chèque", montantDebours:"/", montantPrestations:"15000 DZD"},
-        {deboursPres:"Transit", modePaiement:"Chèque", montantDebours:"/", montantPrestations:"23000 DZD"}],
-        montantDebours:"36000 DZD",
-        montantPrestations:"61000 DZD"
-    },
-    {
-        id : "09",
-        numDossier:"09/23",
-        rep:"05",
-        regDouane:"xxx",
-        numFact:"09/23",
-        client:"SARL Transit Amel",
-        natureMarch:"Produit Chimique",
-        statutDossier:"En livraison",
-        deboursPrestations: [{deboursPres:"Magasinage", modePaiement:"Liquide", montantDebours:"1000 DZD", montantPrestations:"/"}, 
-        {deboursPres:"Fret", modePaiement:"Liquide", montantDebours:"10000 DZD", montantPrestations:"/"}, 
-        {deboursPres:"Dedouanement", modePaiement:"Cache", montantDebours:"25000 DZD", montantPrestations:"/"},
-        {deboursPres:"Honoraire", modePaiement:"Cache", montantDebours:"/", montantPrestations:"34000 DZD"},
-        {deboursPres:"Transit", modePaiement:"Virement", montantDebours:"/", montantPrestations:"12000 DZD"},
-        {deboursPres:"Magasinage", modePaiement:"Chèque", montantDebours:"/", montantPrestations:"15000 DZD"},
-        {deboursPres:"Transit", modePaiement:"Chèque", montantDebours:"/", montantPrestations:"23000 DZD"}],
-        montantDebours:"36000 DZD",
-        montantPrestations:"61000 DZD"
-    },
-    {
-        id : "10",
-        numDossier:"10/23",
-        rep:"06",
-        regDouane:"xxx",
-        numFact:"09/23",
-        client:"SARL Merxis",
-        natureMarch:"Produit de nettoyage",
-        statutDossier:"En livraison",
-        deboursPrestations: [{deboursPres:"Magasinage", modePaiement:"Liquide", montantDebours:"1000 DZD", montantPrestations:"/"}, 
-        {deboursPres:"Fret", modePaiement:"Liquide", montantDebours:"10000 DZD", montantPrestations:"/"}, 
-        {deboursPres:"Dedouanement", modePaiement:"Cache", montantDebours:"25000 DZD", montantPrestations:"/"},
-        {deboursPres:"Honoraire", modePaiement:"Cache", montantDebours:"/", montantPrestations:"34000 DZD"},
-        {deboursPres:"Transit", modePaiement:"Virement", montantDebours:"/", montantPrestations:"12000 DZD"},
-        {deboursPres:"Magasinage", modePaiement:"Chèque", montantDebours:"/", montantPrestations:"15000 DZD"},
-        {deboursPres:"Transit", modePaiement:"Chèque", montantDebours:"/", montantPrestations:"23000 DZD"}],
-        montantDebours:"36000 DZD",
-        montantPrestations:"61000 DZD"
-    }
-];
  
 function DeboursComptabilite() { 
-    let navigate = useNavigate();
-    
+    useEffect(() => {
+        // Create axios requests for both data fetching
+        const debours = axios.get(`/api/dossiers/${id}/debours/`); 
+        const modes = axios.get(`/api/modes-paiement-debours/`);
+        const dossier = axios.get(`/api/dossiers/${id}/`); 
+        const tyoesDebours = axios.get(`/api/types-debours/`);
+        // Use Promise.all to wait for both requests to complete
+        Promise.all([debours, modes,dossier,tyoesDebours])
+          .then((responses) => {
+            const deboursData = responses[0].data;
+            const modesData = responses[1].data;
+            const dossierData = responses[2].data;
+            const typesData = responses[3].data;
+            console.log(deboursData);
+            console.log(modesData);
+            console.log(dossierData);
+            console.log(typesData);
+            if (typeof deboursData === 'object' && deboursData !== null) {
+              const extractedDebours = Object.values(deboursData).map(item => ({
+                id: item.debours_pk,
+                debours: item.typeDebours ? item.typeDebours.designation : null,
+                mode: item.modePaiment,
+                mont: item.montant
+              }));
+              console.log(extractedDebours);
+              setDebours(extractedDebours);
+              setFilteredData(extractedDebours);
+              setDossier(dossierData);
+              const totalMontant = extractedDebours.reduce(
+                (sum, debour) => sum + (parseFloat(debour.mont) || 0),
+                0
+              );
+              const totalMontantString = totalMontant.toFixed(2);
+              setTotal(totalMontantString);
+              const extractedModes = modesData.results.map(status => ({
+                value: status,
+                label: status
+              }));
+              console.log(extractedModes);
+              setModes(extractedModes);
+              const extractedTypes = typesData.map(type => ({
+                id: type.typeDebours_pk,
+                value: type.typeDebours_pk,
+                label: type.designation
+              }));
+              console.log(extractedTypes);
+              setTypes(extractedTypes);
+              setIsLoaded(true);
+            } else {
+              console.error('Response data is not a JSON object:', deboursData);
+              handleError(deboursData);
+              setIsLoaded(true);
+            }
+          })
+          .catch((error) => {
+            setIsLoaded(true);
+            console.log('Error:', error); 
+            if (error.request && error.request.response){
+              handleError(error.request.response);
+            }
+            else{
+              handleError(error);
+            }
+          });
+      }, []);     
     //Recuperer le numero dossier choisie
-    const { slug } = useParams();
-    
+    const { id } = useParams();
+    console.log(id);
     //Trouver le numero du dossier à partir de la liste des dossies existants
-    const selectedDossier = listeDossiers.find((dossier) => dossier.id === slug);
+    const [errorMessages, setErrorMessages] = useState({});
+    const [showError, setShowError] = useState(false);
+    const [showSuccess, setShowSuccess] = useState(false);
+    const [isLoaded, setIsLoaded] = useState(false);
+    const [debours, setDebours] = useState([]);
+    const [dossier,setDossier] = useState([]);
+    const [modes, setModes] = useState([]);
+    const [types, setTypes] = useState([]);
+    const [filteredData, setFilteredData] = useState([]);    
+    const [montTotal, setTotal] = useState(0);
 
+    const handleError = (errors) => {
+      setShowError(true);
+      setErrorMessages(errors);
+    };
+    
+    const handleErrorClose = () => {
+      setShowError(false);
+    };
+    
+    const handleSuccess = () => {
+      setShowSuccess(true);
+    };
+    
+    const handleSuccessClose = () => {
+      setShowSuccess(false);
+      reloadPage();
+    };
+    const handleFilterChangeWrapper = (columnKey, filterValue) => {
+      handleFilterChange(columnKey, filterValue,debours, setFilteredData);
+    };
     //Exemple d'une historique de debours
-    const data = selectedDossier.deboursPrestations.map((deboursPrestations)=>deboursPrestations);
     
     //entete du tableau des debours
-    const headers = ['Debours/Prestation', 'Mode de paiement', 'Mont Debours', 'Mont Prestation'];
-
-    //Mettre à jour l'historique des debours du client
-    const [filteredData, setFilteredData] = useState(data);
-
-    const handleFilterChange = (columnKey, filterValue) => {
-        const filteredData = data.filter((item) =>
-          item[columnKey].toString().toLowerCase().includes(filterValue.toLowerCase())
-        );
-        setFilteredData(filteredData);
-      };
-
-    const setMontantDebours = (dossier) => {
-        let montantDeb = 0;
-        dossier.deboursPrestations.map((debours)=>{debours.montantDebours!='/'? 
-                                                            montantDeb+=Number(String(debours.montantDebours).split(' ')[0])
-                                                            : montantDeb+=0});
-        return montantDeb + ' DZD';
-    };
-
-    const setMontantPrestations = (dossier) => {
-        let montantPres = 0;
-        dossier.deboursPrestations.map((prestation)=>{prestation.montantPrestations!='/'? 
-                                                        montantPres+=Number(String(prestation.montantPrestations).split(' ')[0])  
-                                                                : montantPres+=0});
-        return montantPres + ' DZD';
-    }
+    const headers = ['Debours/Prestation', 'Mode de paiement', 'Mont Debours'];
 
     //Controler le fomrulaire d'ajout de debours
     const [showForm, setShowForm] = useState(false);
@@ -275,47 +153,67 @@ function DeboursComptabilite() {
     
     //Controler l'ajout d'un debours 
     const handleAjouter = (data) => {
-        setFilteredData((prevFilteredData) => [data,...prevFilteredData]);
-      };
+      console.log("this is the sent data");
+      console.log(data);
+      setIsLoaded(false);
+      axios
+          .post(`/api/dossiers/${id}/debours/`, JSON.stringify(data), {
+              headers: {
+                  'Content-Type': 'application/json'
+              }
+          })
+          .then((response) => {
+              setIsLoaded(true);
+              const clientResponse = response.data;
+              console.log(clientResponse);
+              handleSuccess();
+          })
+          .catch((error) => {
+              setIsLoaded(true);
+              handleError(error.request.response);
+          });
 
+    };
 
     return (
         <>
-            <AdvancedBreadcrumb numDossier={selectedDossier.numDossier} hideParams={true}/>
+            <AdvancedBreadcrumb numDossier={dossier.numDossier} hideParams={true}/>
             <h1 className={styles.pageTitle}>Liste des Debours</h1>
             
             <span className={styles.filter_span}>
                 <TableFilter columns={[
-                    { key: 'deboursPres', label: 'Debours/Prestation' },
-                    { key: 'modePaiement', label: 'Mode de paiement' },
-                    {key : 'montantDebours', label:'Mont Debours'},
-                    {key : 'montantPrestations', label:'Mont Prestation'},
-                ]} onFilterChange={handleFilterChange} />
+                    { key: 'debours', label: 'Debours/Prestation', inputType : 'text' },
+                    { key: 'mode', label: 'Mode de paiement' , inputType : 'select' , options: modes},
+                    {key : 'mont', label:'Mont Debours' , inputType : 'number'}
+                ]} onFilterChange={handleFilterChangeWrapper} />
                 <span className={styles.buttons_span}>
                     <button className={`${buttonStyles.primaryButtonY}`} children='Nouveau' onClick={handleNouveauClick} />
                     {showForm && <AjoutDebours onClose={handleFormClose} 
                                                onAjouter={handleAjouter} 
                                                onFileUpload={handleFileUpload} 
                                                onFileUploadClick={handleFileUploadClick}
-                                               inputFile={inputFile}/>} 
+                                               inputFile={inputFile}
+                                               modes = {modes}
+                                               types = {types} />} 
               
                 </span>
             </span>
+            {!isLoaded ? ( // Conditional rendering based on the loading state
+            <div className={styles.loader_container}><span className={styles.loader}></span></div> // Replace with your loader component or CSS
+            ) : (
+            <>
+            <ReusableTable data={filteredData} headers={headers} itemsPerPage={8} addlink={false}/>
+            <span className={styles.container}>
+              <span className={filterStyles.container}>
+                  <InputField display="labelonleft" label="Total (DA)" size="average" type="number" value={montTotal} readOnly = {true} />
+              </span>
+            </span>
+            </> 
 
-            <ReusableTable data={filteredData} headers={headers} itemsPerPage={3} addlink={false}/>
-            <div className={styles.container}>
-                <label className={styles.label_style}>Total</label>
-                <input className={styles.input}
-                    value={setMontantDebours(selectedDossier)}
-                    readOnly={true}
-                />
-                <input className={styles.input}
-                    value={setMontantPrestations(selectedDossier)}
-                    readOnly={true}
-                />
-            </div>   
-
-        </>
+            )}
+            {showError && <ErrorMessage onClose={handleErrorClose} errors={errorMessages} />}
+            {showSuccess && <SuccessMessage onClose={handleSuccessClose} />}
+            </>
     );
 }
 

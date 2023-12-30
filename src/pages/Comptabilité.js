@@ -1,133 +1,91 @@
 
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 
 import Breadcrumb from '../components/breadcrumb';
 import ReusableTable from '../components/reusableTable';
-import styles from './Comptabilite.module.css';
+import styles from './gestionClients.module.css';
 import buttonStyles from '../components/button.module.css';
 import TableFilter from '../components/tableFilter';
+import axios from 'axios';
+import ErrorMessage from '../components/errorMessage';
+import {IconView} from '../components/icons';
+import { openPageBasedOnId , reloadPage , openPage , handleFilterChange} from '../Utils/actionUtils';
 
 
-const data = [
-    {
-        id : "01",
-        numDossier:"01/23",
-        rep:"01",
-        regDouane:"xxx",
-        numFact:"01/23",
-        client:"Sarl MERXIS",
-        natureMarch:"Alimentation",
-        statutDossier:"Livré"
-    },
-    {
-        id : "02",
-        numDossier:"02/23",
-        rep:"01",
-        regDouane:"xxx",
-        numFact:"02/23",
-        client:"SARL Merxis",
-        natureMarch:"Electronique",
-        statutDossier:"Archivé"
-    },
-    {
-        id : "03",
-        numDossier:"03/23",
-        rep:"02",
-        regDouane:"xxx",
-        numFact:"03/23",
-        client:"SARL Transit Amel",
-        natureMarch:"Electromenager",
-        statutDossier:"En livraison"
-    },
-    {
-        id : "04",
-        numDossier:"04/23",
-        rep:"03",
-        regDouane:"xxx",
-        numFact:"04/23",
-        client:"SARL Golden Tulip Hotel Series",
-        natureMarch:"Cosmétiques",
-        statutDossier:"En dédouanement"
-    },
-    {   
-        id : "05",
-        numDossier:"05/23",
-        rep:"03",
-        regDouane:"xxx",
-        numFact:"05/23",
-        client:"SARL Golden Tulip Hotel Series",
-        natureMarch:"Alimentation",
-        statutDossier:"Livré"
-    },
-    {  
-        id : "06",
-        numDossier:"06/23",
-        rep:"04",
-        regDouane:"xxx",
-        numFact:"06/23",
-        client:"ESI",
-        natureMarch:"Meubles",
-        statutDossier:"Livré"
-    },
-    {
-        id : "07",
-        numDossier:"07/23",
-        rep:"04",
-        regDouane:"xxx",
-        numFact:"07/23",
-        client:"SARL Green",
-        natureMarch:"Gazon",
-        statutDossier:"Livré"
-    },
-    {
-        id : "08",
-        numDossier:"08/23",
-        rep:"05",
-        regDouane:"xxx",
-        numFact:"08/23",
-        client:"SARL Transit Amel",
-        natureMarch:"Alimentation",
-        statutDossier:"En dédouanement"
-    },
-    {
-        id : "09",
-        numDossier:"09/23",
-        rep:"05",
-        regDouane:"xxx",
-        numFact:"09/23",
-        client:"SARL Transit Amel",
-        natureMarch:"Produit Chimique",
-        statutDossier:"En livraison"
-    },
-    {
-        id : "10",
-        numDossier:"10/23",
-        rep:"06",
-        regDouane:"xxx",
-        numFact:"09/23",
-        client:"SARL Merxis",
-        natureMarch:"Produit de nettoyage",
-        statutDossier:"En livraison"
-    }
-];
+const headers = ['N° Dossier', 'N° Rep', 'Regime douanier', 'Client', 'Nature marchandise', 'Statut dossier', 'Action'];
 
-const headers = ['N° Dossier', 'N° Repertoire', 'Regime douanier', 'N° Facture', 'Client', 'Nature marchandise', 'Statut dossier'];
-
-
+  
 function Comptabilite() {
-    const [filteredData, setFilteredData] = useState(data);
+    const params = {
+        is_declared: 'True'
+        };
+  const [errorMessages, setErrorMessages] = useState({});
+  const [showError, setShowError] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [dossiers, setDossiers] = useState([]);
+  const [etats, setEtats] = useState([]);
+  const [filteredData, setFilteredData] = useState([]);
 
-    const handleFilterChange = (columnKey, filterValue) => {
-      const filteredData = data.filter((item) =>
-        item[columnKey].toString().toLowerCase().includes(filterValue.toLowerCase())
-      );
-      setFilteredData(filteredData);
-    };
+  const handleFilterChangeWrapper = (columnKey, filterValue) => {
+    handleFilterChange(columnKey, filterValue,dossiers, setFilteredData);
+  };
+  const handleError = (errors) => {
+    setShowError(true);
+    setErrorMessages(errors);
+  };
+  
+  const handleErrorClose = () => {
+    setShowError(false);
+  };
+  useEffect(() => {
+    // Create axios requests for both data fetching
+    const dossiers = axios.get(`/api/dossiers/`, { params }); 
+    const etats = axios.get(`/api/etats-dossier/`);
 
-    const handleReloadClick = () => {
-        window.location.reload(false)
-    };
+    // Use Promise.all to wait for both requests to complete
+    Promise.all([dossiers, etats])
+      .then((responses) => {
+        const dossiersData = responses[0].data;
+        const etatsData = responses[1].data;
+        console.log(dossiersData);
+        console.log(etatsData);
+        if (typeof dossiersData === 'object' && dossiersData !== null) {
+          const extractedDossiers = Object.values(dossiersData).map(item => ({
+            id: item.dossier_pk,
+            numDossier: item.numDossier,
+            numRep: item.declaration ? item.declaration.numRepertoire : null,
+            regime: item.declaration ? (item.declaration.regime ? item.declaration.regime.designation : null) : null,
+            client: item.client ? item.client.raisonSociale : null,
+            natureMarch: item.natureMarchandise ? (item.natureMarchandise.designation ? item.natureMarchandise.designation : null) : null,
+            statutDossier: item.etatDossier
+          }));
+          console.log(extractedDossiers);
+          setDossiers(extractedDossiers);
+          setFilteredData(extractedDossiers);
+          const extractedEtats = etatsData.results.map(status => ({
+            value: status,
+            label: status
+          }));
+          console.log(extractedEtats);
+          setEtats(extractedEtats);
+          setIsLoaded(true);
+        } else {
+          console.error('Response data is not a JSON object:', dossiersData);
+          handleError(dossiersData);
+          setIsLoaded(true);
+        }
+      })
+      .catch((error) => {
+        setIsLoaded(true);
+        console.log('Error:', error);
+        handleError(error.request.response);
+      });
+  }, []); 
     
+    const tableActions = [
+        <IconView key="view"  onClick={(event) => openPageBasedOnId(event.target.closest('tr').id, '/comptabilite/deboursComptabilite/')} />
+      ];
+
   return (
     <>
 
@@ -137,22 +95,24 @@ function Comptabilite() {
       <span className={styles.filter_span}>
             <TableFilter columns={[
                 { key: 'numDossier', label: 'N° Dossier', inputType : 'text' },
-                { key: 'rep', label: 'N° Repertoire' ,  inputType : 'text'},
-                { key: 'numFact', label: 'N° Facture' , inputType : 'text' },
-                { key: 'regimeDouanier', label: 'Régime douanier', inputType : 'text' },
+                { key: 'numRep', label: 'N° Repertoire' ,  inputType : 'text'},
+                { key: 'regime', label: 'Régime douanier', inputType : 'text' },
                 { key: 'client', label: 'Client' , inputType : 'text'},
                 { key: 'natureMarch', label: 'Nature marchandise' , inputType : 'text'},
-                { key: 'statutDossier', label: 'Statut dossier' , inputType : 'select', options: [
-                    { value: 'Livré', label: 'Livré' },
-                    { value: 'En livraison', label: 'En livraison' }, ]},
-            ]} onFilterChange={handleFilterChange} />
+                { key: 'statutDossier', label: 'Statut dossier' , inputType : 'select', options: etats },
+            ]} onFilterChange={handleFilterChangeWrapper} />
             <span className={styles.buttons_span}>
-                <button className={`${buttonStyles.secondary}`}  onClick={() => handleReloadClick()} children='Actualiser' />    
+                <button className={`${buttonStyles.secondary}`}  onClick={() => reloadPage()} children='Actualiser' />    
             </span>
             
         </span>
+        {!isLoaded ? ( // Conditional rendering based on the loading state
+        <div className={styles.loader_container}><span className={styles.loader}></span></div> // Replace with your loader component or CSS
+      ) : (
+        <ReusableTable data={filteredData} headers={headers} itemsPerPage={8} addlink={false} addactions={true} actionIcons={tableActions} />
+      )}
+        {showError && <ErrorMessage onClose={handleErrorClose} errors={JSON.parse(errorMessages)} />}
         
-        <ReusableTable data={filteredData} headers={headers} itemsPerPage={8} addlink={true}/>
 
   </>
   );

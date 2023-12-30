@@ -36,7 +36,7 @@ const App = () => {
           <Route path="/gestionClients/ViewClient/:id" element={<ViewClient />} />
           <Route path="/gestionClients/EditClient/:id" element={<EditClient />} />
           <Route path="/comptabilite" element={<Comptabilite/>}/>
-          <Route path="/comptabilite/:slug" element={<DeboursComptabilite/>}/>
+          <Route path="/comptabilite/deboursComptabilite/:id" element={<DeboursComptabilite/>}/>
         </Routes>
       </div>
     </Router>
