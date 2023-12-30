@@ -11,6 +11,7 @@ import axios from 'axios';
 import InputField from '../components/InputField';
 import ErrorMessage from '../components/errorMessage';
 import SuccessMessage from '../components/succesMessage';
+import { openPageBasedOnId , reloadPage , openPage , handleFilterChange} from '../Utils/actionUtils';
 
 const DetailsClient = () => {
     const { id } = useParams();
@@ -41,12 +42,9 @@ const DetailsClient = () => {
             setIsLoaded(true);
           })
           .catch((error) => {
-            console.log('Error:', error);
-    
-            if (error.response) {
-              console.log('Status Code:', error.response.status);
-              console.log('Response Data:', error.response.data);
-            }       
+            setIsLoaded(true);
+            console.log(error.request.response);
+            handleError(error.request.response);     
           });
       }, [id]); // Add 'id' as a dependency
     
@@ -66,10 +64,6 @@ const DetailsClient = () => {
     const handleNouveauClick = () => {
       setShowForm(true);
     };
-
-    const handleReloadClick = () => {
-        window.location.reload(false)
-    };
   
     const handleFormClose = () => {
       setShowForm(false);
@@ -80,18 +74,17 @@ const DetailsClient = () => {
         setErrorMessages(errors);
       };
       
-      const handleErrorClose = () => {
-        setShowError(false);
-      };
+    const handleErrorClose = () => {
+      setShowError(false);
+    };
       
-      const handleSuccess = () => {
-          setShowSuccess(true);
-        };
+    const handleSuccess = () => {
+        setShowSuccess(true);
+      };
         
-        const handleSuccessClose = () => {
-          setShowSuccess(false);
-          window.location.reload(false);
-        };
+    const handleSuccessClose = () => {
+      setShowSuccess(false);
+      reloadPage();    };
         
     
     //Controler l'ajout d'un versement 
@@ -131,7 +124,7 @@ const DetailsClient = () => {
             </span>
             
             <span className={styles.buttons_span}>
-                <button className={`${buttonStyles.secondary}`} children='Actualiser' onClick={handleReloadClick} />    
+                <button className={`${buttonStyles.secondary}`} children='Actualiser' onClick={reloadPage} />    
                 <button className={`${buttonStyles.primaryButtonY}`} children='Nouveau' onClick={handleNouveauClick} />
                 {showForm && <AjoutVersement onClose={handleFormClose} onAjouter={handleAjouter} />}
             </span>

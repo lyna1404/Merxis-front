@@ -41,7 +41,7 @@ const NouveauClient = () => {
     const [rcArabe, setrcArabe] = useState('');
     const [adresseArabe, setAdresseArabe] = useState('');
 
-    const [errorMessages, setErrorMessages] = useState({});
+    const [errorMessages, setErrorMessages] = useState();
     const [showError, setShowError] = useState(false);
     const [showSuccess, setShowSuccess] = useState(false);
     const [isLoaded, setIsLoaded] = useState(false);
@@ -58,11 +58,7 @@ const NouveauClient = () => {
            })
            .catch((error) => {
             console.log('Error:', error);
-    
-            if (error.response) {
-              console.log('Status Code:', error.response.status);
-              console.log('Response Data:', error.response.data);
-            }       
+            handleError(error.request.response);   
           });
      }, []);
 
@@ -77,7 +73,7 @@ const NouveauClient = () => {
         setShowError(true);
         setErrorMessages(errors);
       };
-      
+    
     const handleErrorClose = () => {
     setShowError(false);
     };
@@ -139,11 +135,10 @@ const NouveauClient = () => {
             })
             .catch((error) => {
                 setIsLoaded(true);
+                console.log(error.request.response);
                 handleError(error.request.response);
             });
     };
-
-
 
     return (
         <>
@@ -228,7 +223,7 @@ const NouveauClient = () => {
             <span className={styles.buttonSpan_downpage}>
                     <button className={buttonStyles.primaryButtonY} type="submit" onClick={handleAjouterClient} >Enregistrer</button>
             </span>
-            {showError && <ErrorMessage onClose={handleErrorClose} errors={JSON.parse(errorMessages)} />}
+            {showError && <ErrorMessage onClose={handleErrorClose} errors={errorMessages} />}
             {showSuccess && <SuccessMessage onClose={handleSuccessClose} />}
             
             

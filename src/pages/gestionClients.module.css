@@ -98,3 +98,24 @@
         transform: rotate(360deg);
     }
     } 
+
+.container {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap:10px;
+    margin-right: 105px;
+
+}
+
+.label_style {
+    color: var(--darkviolet, #2e2f5b);
+    font-family: Montserrat;
+    font-size: 16px;
+    font-style: medium;
+    font-weight: 500;
+    line-height: normal;
+    gap: 16px;
+    display: flex;
+}

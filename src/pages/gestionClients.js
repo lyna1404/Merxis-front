@@ -9,7 +9,7 @@ import axios from 'axios';
 import ErrorMessage from '../components/errorMessage';
 import CustomMessage from '../components/customMessage';
 import SuccessMessage from '../components/succesMessage';
-
+import { openPageBasedOnId , reloadPage , openPage , handleFilterChange} from '../Utils/actionUtils';
 
 //Entete du tableau de gestion des clients
 const headers = ['Raison Sociale', 'Somme Due','Actions'];
@@ -23,9 +23,11 @@ const GestionClients = () => {
   const [clients, setClients] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [showSuccess, setShowSuccess] = useState(false);
-
   const [clientTodelete,setClientToDelete] = useState(null);
 
+  const handleFilterChangeWrapper = (columnKey, filterValue) => {
+    handleFilterChange(columnKey, filterValue,clients, setFilteredData);
+  };
 
   const handleError = (errors) => {
     setShowError(true);
@@ -35,6 +37,7 @@ const GestionClients = () => {
   const handleErrorClose = () => {
     setShowError(false);
   };
+
   const handleDialogClose = () => {
     setClientToDelete(null);
     setShowDialog(false);
@@ -46,13 +49,13 @@ const GestionClients = () => {
   
   const handleSuccessClose = () => {
     setShowSuccess(false);
-    window.close();
+    reloadPage();
   };
   
 
   useEffect(() => {
     axios
-      .get('https://merxis.onrender.com/api/clients/')
+      .get('/api/clients/')
       .then((response) => {
         const clientsData = response.data;
         console.log(clientsData);
@@ -69,84 +72,53 @@ const GestionClients = () => {
           setIsLoaded(true);
         } else {
           console.error('Response data is not a JSON object:', clientsData);
+          handleError(clientsData);
+          setIsLoaded(true);
         }
       })
       .catch((error) => {
+        setIsLoaded(true);
         console.log('Error:', error);
-  
-        if (error.response) {
-          console.log('Status Code:', error.response.status);
-          console.log('Response Data:', error.response.data);
-        }
+        handleError(error.request.response);
+
       });
   
   }, []);
   
-
-
-    const handleFilterChange = (columnKey, filterValue) => {
-      const filteredData = clients.filter((item) =>
-        item[columnKey].toString().toLowerCase().includes(filterValue.toLowerCase())
-      );
-      setFilteredData(filteredData);
-    };
-
-    const handleReloadClick = () => {
-      window.location.reload(false)
-  };
-    const openNewCLient = () => {
-      window.open("/gestionClients/NouveauClient", '_blank');
-    };
-    const handleViewClick = (event) => {
-      console.log("view");
-      const rowId = event.target.closest('tr').id;
-      console.log(rowId);
-      window.open(`/gestionClients/ViewClient/${rowId}`, '_blank');
-
-    };
-    const handleEditClick = (event) => {
-      console.log("edit");
-      const rowId = event.target.closest('tr').id;
-      console.log(rowId);
-      window.open(`/gestionClients/EditClient/${rowId}`, '_blank');
-    };
     const handleDeleteClick = (event) => {
       console.log("delete");
       const rowId = event.target.closest('tr').id;
       setClientToDelete(rowId);
       setShowDialog(true);
     };
-
-    const handleVersementClick = (event) => {
-      console.log("versements");
-      const rowId = event.target.closest('tr').id;
-      window.open(`/gestionClients/detailsClient/${rowId}`, '_blank');
-
-    };
     
     const handleDeleteClient = () => {
+      setShowDialog(false);
       setIsLoaded(false);
       console.log("delete");
       console.log(clientTodelete);
       axios
        .delete(`/api/clients/${clientTodelete}/`)
        .then(() => {
+          setShowDialog(false);
           setIsLoaded(true);
+          console.log("successfully deleted");
           handleSuccess();
           setClientToDelete(null);
        })
        .catch((error) => {
+          setShowDialog(false);
+          setIsLoaded(true);
           console.log('Delete request error:', error);
           handleError(error.request.response);
           setClientToDelete(null);
        });
     };
     
-
     const tableActions = [
-      <IconCash key="cash" onClick={handleVersementClick} />,
-      <IconView key="view" onClick={handleViewClick} />,
-      <IconEdit key="edit" onClick={handleEditClick} />,
+      <IconCash key="cash" onClick={(event) => openPageBasedOnId(event.target.closest('tr').id, '/gestionClients/detailsClient/')} />,
+      <IconView key="view" onClick={(event) => openPageBasedOnId(event.target.closest('tr').id, '/gestionClients/ViewClient/')} />,
+      <IconEdit key="edit" onClick={(event) => openPageBasedOnId(event.target.closest('tr').id, '/gestionClients/EditClient/')} />,
       <IconDelete key="delete" onClick={handleDeleteClick} />
       // Add more icon components for other actions
     ];
@@ -159,10 +131,10 @@ const GestionClients = () => {
             <TableFilter columns={[
                 { key: 'raisonSociale', label: 'Raison Sociale', inputType : "text" },
                 { key: 'somme', label: 'Somme Due' , inputType : "number"}
-            ]} onFilterChange={handleFilterChange} />
+            ]} onFilterChange={handleFilterChangeWrapper} />
             <span className={styles.buttons_span}>
-                <button className={`${buttonStyles.secondary}`} onClick={() => handleReloadClick()} children='Actualiser' />    
-                <button className={`${buttonStyles.primaryButtonY}`} children='Nouveau'  onClick={() => openNewCLient()}/>
+                <button className={`${buttonStyles.secondary}`} onClick={() => reloadPage()} children='Actualiser' />    
+                <button className={`${buttonStyles.primaryButtonY}`} children='Nouveau'  onClick={() => openPage("/gestionClients/NouveauClient")}/>
             </span>
             
         </span>
@@ -172,7 +144,7 @@ const GestionClients = () => {
       ) : (
         <ReusableTable data={filteredData} headers={headers} itemsPerPage={8} addlink={false} addactions={true} actionIcons={tableActions} />
       )}
-        {showError && <ErrorMessage onClose={handleErrorClose} errors={JSON.parse(errorMessages)} />}
+        {showError && <ErrorMessage onClose={handleErrorClose} errors={errorMessages} />}
         {showDialog && <CustomMessage onClose={handleDialogClose} onConfirm={handleDeleteClient} message={"Souhaitez-vous vraiment supprimer ce client ?"} />}
         {showSuccess && <SuccessMessage onClose={handleSuccessClose} />}
 
