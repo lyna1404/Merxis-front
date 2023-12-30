@@ -32,14 +32,14 @@ const App = () => {
     <Router>
       <div>
         <Routes>
-          <Route path="/" element={<HomePage />} />
+        <Route path="/" element={<HomePage />} />
           <Route path="/gestionClients" element={<GestionClients />} />
           <Route path="/gestionClients/detailsClient/:id" element={<DetailsClient />} />
           <Route path="/gestionClients/NouveauClient" element={<NouveauClient />} />
           <Route path="/gestionClients/ViewClient/:id" element={<ViewClient />} />
           <Route path="/gestionClients/EditClient/:id" element={<EditClient />} />
           <Route path="/comptabilite" element={<Comptabilite/>}/>
-          <Route path="/comptabilite/:slug" element={<DeboursComptabilite/>}/>
+          <Route path="/comptabilite/deboursComptabilite/:id" element={<DeboursComptabilite/>}/>
           <Route path="/facturation" element={<Facturation/>}/>
           <Route path="/facturation/:slug" element={<ViewFactures/>}/>
           <Route path="/facturation/NouvelleFacture" element={<AjouterFacture/>}/>
