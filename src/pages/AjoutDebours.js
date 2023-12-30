@@ -2,12 +2,12 @@ import React , {useState} from 'react';
 import styles from './popupForm.module.css'
 import buttonStyles from '../components/button.module.css'
 import InputField from '../components/InputField'
-
-const AjoutDebours = ({ onClose,onAjouter,onFileUpload,onFileUploadClick,inputFile }) => {
+import filterStyles from '../components/tableFilter.module.css'
+import labelStyles from '../components/inputField.module.css'
+const AjoutDebours = ({ onClose,onAjouter,onFileUpload,onFileUploadClick,inputFile,modes, types }) => {
     
-    const [debours, setDebours] = useState('');
-    const [montant, setMontant] = useState('');
-    const montantPres = "/"
+    const [typeDebours, setDebours] = useState();
+    const [montant, setMontant] = useState();
     const [modePaiement, setModePaiement] = useState('');
     const [piecePaiement, setPiecePaiement] = useState('');
     const [beneficiaire, setBeneficiaire] = useState('');
@@ -15,8 +15,7 @@ const AjoutDebours = ({ onClose,onAjouter,onFileUpload,onFileUploadClick,inputFi
     const handleSubmit = (event) => {
         event.preventDefault();
         // Appeler la fonction onAjouter pour ajouter le nouveau debours
-        onAjouter({ debours, modePaiement, montant, montantPres });
-
+        onAjouter({ typeDebours, modePaiement, montant, piecePaiement});
         // Fermer le Pop Up
         onClose();
     };
@@ -26,13 +25,36 @@ const AjoutDebours = ({ onClose,onAjouter,onFileUpload,onFileUploadClick,inputFi
       <form onSubmit={handleSubmit}>
         <h2>Ajout Debours</h2>
         <div className={styles.fields_area}>
-          <InputField display="labelontop" label="Debours" size="extralarge" type="text" value={debours} onChange={(e) => setDebours(e.target.value)} />
-
-          <InputField display="labelontop" label="Montant" size="extralarge" type="text" value={montant} onChange={(e) => setMontant(e.target.value)} />
-          <div className={styles.many_fields}>        
-              <InputField display="labelontop" label="Mode de paiement" size="overaverage" type="text" value={modePaiement} onChange={(e) => setModePaiement(e.target.value)} />
-
-              <InputField display="labelontop" label="N° Piece de paiement" size="large" type="text" value={piecePaiement} onChange={(e) => setPiecePaiement(e.target.value)} />
+        <span className={filterStyles.container}>
+          <label className={labelStyles.labelontop}>
+            Debours
+            <select id="typeSelect" value={typeDebours} onChange={(e) => setDebours(e.target.value)}>
+                <option value="">Choisissez une option</option>
+                { types.map(type => (
+                  <option id = {type.id} key={type.value} value={type.value}>
+                    {type.label}
+                </option>
+                ))}
+              </select>
+          </label>
+          </span>
+          <InputField display="labelontop" label="Montant" size="extralarge" type="number" value={montant} onChange={(e) => setMontant(e.target.value)} />
+          <div className={styles.many_fields}>      
+          <span className={filterStyles.container}>
+          <label className={labelStyles.labelontop}>
+            Mode de paiment
+            <select id="modeSelect" value={modePaiement} onChange={(e) => setModePaiement(e.target.value)}>
+                <option value="">Choisissez une option</option>
+                { modes.map(mode => (
+                  <option key={mode.value} value={mode.value}>
+                    {mode.label}
+                </option>
+                ))}
+              </select>
+          </label>
+          </span>
+              
+              <InputField display="labelontop" label="N° Piece de paiement" size="large" type="number" value={piecePaiement} onChange={(e) => setPiecePaiement(e.target.value)} />
           </div>
           <InputField display="labelontop" label="Beneficiaire" size="extralarge" type="text" value={beneficiaire} onChange={(e) => setBeneficiaire(e.target.value)} />
 
