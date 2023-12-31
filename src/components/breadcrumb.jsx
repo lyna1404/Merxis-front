@@ -2,6 +2,7 @@ import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import styles from "./breadcrumb.module.css";
 import IconeDroite from "./IconeDroite.jsx";
+import buttonStyles from './button.module.css';
 
 const displayNameMap = {
     home: "Home",
@@ -16,7 +17,7 @@ const displayNameMap = {
 
   };
 
-const Breadcrumb = ({ hideParams = false }) => {
+const Breadcrumb = ({ hideParams = false}) => {
   const location = useLocation();
   const pathnames = location.pathname.split("/").filter((x) => x);
 

@@ -4,6 +4,7 @@ import buttonStyles from '../components/button.module.css'
 import InputField from '../components/InputField'
 import stylesBE from './listeBordereau.module.css'
 import labelStyles from "../components/inputField.module.css";
+import filterStyles from '../components/tableFilter.module.css'
 
 
 const AjouterDocBordereau = ({ onClose,onAjouter,onFileUpload,onFileUploadClick,inputFile }) => {
@@ -25,9 +26,6 @@ const AjouterDocBordereau = ({ onClose,onAjouter,onFileUpload,onFileUploadClick,
         onClose();
     };
 
-    const handleTypeDocChange = (event) => {
-      setTypeDocument(event.target.value)        
-  };
 
 
   return (
@@ -39,8 +37,19 @@ const AjouterDocBordereau = ({ onClose,onAjouter,onFileUpload,onFileUploadClick,
           <div className={styles.many_fields}> 
               <InputField display="labelontop" label="N° Document" size="average" type="text" value={numDocument} onChange={(e) => setNumDocument(e.target.value)} />
        
-              <InputField display="labelontop" label="Type Document" size="average" type="text" value={typeDocument} onChange={(e) => setTypeDocument(e.target.value)} />
-
+              <span className={filterStyles.container}>
+                <label className={labelStyles.labelontop}>
+                  Type Document
+                  <select id="modeSelect" value={typeDocument} onChange={(e) => setTypeDocument(e.target.value)}>
+                      <option value="">Choisissez une option</option>
+                      { listeTypesDoc.map(type => (
+                        <option key={type.index} value={type.type}>
+                          {type.type}
+                      </option>
+                      ))}
+                    </select>
+                </label>
+            </span>
               <InputField display="labelontop" label="Nbr Copies" size="belowaverage" type="text" value={nbrDocuments} onChange={(e) => setNbrDocument(e.target.value)} />
           </div>
 

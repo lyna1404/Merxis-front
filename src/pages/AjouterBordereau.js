@@ -43,6 +43,10 @@ function AjouterBordereau() {
     const handleNouveauClick = () => {
       setShowForm(true);
     };
+
+    const handleEnregistrerClick = () => {
+        console.log('Bordereau saved')
+      };
   
     const handleFormClose = () => {
       setShowForm(false);
@@ -73,7 +77,7 @@ function AjouterBordereau() {
 
     return (
         <>
-            <Breadcrumb numDossier={numDossier} />
+            <Breadcrumb numDossier={numDossier}/>
             <div className={styles.main_grid}>
                 <span className={styles.info_grid}>
                     <div className={styles.label_wrapper}>
@@ -129,7 +133,8 @@ function AjouterBordereau() {
                <span className={styles.table_grid}>
                     <ReusableTable data={filteredData} headers={headers} itemsPerPage={5} addlink={false}/> 
                     <span className={styles.buttons_grid}>
-                        <button className={`${buttonStyles.primaryButtonY}`} children='Nouveau' onClick={handleNouveauClick} />
+                        <button className={`${buttonStyles.primaryButtonB}`} children='Ajouter Doc' onClick={handleNouveauClick} />
+                        <button className={`${buttonStyles.primaryButtonY}`} children='Enregistrer' onClick={handleEnregistrerClick} />
                         {showForm && <TabDocBordereau onClose={handleFormClose} 
                                                             onAjouter={handleAjouter} 
                                                             onFileUpload={handleFileUpload} 

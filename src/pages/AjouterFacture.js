@@ -47,6 +47,9 @@ function AjouterFacture() {
     const [avance, setAvance] = useState('');
     const [netPayement, setNetPayement] = useState('');
     
+    const modes = [{value:"1", label:"Cache"}, {value:"2",label:"Versement"}];
+    const types = [{id:1, value:"1", label:"Transit"}, {id:2, value:2, label:"Magasinage"}];
+    
 
     //entete du tableau des debours
     const headers = ['Debours/Prestation', 'Mode de paiement', 'Mont Debours', 'Mont Prestation'];
@@ -333,7 +336,9 @@ function AjouterFacture() {
                                                             onAjouter={handleAjouter} 
                                                             onFileUpload={handleFileUpload} 
                                                             onFileUploadClick={handleFileUploadClick}
-                                                            inputFile={inputFile}/>} 
+                                                            inputFile={inputFile}
+                                                            modes={modes}
+                                                            types={types}/>} 
                     </span>
                     <div className={styles.verticalLine}></div>
                 </span>

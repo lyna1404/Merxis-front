@@ -105,6 +105,7 @@ const ViewClient = () => {
                     <InputField display="labelonleft" label="Adresse en arabe" size="extralarge" type="text" value={clientData.adresseArabe} readOnly = {true} />
                 </span>
                 <div className={styles.horizontalLine}></div>
+                
             </div>
         </div>
         

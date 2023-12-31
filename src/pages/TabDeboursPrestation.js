@@ -5,7 +5,7 @@ import styles from './popupForm.module.css'
 import TabNavItem from "../components/tabNavItem";
 import TabContent from "../components/tabContent";
 
-const TabDeboursPrestation = ({onClose, onAjouter, onFileUpload, onFileUploadClick,inputFile}) => {
+const TabDeboursPrestation = ({onClose, onAjouter, onFileUpload, onFileUploadClick,inputFile, modes, types}) => {
 
 
   const [activeTab, setActiveTab] = useState("tab1");
@@ -25,7 +25,10 @@ const TabDeboursPrestation = ({onClose, onAjouter, onFileUpload, onFileUploadCli
                                                                             onAjouter={onAjouter} 
                                                                             onFileUpload={onFileUpload} 
                                                                             onFileUploadClick={onFileUploadClick}
-                                                                            inputFile={inputFile}/>}/>
+                                                                            inputFile={inputFile}
+                                                                            modes={modes}
+                                                                            types={types}/>}
+                                                                            />
                 <TabContent id="tab2" activeTab={activeTab} children={<AjoutPrestation onClose={onClose} 
                                                                                     onAjouter={onAjouter} 
                                                                                     onFileUpload={onFileUpload} 

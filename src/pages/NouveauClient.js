@@ -223,6 +223,7 @@ const NouveauClient = () => {
             <span className={styles.buttonSpan_downpage}>
                     <button className={buttonStyles.primaryButtonY} type="submit" onClick={handleAjouterClient} >Enregistrer</button>
             </span>
+            <div className={styles.footerSpace}></div>
             {showError && <ErrorMessage onClose={handleErrorClose} errors={errorMessages} />}
             {showSuccess && <SuccessMessage onClose={handleSuccessClose} />}
             
