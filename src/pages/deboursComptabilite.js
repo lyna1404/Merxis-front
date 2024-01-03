@@ -14,6 +14,8 @@ import ErrorMessage from '../components/errorMessage';
 import SuccessMessage from '../components/succesMessage';
 import filterStyles from '../components/tableFilter.module.css';
 import InputField from '../components/InputField';
+import TabDebours from './TabDebours';
+
 
 
  
@@ -188,7 +190,7 @@ function DeboursComptabilite() {
                 ]} onFilterChange={handleFilterChangeWrapper} />
                 <span className={styles.buttons_span}>
                     <button className={`${buttonStyles.primaryButtonY}`} children='Nouveau' onClick={handleNouveauClick} />
-                    {showForm && <AjoutDebours onClose={handleFormClose} 
+                    {showForm && <TabDebours onClose={handleFormClose} 
                                                onAjouter={handleAjouter} 
                                                onFileUpload={handleFileUpload} 
                                                onFileUploadClick={handleFileUploadClick}

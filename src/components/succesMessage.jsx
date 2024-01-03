@@ -1,5 +1,7 @@
 import styles from "../pages/popupForm.module.css";
 import buttonStyles from "./button.module.css";
+import React from 'react';
+
 const SuccessMessage = ({onClose}) => {
     return (
         <div className={styles.shortformpopup}>

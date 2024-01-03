@@ -21,7 +21,7 @@ const AjoutDebours = ({ onClose,onAjouter,onFileUpload,onFileUploadClick,inputFi
     };
 
   return (
-    <div className={styles.shortformpopup}>
+    <div className={styles.tab}>
       <form onSubmit={handleSubmit}>
         <h2>Ajout Debours</h2>
         <div className={styles.fields_area}>
