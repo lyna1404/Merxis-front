@@ -45,8 +45,6 @@ const App = () => {
           <Route path="/facturation/NouvelleFacture" element={<AjouterFacture/>}/>
           <Route path="/facturation/Bordereaux" element={<Bordereaux/>}/>
           <Route path="/facturation/Bordereaux/NouveauBordereau" element={<AjouterBordereau/>}/>
-
-
         </Routes>
       </div>
     </Router>
