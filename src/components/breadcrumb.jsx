@@ -13,8 +13,23 @@ const displayNameMap = {
     NouveauClient: "Nouveau Client",
     ViewClient: "Détails Client",
     EditClient : "Modification Client",
-    facturation: "Facturation"
-
+    facturation: "Facturation",
+    archivage: "Archivage",
+    EditDossier: "Modification de dossier",
+    ViewDossier: "Affichage de dossier",
+    NouveauDossier: "Nouveau Dossier",
+    options: "Options",
+    devises: "Devises",
+    pays: "Pays",
+    marchandises: "Marchandises",
+    fournisseurs: "Fournisseurs",
+    douanes: "Douanes",
+    transports: "Transports",
+    entrepots: "Entrepots",
+    factures: "Factures",
+    ViewBordereau: "Affichage de bordereau",
+    EditBordereau: "Modificiation de bordereau",
+    documents: "Documents",
   };
 
 const Breadcrumb = ({ hideParams = false}) => {

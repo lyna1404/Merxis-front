@@ -13,6 +13,7 @@ const HomePage = () => {
         <Link to="/comptabilite" className={styles.button}>Comptabilité</Link>
         <Link to="/facturation" className={styles.button}>Facturation</Link>
         <Link to="/gestionClients" className={styles.button} name = 'Gestion des clients'>Gestion des clients</Link>
+        <Link to="/options" className={styles.button}>Options</Link>
       </div>
       <div className={styles.imageContainer}> {/* Use the CSS module class */}
         <img src={logo} alt="Placeholder" />

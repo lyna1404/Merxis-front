@@ -3,7 +3,9 @@ import { Link, useLocation } from "react-router-dom";
 import styles from "./advancedBreadcrumb.module.css"; // Import the CSS module
 import IconeDroite from "./IconeDroite.jsx"; 
 import buttonStyles from './button.module.css';
-
+import ErrorMessage from '../components/errorMessage';
+import SuccessMessage from '../components/succesMessage';
+import TabDocDossier from '../pages/TabDocDossier';
 
 
 const displayNameMap = {
@@ -11,11 +13,16 @@ const displayNameMap = {
     gestionClients: "Gestion des clients",
     detailsClient: "Détails du client",
     comptabilite: "Comptabilité",
-    deboursComptabilite: "Liste des debours"
+    deboursComptabilite: "Liste des debours",
+    facturation : "Facturation",
+    archivage: "Archivage",
+    EditDossier: "Modification",
+    ViewDossier: "Affichage Dossier",
+    NouveauDossier: "Nouveau Dossier",
     // Add more mappings for other pages if needed
   };
 
-const AdvancedBreadcrumb = ({ numDossier, hideParams = false }) => {
+const AdvancedBreadcrumb = ({ numDossier, hideParams = false, hideButtons=false, hideDocs=false, isViewDoc=false, showError, showForm, showSuccess, onDocClick, onSuccessClose, onErrorClose, onClick, onAjouterDoc, onCloseDoc, dossierPk, errorMessages }) => {
 
   const location = useLocation();
   console.log(location);
@@ -62,8 +69,39 @@ const AdvancedBreadcrumb = ({ numDossier, hideParams = false }) => {
             value={numDossier}
             readOnly={true}
           />
-          <button className={`${buttonStyles.primaryButtonY}`} children='Enregistrer' />
-          <button className={`${buttonStyles.third}`} children='Documents' />    
+          {!hideButtons? 
+            <>
+              <button className={buttonStyles.primaryButtonY} type="submit" onClick={onClick} >Enregistrer</button>
+              {showError && <ErrorMessage onClose={onErrorClose} errors={errorMessages} />}
+              {console.log("errors breadcrumb",errorMessages)}
+              {showSuccess && <SuccessMessage onClose={onSuccessClose} />}
+              {!hideDocs?
+                <>
+                  <button className={`${buttonStyles.third}`} children='Documents' onClick={onDocClick} />  
+                  {showForm && <TabDocDossier onClose={onCloseDoc} 
+                                    isView={isViewDoc}
+                                    onAjouter={onAjouterDoc} 
+                                    dossierPk={dossierPk}
+                                    />}                  
+                </>
+                :
+                <>
+                </>
+              }
+            </>
+            : !hideDocs?
+            <>
+             <button className={`${buttonStyles.third}`} children='Documents' onClick={onDocClick} /> 
+             {showForm && <TabDocDossier onClose={onCloseDoc} 
+                                    isView={isViewDoc}
+                                    onAjouter={onAjouterDoc} 
+                                    dossierPk={dossierPk}
+                                    />}       
+            </>
+            :
+            <>
+            </>
+          } 
       </div>   
       </ol>
     </nav>

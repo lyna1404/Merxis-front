@@ -1,151 +1,137 @@
-import { useState, useRef } from 'react';
-import React from 'react';
-import styles from './listeBordereau.module.css';
-import buttonStyles from '../components/button.module.css';
-import Breadcrumb from '../components/breadcrumb'
-import ReusableTable from '../components/reusableTable';
-import InputField from '../components/InputField';
+import React , {useState, useEffect} from 'react';
+import styles from './popupForm.module.css'
+import buttonStyles from '../components/button.module.css'
+import InputField from '../components/InputField'
 import labelStyles from "../components/inputField.module.css";
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import TabDocBordereau from './TabDocBordereau';
+import Select from 'react-select';
+import axios from 'axios';
+import stylesLoader from './gestionClients.module.css'
 
-function AjouterBordereau() {
-
-    const documents = [
-        {id:"1", nomDocument:"D45", numDocument:"4452", typeDocument:"Copie", nbrDocuments:"4", observation:"R.A.S"},
-        {id:"2", nomDocument:"D10", numDocument:"1823", typeDocument:"Original", nbrDocuments:"1", observation:"R.A.S"},
-        {id:"3", nomDocument:"D40", numDocument:"1336", typeDocument:"Original", nbrDocuments:"1", observation:"R.A.S"},
-        {id:"4", nomDocument:"D30", numDocument:"7894", typeDocument:"Dupilicata", nbrDocuments:"1", observation:"R.A.S"},
-        {id:"5", nomDocument:"D2", numDocument:"1259", typeDocument:"Copie", nbrDocuments:"2", observation:"R.A.S"},
-    ]
-
-    const [numBE, setNumBE] = useState('');
-    const [numDossier, setNumDossier] = useState('');
-    const [date, setDate] = useState('');
-    const listeEtatRecup = [ {index:"1", etat:"Non Reçu"},{index:"2", etat:"Reçu"}];
-    const [etatRecup, setEtatRecup] = useState(listeEtatRecup[0].etat);  
-    const [client, setClient] = useState('');
+const AjouterBordereau = ({ onClose,onAjouter, listeDossiers, isLoaded, onFileUpload,onFileUploadClick,inputFile }) => {
     
-    //entete du tableau des debours
-    const headers = ['Document', 'N° Document', 'Type Document', 'Nbr Document', 'Observation'];
+    const [numBE, setNumBE] = useState('');
+    const [date, setDate] = useState('');
+    const listeEtatRecup = [ {index:"1", etat:"Non Reçu"},{index:"2", etat:"Reçu"}]; // à récupérer
+    const [etatRecup, setEtatRecup] = useState(listeEtatRecup[0].etat);  
 
-    //Mettre à jour l'historique des debours du client
-    const [filteredData, setFilteredData] = useState(documents);
+    const [errorMessages, setErrorMessages] = useState();
+    const [showError, setShowError] = useState(false);
+    const [showSuccess, setShowSuccess] = useState(false);
 
-    //Controler le fomrulaire d'ajout de debours
-    const [showForm, setShowForm] = useState(false);
+    const [numDossier, setNumDossier] = useState('');
+    const [dossierPk, setDossierPk] = useState(''); // à récupérer
+
+
+    const listeNumDossiers = listeDossiers.map(({dossierPk, numDossier}) => ({ ['value'] : dossierPk, ['label']:numDossier}))
+
+    const [selectedDossier, setSelectedDossier] = useState({value: dossierPk, label:numDossier});
+
+
+
+  const handleDossierSelection = (searchTerm) => {
+    setSelectedDossier(searchTerm);
+    setNumDossier(searchTerm.label);
+    setDossierPk(searchTerm.value); 
+};
 
     const handleEtatRecupChange = (event) => {
         setEtatRecup(event.target.value)        
     };
 
-    const handleNouveauClick = () => {
-      setShowForm(true);
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        // Appeler la fonction onAjouter pour ajouter le nouveau bordereau
+        onAjouter({numBE, dossierPk, date, etatRecup});
+
+        // Fermer le Pop Up
+        onClose();
     };
 
-    const handleEnregistrerClick = () => {
-        console.log('Bordereau saved')
+      // Controle d'erreurs
+      const handleError = (errors) => {
+        setShowError(true);
+        setErrorMessages(errors);
       };
-  
-    const handleFormClose = () => {
-      setShowForm(false);
-    };
-
-    const inputFile = useRef(null);
-
-    const handleFileUpload = e => {
-        const { files } = e.target;
-        if (files && files.length) {
-          const filename = files[0].name;
-    
-          var parts = filename.split(".");
-          const fileType = parts[parts.length - 1];
-          console.log("fileType", fileType); //ex: zip, rar, jpg, svg etc.
-        }
+      
+      const handleErrorClose = () => {
+        setShowError(false);
       };
 
-    const handleFileUploadClick = () => {
-        inputFile.current.click();
+      
+      const handleSuccess = () => {
+          setShowSuccess(true);
+        };
+        
+        const handleSuccessClose = () => {
+          setShowSuccess(false);
+          window.close();
+        };
+
+      // Styling des searchable dropdown de react-select
+      const colorStyles = {
+          
+          control : styles => ({...styles, backgroundColor:'white',border:'none','box-shadow':'none', fontFamily:'Montserrat'}),
+          option: (styles, {isFocused, isSelected}) => ({
+            ...styles,
+            backgroundColor: isFocused? '#e4e1e1' : isSelected? '#a3a7d8' : 'white',
+            fontFamily: 'Montserrat',
+          }),
+          singleValue : styles => ({...styles, color:'black', fontFamily:'Montserrat', fontSize:'16px'})
       };
-    
-    //Controler l'ajout d'un debours 
-    const handleAjouter = (data) => {
-        setFilteredData((prevFilteredData) => [data,...prevFilteredData]);      
-    };
 
-
-    return (
-        <>
-            <Breadcrumb numDossier={numDossier}/>
-            <div className={styles.main_grid}>
-                <span className={styles.info_grid}>
-                    <div className={styles.label_wrapper}>
-                           <label className={styles.info_field}>
-                                <InputField 
-                                    display="labelonleft" 
-                                    label="N° Bordereau" 
-                                    size="small" 
-                                    type="text" 
-                                    value={numBE} 
-                                    onChange={(e) => setNumBE(e.target.value)}
-                                />
-                            </label>   
-                            <label className={styles.info_field}>
-                                    <label className={labelStyles.labelonleft}>Date</label>
-                                    <DatePicker selected={date} onChange={(e) => setDate(e)} dateFormat="dd/MM/yyyy" placeholderText="Selectionner une date" />
-                            </label>
-                            <label className={styles.info_field}>
-                                <InputField 
-                                    display="labelonleft" 
-                                    label="N° Dossier" 
-                                    size="small" 
-                                    type="text" 
-                                    value={numDossier} 
-                                    onChange={(e) => setNumDossier(e.target.value)}
-                                />
-                            </label>  
-                            <label className={styles.info_field}>
-                                <label className={labelStyles.labelonleft}>Etat Récupération</label>
-                                <select value={etatRecup} onChange={handleEtatRecupChange}>
-                                    <option value="">Sélectionner une option</option>
-                                    {listeEtatRecup.map((etat) => (
-                                        <option key={etat.index} value={etat.etat}>
-                                            {etat.etat}
-                                        </option>
-                                    ))}
-                                </select>
-                            </label> 
-                            <label className={styles.info_field}>
-                                <InputField 
-                                    display="labelonleft" 
-                                    label="Client" 
-                                    size="average" 
-                                    type="text" 
-                                    value={client} 
-                                    onChange={(e) => setClient(e.target.value)}
-                                />
-                            </label>  
-                        <div className={styles.horizontalLine}></div>
-                    </div>
-                </span>
-
-               <span className={styles.table_grid}>
-                    <ReusableTable data={filteredData} headers={headers} itemsPerPage={5} addlink={false}/> 
-                    <span className={styles.buttons_grid}>
-                        <button className={`${buttonStyles.primaryButtonB}`} children='Ajouter Doc' onClick={handleNouveauClick} />
-                        <button className={`${buttonStyles.primaryButtonY}`} children='Enregistrer' onClick={handleEnregistrerClick} />
-                        {showForm && <TabDocBordereau onClose={handleFormClose} 
-                                                            onAjouter={handleAjouter} 
-                                                            onFileUpload={handleFileUpload} 
-                                                            onFileUploadClick={handleFileUploadClick}
-                                                            inputFile={inputFile}/>} 
-                    </span>
-                </span>
+  return (
+    <div className={styles.tab}>
+      <form onSubmit={handleSubmit}>
+        <h2>Ajout Bordereau</h2>
+        {!(isLoaded) ? ( // Conditional rendering based on the loading state
+            <div className={stylesLoader.loader_container}>
+            <span className={stylesLoader.loader}></span></div> // Replace with your loader component or CSS
+            ) : (
+            <>
+        <div className={styles.fields_area}>
+            <div className={styles.many_fields}>   
+                <InputField display="labelontop" label="N° Bordereau" size="overaverage" type="text" value={numBE} onChange={(e) => setNumBE(e.target.value)} />
+                <label className={labelStyles.labelontop}>Date
+                <DatePicker selected={date} onChange={(e) => setDate(e)} dateFormat="dd/MM/yyyy" placeholderText="Selectionner une date" />
+                </label>   
             </div>
-
+            <div className={styles.many_fields}>        
+              <label className={labelStyles.labelontop}>N° Dossier
+                <Select className={labelStyles.overaverage} styles={colorStyles} options={listeNumDossiers} value={selectedDossier} placeholder="Sélectionner un dossier" onChange={(e) => handleDossierSelection(e)} isSearchable={true}/>
+              </label>
+              <label className={labelStyles.labelontop}>Etat Récupération
+                <select className={labelStyles.overaverage} value={etatRecup} onChange={handleEtatRecupChange}>
+                    <option value="">Sélectionner</option>
+                    {listeEtatRecup.map((etat) => (
+                    <option key={etat.index} value={etat.etat}>
+                            {etat.etat}
+                    </option>
+                    ))}
+                </select>
+              </label>    
+            </div>
+            </div>
+            <span className={styles.buttonSpan}>
+                <button className={buttonStyles.primaryButtonY} type="submit" >Ajouter</button>
+                <button className={buttonStyles.primaryButtonB} type="button" onClick={onClose}>Fermer</button>
+                <span className={styles.attacherDocSpan}>
+                  <input
+                    style={{ display: "none" }}
+                    accept=".pdf, .jpeg, .jpg, .png"
+                    ref={inputFile}
+                    onChange={onFileUpload}
+                    type="file"
+                  />
+                  <button className={buttonStyles.attacherdocument} type="button" onClick={onFileUploadClick}>Attacher Documents</button>
+                </span>
+            </span>
         </>
-    );
-}
+            )}
+      </form>
+    </div>
+  );
+};
 
-export default AjouterBordereau
+export default AjouterBordereau;

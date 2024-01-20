@@ -4,13 +4,21 @@ import buttonStyles from '../components/button.module.css'
 import InputField from '../components/InputField'
 import filterStyles from '../components/tableFilter.module.css'
 import labelStyles from '../components/inputField.module.css'
+import Select from 'react-select';
+
 const AjoutDebours = ({ onClose,onAjouter,onFileUpload,onFileUploadClick,inputFile,modes, types }) => {
     
-    const [typeDebours, setDebours] = useState();
+    const [typeDebours, setTypeDebours] = useState('');
+    const [debours, setDebours] = useState('');
+    const [deboursPk, setDeboursPk] = useState(null);
+    const [selectedDebours, setSelectedDebours] = useState({value: deboursPk, label: typeDebours});
     const [montant, setMontant] = useState();
     const [modePaiement, setModePaiement] = useState('');
     const [piecePaiement, setPiecePaiement] = useState('');
     const [beneficiaire, setBeneficiaire] = useState('');
+    
+    const listeDebours = types.map(({id, value, label}) => ({ ['value'] : value, ['label']:label}))
+    console.log(listeDebours)
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -20,6 +28,28 @@ const AjoutDebours = ({ onClose,onAjouter,onFileUpload,onFileUploadClick,inputFi
         onClose();
     };
 
+    const handleDeboursSelection = (searchTerm) => {
+      setSelectedDebours(searchTerm);
+      setDebours(searchTerm.label);
+      setDeboursPk(searchTerm.value); 
+      const deb = types.filter((debours) => debours.label.toString().includes(searchTerm.label.toString()))[0];
+      console.log("deb", deb);
+      setTypeDebours(deb.id);
+
+  };
+
+        // Styling des searchable dropdown de react-select
+        const colorStyles = {
+          
+          control : styles => ({...styles, backgroundColor:'white',border:'none','box-shadow':'none', fontFamily:'Montserrat'}),
+          option: (styles, {isFocused, isSelected}) => ({
+            ...styles,
+            backgroundColor: isFocused? '#e4e1e1' : isSelected? '#a3a7d8' : 'white',
+            fontFamily: 'Montserrat',
+          }),
+          singleValue : styles => ({...styles, color:'black', fontFamily:'Montserrat', fontSize:'16px'})
+        };
+
   return (
     <div className={styles.tab}>
       <form onSubmit={handleSubmit}>
@@ -28,14 +58,7 @@ const AjoutDebours = ({ onClose,onAjouter,onFileUpload,onFileUploadClick,inputFi
         <span className={filterStyles.container}>
           <label className={labelStyles.labelontop}>
             Debours
-            <select id="typeSelect" value={typeDebours} onChange={(e) => setDebours(e.target.value)}>
-                <option value="">Choisissez une option</option>
-                { types.map(type => (
-                  <option id = {type.id} key={type.value} value={type.value}>
-                    {type.label}
-                </option>
-                ))}
-              </select>
+              <Select className={labelStyles.verylarge} styles={colorStyles} options={listeDebours} value={selectedDebours} placeholder="Sélectionner un débours" onChange={(e) => handleDeboursSelection(e)} isSearchable={true}/>
           </label>
           </span>
           <InputField display="labelontop" label="Montant" size="extralarge" type="number" value={montant} onChange={(e) => setMontant(e.target.value)} />
