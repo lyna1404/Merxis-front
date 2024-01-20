@@ -4,7 +4,7 @@ import styles from './popupForm.module.css'
 import TabNavItem from "../components/tabNavItem";
 import TabContent from "../components/tabContent";
 
-const TabDocBordereau = ({onClose, onAjouter, onFileUpload, onFileUploadClick,inputFile}) => {
+const TabDocBordereau = ({onClose, onAjouter, onFileUpload, onFileUploadClick,inputFile,dossierPk}) => {
 
 
   const [activeTab, setActiveTab] = useState("tab1");
@@ -24,7 +24,8 @@ const TabDocBordereau = ({onClose, onAjouter, onFileUpload, onFileUploadClick,in
                                                           onAjouter={onAjouter} 
                                                           onFileUpload={onFileUpload} 
                                                           onFileUploadClick={onFileUploadClick}
-                                                          inputFile={inputFile}/>}/>
+                                                          inputFile={inputFile}
+                                                          dossierPk={dossierPk}/>}/>
         </div>
     </div>
   );

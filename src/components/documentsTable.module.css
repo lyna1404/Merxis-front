@@ -1,0 +1,76 @@
+.tableView{
+    padding-top: 2%;
+    width: 93%;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    overflow-x:auto;
+}
+
+.table_style{
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 0.5em;
+    overflow: hidden;
+}
+
+.table_style thead{
+    background: var(--light-violet, #FFFFFF);
+    height: 42px;
+    color: var(--white, #2E2F5B);
+    text-align: center;
+    font-family: Montserrat;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+
+.table_style td{
+    background: var(--white, #FFFFFF);
+    height: 42px;
+    color: var(--dark-violet, #2E2F5B);
+    text-align: center;
+    font-family: Montserrat;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    border-bottom: 1px solid var(--d-4-d-4-d-4-light-grey, #D4D4D4);
+}
+.table_style a{
+    text-decoration: none;
+}
+
+.paginationPage{
+    margin: 5px;
+    cursor: pointer;
+    padding: 8px 16px;
+    font-family: Montserrat;
+    font-size: 16px;
+}
+.pagination {
+    display: flex;
+    justify-content: center;
+    list-style: none;
+    padding: 0;
+    cursor: auto;
+  
+}
+.active {
+    color: #F4D35E;
+}
+
+.pagination .previous, .pagination .next {
+    font-weight: bold;
+}
+
+.actionbuttons{
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    justify-content: center;
+    gap: 8px;
+    flex-wrap: wrap;
+
+}

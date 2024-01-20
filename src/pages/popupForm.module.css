@@ -1,5 +1,5 @@
 .formpopup {
-
+  z-index: -1;
   position: fixed;
   top: 50%;
   left: 50%;
@@ -14,6 +14,7 @@
 .container {
   display: flex;
   position: fixed;
+  z-index: 1;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -47,6 +48,11 @@
   line-height: normal;
 } 
 
+.tab h3 {
+  color: var(--yellow, #F4D35E);
+  font-family: Montserrat;
+}
+
 .outlet{
   width: 100%;
   height: 60%;
@@ -57,7 +63,22 @@
   margin-left: -3%;
 }
 
-.sidebar li {
+.sidebarLi {
+  color: var(--light-lavender, #afb2c7);
+  font-family: Montserrat;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: bold;
+  line-height: normal;
+  gap: 16px;
+  display: flex;
+  padding-bottom: 12px;
+  cursor: pointer;
+  align-items: center;
+  margin-left: -5%;
+}
+
+.activeSidebarLi {
   color: var(--light-violet, #505581);
   font-family: Montserrat;
   font-size: 16px;
@@ -70,7 +91,6 @@
   cursor: pointer;
   align-items: center;
   margin-left: -5%;
-
 }
 
 .sidebar li:hover {
@@ -87,7 +107,56 @@
   height: 80%;
 }
 
+.navbar {
+  margin: 2% 2% 2% 2%;
+}
+
+
+.NavbarLi {
+  color: var(--lavender, #AEB1DE);
+  font-family: Montserrat;
+  font-size: 14px;
+  font-style: normal;
+  font-weight:bold;
+  line-height: normal;
+  gap: 16px;
+  display: inline;
+  padding-bottom: 12px;
+  cursor: pointer;
+  align-items: center;
+  padding: 1% 3% 1% 3%;
+  border-bottom: 2px solid #AEB1DE;
+}
+
+.navbar li:hover {
+  color: var(--yellow, #F4D35E);
+  border-bottom: 2px solid #F4D35E;
+}
+
+.activeNavbarLi {
+  color: var(--yellow, #F4D35E);
+  font-family: Montserrat;
+  font-size: 14px;
+  font-style: normal;
+  font-weight:bold;
+  line-height: normal;
+  gap: 16px;
+  display: inline;
+  padding-bottom: 12px;
+  cursor: pointer;
+  align-items: center;
+  padding: 1% 3% 1% 3%;
+  border-bottom: 2px solid #F4D35E;
+  
+}
+
+.mainContent {
+  margin : 0% 6% 0% 6%
+}
+
+
 .shortformpopup {
+  z-index:9999;
   position: fixed;
   top: 50%;
   left: 50%;
@@ -109,6 +178,20 @@
   flex-direction: row;
   gap: 24px;
   flex-wrap: wrap;
+}
+.date_field{
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  color: var(--dark-violet, #2E2F5B);
+  font-family: Montserrat;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  grid-gap: 16px;
+  gap: 10px;
+  margin-right: 12px;
 }
 .formpopup h2 {
   color: var(--yellow, #F4D35E);
@@ -183,4 +266,27 @@
   flex-direction: row-reverse;
   gap:12px;
   align-items: center;
+}
+
+.docsButtonSpan{
+  margin-top: 24px;
+  margin-right: 6%;
+  display: flex;
+  flex-direction: row-reverse;
+  gap:12px;
+  align-items: center;
+}
+
+.addButton{
+  display: flex;
+  justify-content: flex-end;
+  margin-right: 5%;
+}
+
+.line{
+  margin-top: 2%;
+}
+
+.buttonSpacer{
+padding: 1%;
 }

@@ -16,6 +16,23 @@ import ViewFactures from './pages/ViewFactures';
 import AjouterFacture from './pages/AjouterFacture';
 import Bordereaux from './pages/Bordereaux';
 import AjouterBordereau from './pages/AjouterBordereau';
+import ViewBordereau from './pages/ViewBordereau';
+import EditBordereau from './pages/EditBordereau';
+import Archivage from './pages/Archivage';
+import AjouterDossier from './pages/AjouterDossier';
+import AjoutEmballage from './pages/AjoutEmballage';
+import EditDossier from './pages/EditDossier';
+import ViewDossier from './pages/ViewDossier'
+import Options from './pages/Options';
+import OptionsDevises from './pages/Layouts/OptionsDevises';
+import OptionsPays from './pages/Layouts/OptionsPays'
+import OptionsMarchandises from './pages/Layouts/OptionsMarchandises'
+import OptionsFournisseurs from './pages/Layouts/OptionsFournisseurs';
+import OptionsBureaux from './pages/Layouts/OptionsBureaux';
+import OptionsTransports from './pages/Layouts/OptionsTransports';
+import OptionsEntrepots from './pages/Layouts/OptionsEntrepots';
+import OptionsFactures from './pages/Layouts/OptionsFactures';
+import OptionsDocuments from './pages/Layouts/OptionsDocuments';
 
 
 
@@ -45,6 +62,23 @@ const App = () => {
           <Route path="/facturation/NouvelleFacture" element={<AjouterFacture/>}/>
           <Route path="/facturation/Bordereaux" element={<Bordereaux/>}/>
           <Route path="/facturation/Bordereaux/NouveauBordereau" element={<AjouterBordereau/>}/>
+          <Route path="/facturation/Bordereaux/ViewBordereau/:id" element={<ViewBordereau/>}/>
+          <Route path="/facturation/Bordereaux/EditBordereau/:id" element={<EditBordereau/>}/>
+          <Route path="/archivage" element={<Archivage/>}/>
+          <Route path="/archivage/EditDossier/:id" element={<EditDossier/>}/>
+          <Route path="/archivage/ViewDossier/:id" element={<ViewDossier/>}/>
+          <Route path="/archivage/NouveauDossier" element={<AjouterDossier/>}/>
+          <Route path="/archivage/NouveauDossier/NouvelEmballage" element={<AjoutEmballage/>}/>
+          <Route path="/options" element={<Options/>}/>
+          <Route path="/options/devises" element={<OptionsDevises/>}/>
+          <Route path="/options/pays" element={<OptionsPays/>}/>
+          <Route path="/options/marchandises" element={<OptionsMarchandises/>}/>
+          <Route path="/options/fournisseurs" element={<OptionsFournisseurs/>}/>
+          <Route path="/options/douanes" element={<OptionsBureaux/>}/>
+          <Route path="/options/transports" element={<OptionsTransports/>}/>
+          <Route path="/options/entrepots" element={<OptionsEntrepots/>}/>
+          <Route path="/options/factures" element={<OptionsFactures/>}/>
+          <Route path="/options/documents" element={<OptionsDocuments/>}/>
         </Routes>
       </div>
     </Router>

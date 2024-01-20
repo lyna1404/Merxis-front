@@ -1,50 +1,113 @@
-import React , {useState} from 'react';
+import React , {useState, useEffect} from 'react';
 import styles from './popupForm.module.css'
 import buttonStyles from '../components/button.module.css'
 import InputField from '../components/InputField'
-import stylesBE from './listeBordereau.module.css'
 import labelStyles from "../components/inputField.module.css";
 import filterStyles from '../components/tableFilter.module.css'
+import Select from 'react-select'
+import axios from 'axios';
 
 
-const AjouterDocBordereau = ({ onClose,onAjouter,onFileUpload,onFileUploadClick,inputFile }) => {
+const AjouterDocBordereau = ({ onClose,onAjouter,onFileUpload,onFileUploadClick,inputFile, dossierPk }) => {
     
     const [nomDocument, setNomDocument] = useState('');
     const [numDocument, setNumDocument] = useState('');
+    const [docPk, setDocPk] = useState(''); 
     const [typeDocument, setTypeDocument] = useState('');
     const listeTypesDoc = [ {index:"1", type:"Original"},{index:"2", type:"Copie"},{index:"3", type:"Dupilicata"}];
     const [nbrDocuments, setNbrDocument] = useState('');
     const [observation, setObservation] = useState("R.A.S");
 
+    const [listeTypes, setListeTypes] = useState([]);
+
+    const [docs, setDocs] = useState([]);
+    const [selectedDoc, setSelectedDoc] = useState({value: docPk, label: nomDocument});
+    
+    const listeDocs = docs.map(({documentDossier_pk, typeDocument}) => ({ ['value'] : documentDossier_pk, ['label']:typeDocument.designation}))
+
+  console.log(docs);
+    const [errorMessages, setErrorMessages] = useState();
+    const [showError, setShowError] = useState(false);
+    const [showSuccess, setShowSuccess] = useState(false);
+
     const handleSubmit = (event) => {
         event.preventDefault();
-        // Appeler la fonction onAjouter pour ajouter le nouveau debours
-        const id = 1;
-        onAjouter({ id, nomDocument, numDocument, typeDocument, nbrDocuments, observation });
+        // Appeler la fonction onAjouter pour ajouter le nouveau document
+        onAjouter({docPk, nbrDocuments, typeDocument, observation});
 
         // Fermer le Pop Up
         onClose();
     };
 
+  // Récupération des documents et types documents
+  useEffect(() => {
+    const docs = axios.get(`/api/dossiers/${dossierPk}/documents/`);
+    const types = axios.get('/api/types-document/');
+    Promise.all([docs, types])
+    .then((responses) => {
+      const docsData = responses[0].data;
+      const typeData = responses[1].data;
+      setDocs(docsData);
+      setListeTypes(typeData.results);
+    })
+    .catch((error) => {
+      console.log('Error:', error);
+      handleError(error.request.response);
 
+    });
+  }, [dossierPk]) 
+
+    // Controle d'erreurs
+    const handleError = (errors) => {
+      setShowError(true);
+      setErrorMessages(errors);
+    };
+      
+    const handleErrorClose = () => {
+      setShowError(false);
+    };
+
+    const handleDocumentSelection = (searchTerm) => {
+      setSelectedDoc(searchTerm);
+      setNomDocument(searchTerm.label);
+      setDocPk(searchTerm.value); 
+      const doc = docs.filter((doc) => doc.documentDossier_pk.toString().includes(searchTerm.value.toString()))[0];
+      setNumDocument(doc.numDocument);
+    };
+
+    // Styling des searchable dropdown de react-select
+    const colorStyles = {
+          control : // le champs d'input
+          styles => ({...styles, backgroundColor:'white',border:'none',boxShadow:'none', fontFamily:'Montserrat'}),
+          option: // les éléments à selectionnés
+          (styles, {isFocused, isSelected}) => ({
+            ...styles,
+            backgroundColor: isFocused? '#e4e1e1' : isSelected? '#a3a7d8' : 'white',
+            fontFamily: 'Montserrat',
+          }),
+          singleValue : // option séléctionnée
+          styles => ({...styles, color:'black', fontFamily:'Montserrat', fontSize:'16px'})
+    };
 
   return (
     <div className={styles.tab}>
       <form onSubmit={handleSubmit}>
         <h2>Ajout Documents</h2>
         <div className={styles.fields_area}>
-          <InputField display="labelontop" label="Document" size="extralarge" type="text" value={nomDocument} onChange={(e) => setNomDocument(e.target.value)} />          
+          <label className={labelStyles.labelontop}>Document
+            <Select className={labelStyles.extralarge} styles={colorStyles} options={listeDocs} value={selectedDoc} placeholder="Sélectionner un nom" onChange={(e) => handleDocumentSelection(e)} isSearchable={true}/>
+          </label>  
           <div className={styles.many_fields}> 
-              <InputField display="labelontop" label="N° Document" size="average" type="text" value={numDocument} onChange={(e) => setNumDocument(e.target.value)} />
+              <InputField display="labelontop" readOnly={true} label="N° Document" size="average" type="text" value={numDocument} onChange={(e) => setNumDocument(e.target.value)} />
        
               <span className={filterStyles.container}>
                 <label className={labelStyles.labelontop}>
                   Type Document
                   <select id="modeSelect" value={typeDocument} onChange={(e) => setTypeDocument(e.target.value)}>
                       <option value="">Choisissez une option</option>
-                      { listeTypesDoc.map(type => (
-                        <option key={type.index} value={type.type}>
-                          {type.type}
+                      {listeTypes.map((statut, index) => (
+                        <option key={index} value={statut}>
+                          {statut}
                       </option>
                       ))}
                     </select>

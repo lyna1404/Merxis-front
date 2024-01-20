@@ -16,6 +16,12 @@
 
 .primaryButtonY:hover {
     cursor: pointer;
+    background: var(--yellow, #e2be3d);
+}
+
+.primaryButtonY:active {
+    cursor: pointer;
+    background: var(--yellow, #b8992b);
 }
 
 .primaryButtonB{
@@ -33,6 +39,17 @@
     gap: 10px;
     border-style: none;
 }
+
+.primaryButtonB:hover{
+    cursor: pointer;
+    background: var(--light-violet, #3f436d);
+}
+
+.primaryButtonB:active{
+    cursor: pointer;
+    background: var(--light-violet, #2f3358);
+}
+
 .primaryButtonR{
     border-radius: 8px;
     background: var(--red, #d22b2b);
@@ -65,10 +82,22 @@
 }
 .primaryButtonG:hover {
     cursor: pointer;
+    background: var(--red, #073f10);
 }
+.primaryButtonG:active {
+    cursor: pointer;
+    background: var(--red, #042709);
+}
+
 .primaryButtonR:hover {
     cursor: pointer;
+    background: var(--red, #bd2020);
 }
+.primaryButtonR:active {
+    cursor: pointer;
+    background: var(--red, #941515);
+}
+
 .primaryButtonB:hover {
     cursor: pointer;
 }

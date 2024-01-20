@@ -1,0 +1,132 @@
+.wrapper{
+    display: block;
+    margin-top: 4%;
+
+}
+
+.container{
+    display: grid;
+    width: 100%;
+}
+
+
+.textLine{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 10px;
+    grid-auto-rows: minmax(100px,auto);
+}
+
+.verticalLine {
+    border: 1px solid #B8B8B8;
+    height: 97%;
+    width: 0%;
+    padding-top: 30%;
+    margin-left: 2%;
+    margin-right: 2%;
+  }
+
+  .horizontalLine {
+    border-top: 1px solid #B8B8B8;
+    height: 1px;
+    width: 100%;
+    margin-top: -1%;
+    margin-bottom: 1%;
+  }
+
+.primaryButtonB{
+    border-radius: 8px;
+    background: var(--light-violet, #505581);
+    color: #FFF;
+    font-family: Montserrat;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    display: inline-flex;
+    padding: 10px;
+    align-items: flex-start;
+    gap: 10px;
+    border-style: none;
+    margin-bottom: 7%;
+    margin-top: 1%;
+}
+
+.primaryButtonB:hover {
+    cursor: pointer;
+    background: var(--light-violet, #3a3d5e);
+}
+
+.cadreInputs{
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 8px;
+    width: 100%;
+    grid-row: 1;
+    grid-column: 4/4;
+    margin-left: 15%;
+}
+
+.pageTitle{
+    color: var(--dark-violet, #2E2F5B);
+    font-family: Montserrat;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    padding-left: 5%;
+    margin-top: 12px;
+    margin-bottom: 12px;
+}
+
+.normalText{
+    color: var(--dark-violet, #2E2F5B);
+    font-family: Montserrat;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    padding-left: 5%;
+    padding-top: 4px;
+    margin-top: 8px;
+    grid-row: 1;
+    grid-column: 1/4;
+    width: 100%;
+
+}
+
+.navbar {
+    margin: 2% 2% 4% 2%;
+  }
+  
+  .navbar li {
+    color: var(--lavender, #AEB1DE);
+    font-family: Montserrat;
+    font-size: 14px;
+    font-style: normal;
+    font-weight:bold;
+    line-height: normal;
+    gap: 16px;
+    display: inline;
+    padding-bottom: 12px;
+    cursor: pointer;
+    align-items: center;
+    padding: 1% 3% 1% 3%;
+    border-bottom: 2px solid #AEB1DE;
+  }
+  
+  .navbar li:hover {
+    color: var(--yellow, #F4D35E);
+    border-bottom: 2px solid #F4D35E;
+  }
+  
+  .navbar li.active {
+    border-top: 2px solid red;
+    color: var(--lavender, #AEB1DE);
+    border-bottom: 2px solid #F4D35E;
+  }
+
+  .contentWrapper{
+    margin: 0% 5% 0% 5%;
+  }
