@@ -10,6 +10,7 @@ const TableFilter = ({ columns, onFilterChange }) => {
   };
 
   const handleFilterChange = (event) => {
+    console.log("change")
     const value = event.target.value;
     setFilterValue(value);
     onFilterChange(selectedColumn, value);

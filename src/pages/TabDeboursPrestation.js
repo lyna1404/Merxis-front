@@ -5,7 +5,7 @@ import styles from './popupForm.module.css'
 import TabNavItem from "../components/tabNavItem";
 import TabContent from "../components/tabContent";
 
-const TabDeboursPrestation = ({onClose, onAjouter, onFileUpload, onFileUploadClick,inputFile, modes, types}) => {
+const TabDeboursPrestation = ({onClose, onAjouterDeb,onAjouterPres, onFileUpload, onFileUploadClick,inputFile, modes, types,typesPres}) => {
 
 
   const [activeTab, setActiveTab] = useState("tab1");
@@ -22,7 +22,7 @@ const TabDeboursPrestation = ({onClose, onAjouter, onFileUpload, onFileUploadCli
         <div className={styles.verticalLine}/>
         <div className={styles.outlet}>
                 <TabContent id="tab1" activeTab={activeTab} children={<AjoutDebours onClose={onClose} 
-                                                                            onAjouter={onAjouter} 
+                                                                            onAjouter={onAjouterDeb} 
                                                                             onFileUpload={onFileUpload} 
                                                                             onFileUploadClick={onFileUploadClick}
                                                                             inputFile={inputFile}
@@ -30,10 +30,11 @@ const TabDeboursPrestation = ({onClose, onAjouter, onFileUpload, onFileUploadCli
                                                                             types={types}/>}
                                                                             />
                 <TabContent id="tab2" activeTab={activeTab} children={<AjoutPrestation onClose={onClose} 
-                                                                                    onAjouter={onAjouter} 
+                                                                                    onAjouter={onAjouterPres} 
                                                                                     onFileUpload={onFileUpload} 
                                                                                     onFileUploadClick={onFileUploadClick}
-                                                                                    inputFile={inputFile}/>}/>
+                                                                                    inputFile={inputFile}
+                                                                                    typesPres ={typesPres}/>}/>
         </div>
     </div>
   );
