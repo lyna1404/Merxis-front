@@ -13,9 +13,8 @@ import axios from 'axios';
 import styles2 from './gestionClients.module.css';
 
 
-function ViewFactures() {
+function ViewFacturesProforma() {
    
-    //Recuperer le numero dossier choisie
     const { id } = useParams();
     console.log(id);
     
@@ -35,10 +34,10 @@ function ViewFactures() {
     useEffect(() => {
         // Create axios requests for both data fetching
         while(id==null){}
-        const facture = axios.get(`/api/factures-definitives/${id}/`); // Replace with your other endpoint
-        const debours = axios.get(`/api/factures-definitives/${id}/debours/`);
-        const prestations = axios.get(`/api/factures-definitives/${id}/prestations/`);
-        const calculs = axios.get(`/api/factures-definitives/${id}/calcul/`);
+        const facture = axios.get(`/api/factures-proforma/${id}/`); // Replace with your other endpoint
+        const debours = axios.get(`/api/factures-proforma/${id}/debours/`);
+        const prestations = axios.get(`/api/factures-proforma/${id}/prestations/`);
+        const calculs = axios.get(`/api/factures-proforma/${id}/calcul/`);
 
 
 
@@ -183,86 +182,41 @@ function ViewFactures() {
                                     label="Nom Client" 
                                     size="average" 
                                     type="text" 
-                                    value={facture.dossier.client.raisonSociale} 
+                                    value={facture.client.raisonSociale} 
                                     onChange=""
                                     readOnly={true}
                             />
                         </label>
-                        <label className={styles.info_field}>
-                            <InputField className={styles.info_field} display="labelonleft" 
-                                    label="N° Declaration" 
-                                    size="small" 
-                                    type="text" 
-                                    value={facture.numDeclaration} 
-                                    onChange=""
-                                    readOnly={true}
-                            />
-                        </label>
-                        <label className={styles.info_field}>
-                            <InputField className={styles.info_field} display="labelonleft" 
-                                    label="Nom Fournisseur" 
-                                    size="overaverage" 
-                                    type="text" 
-                                    value={facture.dossier.fournisseur} 
-                                    onChange=""
-                                    readOnly={true}
-                            />
-                        </label>
-                        <label className={styles.info_field}>
-                            <InputField className={styles.info_field} display="labelonleft" 
-                                    label="N° Fact. Fournisseur" 
-                                    size="small" 
-                                    type="text" 
-                                    value={facture.numFactureFournisseur} 
-                                    onChange=""
-                                    readOnly={true}
-                            />
-                        </label>
-                        <label className={styles.info_field}>
-                            <InputField className={styles.info_field} display="labelonleft" 
-                                    label="Montant" 
-                                    size="small" 
-                                    type="text" 
-                                    value={facture.montantFactureFournisseur} 
-                                    onChange=""
-                                    readOnly={true}
-                            />
-                        </label>
-                        <label className={styles.info_field}>
-                            <InputField className={styles.info_field} display="labelonleft" 
-                                    label="Monnaie" 
-                                    size="verysmall" 
-                                    type="text" 
-                                    value={facture.dossier.monnaie} 
-                                    onChange=""
-                                    readOnly={true}
-                            />
-                        </label>
-                        <label className={styles.info_field}>
-                            <InputField className={styles.info_field} display="labelonleft" 
-                                    label="N° Titre Transport" 
-                                    size="belowaverage" 
-                                    type="text" 
-                                    value={facture.numTitreTransport} 
-                                    onChange=""
-                                    readOnly={true}                            />
-                        </label>
-                    <label className={styles.info_field}><InputField className={styles.info_field} display="labelonleft" 
-                                    label="Nbr Colis" 
-                                    size="verysmall" 
-                                    type="text" 
-                                    value={facture.dossier.declaration.nbrColis} 
-                                    onChange=""
-                                    readOnly={true}                            />
-                        </label>
-                    <label className={styles.info_field}><InputField className={styles.info_field} display="labelonleft" 
+                        <label className={styles.info_field}><InputField className={styles.info_field} display="labelonleft" 
                                     label="Nature Marchandise" 
                                     size="overaverage" 
                                     type="text" 
-                                    value={facture.dossier.natureMarchandise} 
+                                    value={facture.natureMarchandise} 
+                                    onChange=""
+                                    readOnly={true}                            />
+                      </label>
+                       <label className={styles.info_field}><InputField className={styles.info_field} display="labelonleft" 
+                                    label="Nbr Colis" 
+                                    size="verysmall" 
+                                    type="text" 
+                                    value={facture.nbrColis} 
                                     onChange=""
                                     readOnly={true}                            />
                         </label>
+                        <label className={styles.info_field}><InputField className={styles.info_field} display="labelonleft" 
+                                                    label="Nbr TC" 
+                                                    size="verysmall" 
+                                                    type="number" 
+                                                    value={facture.nbrTc} 
+                                                    readOnly={true}                            />
+                                            </label>
+                                            <label className={styles.info_field}><InputField className={styles.info_field} display="labelonleft" 
+                                                    label="Poids" 
+                                                    size="small" 
+                                                    type="number" 
+                                                    value={facture.poids} 
+                                                    readOnly={true}                            />
+                                            </label>
                         <div className={styles.horizontalLine}></div>
                     </div>
                 </span>
@@ -315,6 +269,16 @@ function ViewFactures() {
                     <label className={styles.info_field}>
                         <InputField 
                                 display="labelontop" 
+                                label="Total TTC" 
+                                size="small" 
+                                type="number" 
+                                value={facture.total_TTC}
+                                readOnly={true}
+                        />
+                    </label>
+                    <label className={styles.info_field}>
+                        <InputField 
+                                display="labelontop" 
                                 label="Total prestation TTC" 
                                 size="overaverage" 
                                 type="text" 
@@ -334,40 +298,7 @@ function ViewFactures() {
                                 readOnly="true"
                         />
                     </label>
-                    <label className={styles.info_field}>
-                        <InputField 
-                                display="labelontop" 
-                                label="Droits de Timbre" 
-                                size="small" 
-                                type="text" 
-                                value={calcul.montant_droitTimbre}
-                                onChange="" 
-                                readOnly="true"
-                        />
-                        
-                    </label>
-                    <label className={styles.info_field}>
-                        <InputField 
-                                display="labelontop" 
-                                label="Total à payer" 
-                                size="overaverage" 
-                                type="text" 
-                                value={calcul.total_a_payer}
-                                onChange="" 
-                                readOnly="true"
-                        />
-                    </label>
-                    <label className={styles.info_field}>
-                        <InputField 
-                                display="labelontop" 
-                                label="Net à payer" 
-                                size="overaverage" 
-                                type="text" 
-                                value={calcul.net_a_payer}
-                                onChange="" 
-                                readOnly="true"
-                         />
-                    </label>
+                    
                     <div className={styles.footerSpace}></div>
             </span>
             </div>
@@ -377,4 +308,4 @@ function ViewFactures() {
     );
 }
 
-export default ViewFactures
+export default ViewFacturesProforma

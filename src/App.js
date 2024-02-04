@@ -13,7 +13,10 @@ import ViewClient from './pages/ViewClient';
 import EditClient from './pages/EditClient';
 import Facturation from './pages/Facturation';
 import ViewFactures from './pages/ViewFactures';
+import ViewFacturesProforma from './pages/ViewFacturesProforma';
 import AjouterFacture from './pages/AjouterFacture';
+import EditFacture from './pages/EditFacture';
+import EditFactureProforma from './pages/EditFactureProforma';
 import Bordereaux from './pages/Bordereaux';
 import AjouterBordereau from './pages/AjouterBordereau';
 import ViewBordereau from './pages/ViewBordereau';
@@ -58,7 +61,10 @@ const App = () => {
           <Route path="/comptabilite" element={<Comptabilite/>}/>
           <Route path="/comptabilite/deboursComptabilite/:id" element={<DeboursComptabilite/>}/>
           <Route path="/facturation" element={<Facturation/>}/>
-          <Route path="/facturation/:slug" element={<ViewFactures/>}/>
+          <Route path="/facturation/detailsFacture/:id" element={<ViewFactures/>}/>
+          <Route path="/facturation/EditFacture/:id" element={<EditFacture/>}/>
+          <Route path="/facturation/EditFactureProforma/:id" element={<EditFactureProforma/>}/>
+          <Route path="/facturation/detailsFactureProforma/:id" element={<ViewFacturesProforma/>}/>
           <Route path="/facturation/NouvelleFacture" element={<AjouterFacture/>}/>
           <Route path="/facturation/Bordereaux" element={<Bordereaux/>}/>
           <Route path="/facturation/Bordereaux/NouveauBordereau" element={<AjouterBordereau/>}/>

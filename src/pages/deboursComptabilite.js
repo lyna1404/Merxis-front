@@ -22,6 +22,7 @@ import TabDebours from './TabDebours';
 function DeboursComptabilite() { 
     useEffect(() => {
         // Create axios requests for both data fetching
+        console.log(id)
         const debours = axios.get(`/api/dossiers/${id}/debours/`); 
         const modes = axios.get(`/api/modes-paiement-debours/`);
         const dossier = axios.get(`/api/dossiers/${id}/`); 

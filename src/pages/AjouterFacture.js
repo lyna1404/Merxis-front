@@ -9,6 +9,10 @@ import labelStyles from "../components/inputField.module.css";
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import TabDeboursPrestation from './TabDeboursPrestation';
+import { reloadPage , handleFilterChange} from '../Utils/actionUtils';
+import axios from 'axios';
+import {formatDateFromAPI,formatDateToAPI} from '../Utils/dateUtils';
+
 
 function AjouterFacture() {
 
@@ -20,6 +24,29 @@ function AjouterFacture() {
     {id:"1", deboursPres:"Transit", modePaiement:"Virement", montantDebours:"/", montantPrestations:"12000 DZD"},
     {id:"1", deboursPres:"Magasinage", modePaiement:"Chèque", montantDebours:"/", montantPrestations:"15000 DZD"},
     {id:"1", deboursPres:"Transit", modePaiement:"Chèque", montantDebours:"/", montantPrestations:"23000 DZD"}]
+    
+    const [errorMessages, setErrorMessages] = useState({});
+    const [showError, setShowError] = useState(false);
+    const [showSuccess, setShowSuccess] = useState(false);
+    const [isLoaded, setIsLoaded] = useState(false);
+
+    const handleError = (errors) => {
+        setShowError(true);
+        setErrorMessages(errors);
+      };
+      
+      const handleErrorClose = () => {
+        setShowError(false);
+      };
+      
+      const handleSuccess = () => {
+        setShowSuccess(true);
+      };
+      
+      const handleSuccessClose = () => {
+        setShowSuccess(false);
+        reloadPage();
+      };
 
     const [numDossier, setNumDossier] = useState('');
     const [numFact, setNumFacture] = useState('');
@@ -113,7 +140,74 @@ function AjouterFacture() {
     
     //Controler l'ajout d'un debours 
     const handleAjouter = (data) => {
-        setFilteredData((prevFilteredData) => [data,...prevFilteredData]);      
+        setIsLoaded(false)
+        if(typeFacture == "Proforma"){
+            const facture = {
+                numFacture : numFact,
+            date : date ? formatDateToAPI(date) : null,
+                client : 2,
+                natureMarchandise : natureMarch,
+                nbrTC : nbrTc,
+                poids : poids,
+                nbrColis : nbrColis,
+                taux_tva : tauxTVA,
+            }
+            axios
+            .post(`/api/factures-proforma/`, JSON.stringify(facture), {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then((response) => {
+                setIsLoaded(true);
+                const clientResponse = response.data;
+                console.log(clientResponse);
+                handleSuccess();
+            })
+            .catch((error) => {
+                setIsLoaded(true);
+                handleError(error.request.response);
+            });
+
+        }
+        else{
+            const apiUrl = `/api/dossier?numDossier=${numDossier}`;
+            axios.get(apiUrl)
+            .then(response => {
+                console.log('Response:', response.data);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+            const facture = {
+                numFacture : numFact,
+                date : date,
+                client : client,
+                taux_droitTimbre : droitTimbre1,
+                natureMarchandise : natureMarch,
+                numDossier : numDossier,
+                dossier : null,
+                nbrColis : nbrColis,
+                taux_tva : tauxTVA,
+                avanceClient : avance,
+            }
+            axios
+            .post(`/api/factures-definitives/`, JSON.stringify(facture), {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then((response) => {
+                setIsLoaded(true);
+                const clientResponse = response.data;
+                console.log(clientResponse);
+                handleSuccess();
+            })
+            .catch((error) => {
+                setIsLoaded(true);
+                handleError(error.request.response);
+            });
+        }
     };
 
 
@@ -163,7 +257,8 @@ function AjouterFacture() {
                                             </label>
                                             <label className={styles.info_field}>
                                                 <InputField 
-                                                    display="labelonleft"                                                             label="Nom Client" 
+                                                    display="labelonleft"                                                             
+                                                    label="Nom Client" 
                                                     size="average" 
                                                     type="text" 
                                                     value={client} 
@@ -175,7 +270,8 @@ function AjouterFacture() {
                                                     label="N° Declaration" 
                                                     size="small" 
                                                     type="number" 
-                                                    value={numDeclaration}                                                         onChange={(e) => setNumDeclaration(e.target.value)}
+                                                    value={numDeclaration}                                                         
+                                                    onChange={(e) => setNumDeclaration(e.target.value)}
                                                 />
                                             </label>
                                             <label className={styles.info_field}>
@@ -316,32 +412,6 @@ function AjouterFacture() {
                         <div className={styles.horizontalLine}></div>
                     </div>
                 </span>
-
-               <span className={styles.table_grid}>
-                    <ReusableTable data={filteredData} headers={headers} itemsPerPage={5} addlink={false}/> 
-                    <span className={styles.container}>
-                        <label className={styles.label_style}>Total</label>
-                        <input className={styles.input}
-                            value={setMontantDebours(deboursPrestations)}
-                            readOnly={true}
-                        />
-                        <input className={styles.input}
-                            value={setMontantPrestations(deboursPrestations)}
-                            readOnly={true}
-                        />
-                    </span>  
-                    <span className={styles.buttons_grid}>
-                        <button className={`${buttonStyles.primaryButtonY}`} children='Nouveau' onClick={handleNouveauClick} />
-                        {showForm && <TabDeboursPrestation onClose={handleFormClose} 
-                                                            onAjouter={handleAjouter} 
-                                                            onFileUpload={handleFileUpload} 
-                                                            onFileUploadClick={handleFileUploadClick}
-                                                            inputFile={inputFile}
-                                                            modes={modes}
-                                                            types={types}/>} 
-                    </span>
-                    <div className={styles.verticalLine}></div>
-                </span>
                 
                 <span className={styles.label_grid}>
                     <label className={styles.info_field}>
@@ -357,62 +427,12 @@ function AjouterFacture() {
                     <label className={styles.info_field}>
                         <InputField 
                                 display="labelontop" 
-                                label="Montant TVA" 
-                                size="belowaverage" 
-                                type="number" 
-                                value={montantTVA}
-                                onChange={(e) => setMontantTVA(e.target.value)} 
-                         />
-                    </label>
-                    <label className={styles.info_field}>
-                        <InputField 
-                                display="labelontop" 
-                                label="Total prestation TTC" 
-                                size="overaverage" 
-                                type="number" 
-                                value={totalTTC}
-                                onChange={(e) => setTotalTTC(e.target.value)} 
-                         />
-                    </label>
-                    <label className={styles.info_field}>
-                        <InputField 
-                                display="labelontop" 
-                                label="Total prestation et debours" 
-                                size="overaverage" 
-                                type="number" 
-                                value={totalPresDebours}
-                                onChange={(e) => setTotalPresDebours(e.target.value)} 
-                        />
-                    </label>
-                    <label className={styles.info_field}>
-                        <InputField 
-                                display="labelontop" 
                                 label="Droit de Timbre" 
                                 size="small" 
                                 type="number" 
                                 disabled={disableInput}
                                 value={droitTimbre1}
                                 onChange={(e) => setDroitTimbre1(e.target.value)} 
-                        />
-                        <InputField 
-                                display="labelontop" 
-                                label="."
-                                size="small" 
-                                type="number" 
-                                disabled={disableInput}
-                                value={droitTimbre2}
-                                onChange={(e) => setDroitTimbre2(e.target.value)} 
-                        />
-                    </label>
-                    <label className={styles.info_field}>
-                        <InputField 
-                                display="labelontop" 
-                                label="Total à payer" 
-                                size="overaverage" 
-                                type="number" 
-                                disabled={disableInput}
-                                value={totalPayement}
-                                onChange={(e) => setTotalPayement(e.target.value)} 
                         />
                     </label>
                     <label className={styles.info_field}>
@@ -426,17 +446,7 @@ function AjouterFacture() {
                                 onChange={(e) => setAvance(e.target.value)} 
                          />
                     </label>
-                   <label className={styles.info_field}>
-                        <InputField 
-                                display="labelontop" 
-                                label="Net à payer" 
-                                size="overaverage" 
-                                type="number" 
-                                disabled={disableInput}
-                                value={netPayement}
-                                onChange={(e) => setNetPayement(e.target.value)} 
-                        />
-                    </label>
+                    <button className={`${buttonStyles.primaryButtonY}`} children='Ajouter' onClick={handleAjouter} />
                     <div className={styles.footerSpace}></div>
             </span>
             </div>
