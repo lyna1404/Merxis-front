@@ -4,7 +4,7 @@ import buttonStyles from "./button.module.css";
 import { isValidJSON } from '../Utils/actionUtils';
 
 const ErrorMessage = ({ onClose, errors }) => {
-  console.log(errors);
+  console.log("err",errors);
   if (!errors) {
     return (
       <div className={styles.shortformpopup}>

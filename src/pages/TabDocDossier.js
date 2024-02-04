@@ -9,7 +9,7 @@ import SuccessMessage from "../components/succesMessage";
 import axios from "axios";
 import { reloadPage } from "../Utils/actionUtils";
 
-const TabDocDossier = ({onClose, isView=false, onAjouter, onFileUpload, onFileUploadClick,inputFile,dossierPk}) => {
+const TabDocDossier = ({onClose, isView=false, onAjouter, onFileUpload, onFileUploadClick,inputFile,dossierPk, dossier, declaration}) => {
 
 
   const [activeTab, setActiveTab] = useState("tab1");
@@ -69,11 +69,7 @@ const TabDocDossier = ({onClose, isView=false, onAjouter, onFileUpload, onFileUp
         <div className={styles.sidebar}>
             <ul className={styles.ul}>
               <TabNavItem id="tab1" title="Documents" activeTab={activeTab} setActiveTab={setActiveTab}/>
-              {!isView?
-                <TabNavItem id="tab2" title="Ajouter" activeTab={activeTab} setActiveTab={setActiveTab}/>
-                : <></>
-              }
-              <TabNavItem id="tab3" title="Imprimer" activeTab={activeTab} setActiveTab={setActiveTab}/>
+              <TabNavItem id="tab2" title="Impressions" activeTab={activeTab} setActiveTab={setActiveTab}/>
 
            </ul>
         </div>
@@ -81,28 +77,19 @@ const TabDocDossier = ({onClose, isView=false, onAjouter, onFileUpload, onFileUp
         <div className={styles.outlet}>
             <TabContent id="tab1" activeTab={activeTab} 
                                   children={<DocumentsDossier onClose={onClose} 
-                                                          onAjouter={onAjouter} 
-                                                          onFileUpload={onFileUpload} 
-                                                          onFileUploadClick={onFileUploadClick}
-                                                          inputFile={inputFile}
-                                                          dossierPk={dossierPk}/>}/>
-            {!isView? 
-              <>
-                <TabContent id="tab2" activeTab={activeTab} 
-                                  children={<AjouterDocDossier onClose={onClose} 
                                                           onAjouter={handleAjouterDoc} 
                                                           onFileUpload={onFileUpload} 
                                                           onFileUploadClick={onFileUploadClick}
                                                           inputFile={inputFile}
                                                           dossierPk={dossierPk}/>}/>
-                {showSuccess && <SuccessMessage onClose={handleSuccessClose} />}
-              </>
-              : <></>
-            }
-            <TabContent id="tab3" activeTab={activeTab} 
+
+            <TabContent id="tab2" activeTab={activeTab} 
                                   children={<DocumentsImpression onClose={onClose} 
                                                           onAjouter={onAjouter} 
-                                                          dossierPk={dossierPk}/>}/>
+                                                          dossierPk={dossierPk}
+                                                          dossier={dossier}
+                                                          declaration={declaration}/>}/>
+            {showSuccess && <SuccessMessage onClose={handleSuccessClose} />}
                 
         </div>
     </div>

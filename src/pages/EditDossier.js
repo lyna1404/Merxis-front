@@ -874,7 +874,7 @@ function EditDossier() {
 
   return (
     <>
-        <AdvancedBreadcrumb numDossier={numDossier} hideParams={true} dossierPk={id} showError={showError} showSuccess={showSuccess} showForm={showDocumentForm} onDocClick={handleDocumentClick} hideButtons={false}
+        <AdvancedBreadcrumb numDossier={numDossier} dossier={dossierData} declaration={declarationData} hideParams={true} dossierPk={id} showError={showError} showSuccess={showSuccess} showForm={showDocumentForm} onDocClick={handleDocumentClick} hideButtons={false}
                             onClick={handleModifierDossier} onErrorClose={handleErrorClose} onSuccessClose={handleSuccessClose} onCloseDoc={handleDocumentFormClose} errorMessages={errorMessages}/>
         <div>
             <div className={styles.navbar}>

@@ -61,9 +61,9 @@ const EditDebours = ({ onClose,onAjouter, toModify}) => {
         ) : 
         (
         <>
-                <div className={styles.fields_area}>
+        <div className={styles.fields_area}>
         <span className={filterStyles.container}>
-            <InputField display="labelontop" label="Designation du debours" size="extralarge" debours="text" value={designation} onChange={(e) => setDesignation(e.target.value)} />
+            <InputField display="labelontop" label="Designation du debours" size="extralarge" type="text" value={designation} onChange={(e) => setDesignation(e.target.value)} />
         </span>
         </div>
         <span className={styles.buttonSpan}>
