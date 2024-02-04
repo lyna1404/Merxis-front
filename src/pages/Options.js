@@ -35,6 +35,10 @@ function openFournisseurs() {
   window.open("/options/fournisseurs", '_blank');
 }
 
+function openFraudes() {
+  window.open("/options/fraudes", '_blank');
+}
+
 function openDouanes() {
   window.open("/options/douanes", '_blank');
 }
@@ -125,6 +129,16 @@ function openDocuments(){
           </div>
           <div className={styles.horizontalLine}/>
           <div className={styles.container}>
+            <p className={styles.pageTitle}>Gestion des fraudes</p>
+            <div className={styles.textLine}>
+              <p className={styles.normalText}>Les paramètres de fraudes contiennent les formulaires de gestion des inspections frontières et des lieux d'arrivée</p>
+              <div className={styles.cadreInputs}>
+                <button className={`${styles.primaryButtonB}`} children="Gérer" onClick={() => openFraudes()}/>  
+              </div>
+            </div>
+          </div>
+          <div className={styles.horizontalLine}/>
+          <div className={styles.container}>
             <p className={styles.pageTitle}>Gestion des marchandises</p>
             <div className={styles.textLine}>
               <p className={styles.normalText}>Les paramètres de marchandises contiennent les formulaires de gestion des natures de marchandises</p>
@@ -147,7 +161,7 @@ function openDocuments(){
           <div className={styles.container}>
             <p className={styles.pageTitle}>Gestion des transports</p>
             <div className={styles.textLine}>
-              <p className={styles.normalText}>Les paramètres de transports contiennent les formulaires de gestion des compagnies, des types de compagnies, et des moyens de transport</p>
+              <p className={styles.normalText}>Les paramètres de transports contiennent les formulaires de gestion des compagnies, des types de compagnies, des moyens de transport, et des emballages</p>
               <div className={styles.cadreInputs}>
                 <button className={`${styles.primaryButtonB}`} children="Gérer" onClick={() => openTransports()}/>  
               </div>

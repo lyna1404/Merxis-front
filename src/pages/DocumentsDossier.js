@@ -9,6 +9,7 @@ import SuccessMessage from '../components/succesMessage';
 import ErrorMessage from '../components/errorMessage';
 import CustomMessage from '../components/customMessage';
 import {reloadPage} from '../Utils/actionUtils';
+import AjouterDocDossier from './AjouterDocDossier';
 
 function DocumentsDossier({onClose,onAjouter,onFileUpload,onFileUploadClick,inputFile, dossierPk}) {
   
@@ -37,6 +38,7 @@ function DocumentsDossier({onClose,onAjouter,onFileUpload,onFileUploadClick,inpu
       setShowSuccess(false);
       reloadPage();
     };
+
 
       // Suppression d'un document
       const handleDeleteClick = (event) => {
@@ -95,6 +97,35 @@ function DocumentsDossier({onClose,onAjouter,onFileUpload,onFileUploadClick,inpu
       setShowDialog(false);
     };
 
+    //Controler l'ajout d'un document
+    const handleAjouterDoc = (data) => {
+        
+      setIsLoadedDocument(false);
+
+      const doc = {
+        typeDocument: data.docPk,
+        numDocument: data.numDocument,
+        dateEtablissement: data.date,
+        lieuEtablissement: data.lieu,
+      }
+     
+      const docCreated =  axios.post(`/api/dossiers/${dossierPk}/documents/`, JSON.stringify(doc), {
+        headers: {
+          'Content-Type': 'application/json',
+        }
+        })
+        .then((response) => {
+            const docResponse = response.data;   
+            setIsLoadedDocument(true);
+            handleSuccess();
+        })
+        .catch((error) => {
+            setIsLoadedDocument(true)
+            console.log(error.request.response);  
+            handleError(error.request.response);
+        });
+  };
+
     // Récupérer les documents du dossier 
     useEffect(() => {
         const bordereau = axios.get(`/api/dossiers/${dossierPk}/documents/`)
@@ -143,6 +174,10 @@ function DocumentsDossier({onClose,onAjouter,onFileUpload,onFileUploadClick,inpu
                   {showDialog && <CustomMessage onClose={handleDialogClose} onConfirm={handleDelete} message={"Souhaitez-vous vraiment supprimer ce document ?"} />}
                   {showSuccess && <SuccessMessage onClose={handleSuccessClose} />}
                   <span className={styles.docsButtonSpan}>
+                  <button className={buttonStyles.primaryButtonY} type="button" onClick={handleNouveauClick}>Ajouter</button>
+                  {showForm && <AjouterDocDossier dossierPk={dossierPk} onFileUpload={onFileUpload} onFileUploadClick={onFileUploadClick} inputFile={inputFile} onAjouter={handleAjouterDoc} onClose={handleFormClose}/>}
+                  {showError && <ErrorMessage onClose={handleErrorClose} errors={errorMessages} />}
+                  {showSuccess && <SuccessMessage onClose={handleSuccessClose} />}
                       <button className={buttonStyles.primaryButtonB} type="button" onClick={onClose}>Fermer</button>
                   </span>
                 </>

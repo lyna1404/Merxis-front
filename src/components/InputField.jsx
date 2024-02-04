@@ -9,7 +9,7 @@ import React from 'react';
 // type, value, et onChange are params of html Input tag
 */
 
-const InputField = ({ display,label,size,type,disabled,value,onChange,readOnly }) => {
+const InputField = ({ display,label,size,type,disabled,value,onChange,readOnly, placeholder, dir='ltr' }) => {
 
     function switchSizeCase() {
             switch (size){
@@ -20,6 +20,8 @@ const InputField = ({ display,label,size,type,disabled,value,onChange,readOnly }
                                 value={value !== null ? value : ''}
                                 onChange={onChange}
                                 readOnly={readOnly}
+                                placeholder={placeholder}
+                                dir={dir}
                           />)
                 case 'verylarge' : 
                     return   (<input className={styles.verylarge}
@@ -28,7 +30,8 @@ const InputField = ({ display,label,size,type,disabled,value,onChange,readOnly }
                                     value={value !== null ? value : ''}
                                     onChange={onChange}
                                     readOnly={readOnly}
-
+                                    placeholder={placeholder}
+                                    dir={dir}
                               />)
                 case 'large' : 
                     return   (<input className={styles.large}
@@ -37,7 +40,8 @@ const InputField = ({ display,label,size,type,disabled,value,onChange,readOnly }
                                     value={value !== null ? value : ''}
                                     onChange={onChange}
                                     readOnly={readOnly}
-
+                                    placeholder={placeholder}
+                                    dir={dir}
                               />)
                 case 'overaverage' : 
                     return   (<input className={styles.overaverage}
@@ -46,7 +50,8 @@ const InputField = ({ display,label,size,type,disabled,value,onChange,readOnly }
                                     value={value !== null ? value : ''}
                                     onChange={onChange}
                                     readOnly={readOnly}
-
+                                    placeholder={placeholder}
+                                    dir={dir}
                               />)
                 case 'average' : 
                     return   (<input className={styles.average}
@@ -55,7 +60,8 @@ const InputField = ({ display,label,size,type,disabled,value,onChange,readOnly }
                                     value={value !== null ? value : ''}
                                     onChange={onChange}
                                     readOnly={readOnly}
-
+                                    placeholder={placeholder}
+                                    dir={dir}
                               />)
                 case 'belowaverage' : 
                     return   (<input className={styles.belowaverage}
@@ -64,7 +70,8 @@ const InputField = ({ display,label,size,type,disabled,value,onChange,readOnly }
                                     value={value !== null ? value : ''}
                                     onChange={onChange}
                                     readOnly={readOnly}
-
+                                    placeholder={placeholder}
+                                    dir={dir}
                               />)
                 case 'small' : 
                     return   (<input className={styles.small}
@@ -73,7 +80,8 @@ const InputField = ({ display,label,size,type,disabled,value,onChange,readOnly }
                                     value={value !== null ? value : ''}
                                     onChange={onChange}
                                     readOnly={readOnly}
-
+                                    placeholder={placeholder}
+                                    dir={dir}
                               />)
                 case 'verysmall' : 
                     return   (<input className={styles.verysmall}
@@ -82,7 +90,8 @@ const InputField = ({ display,label,size,type,disabled,value,onChange,readOnly }
                                     value={value !== null ? value : ''}
                                     onChange={onChange}
                                     readOnly={readOnly}
-
+                                    placeholder={placeholder}
+                                    dir={dir}
                               />)
                 default : 
                 return   (<input className={styles.average}
@@ -91,7 +100,8 @@ const InputField = ({ display,label,size,type,disabled,value,onChange,readOnly }
                                 value={value !== null ? value : ''}
                                 onChange={onChange}
                                 readOnly={readOnly}
-
+                                placeholder={placeholder}
+                                dir={dir}
                         />)
     
             }
@@ -102,6 +112,11 @@ const InputField = ({ display,label,size,type,disabled,value,onChange,readOnly }
         {
             display === "labelontop" ? (
                 <label className={styles.labelontop}>{label}
+                { switchSizeCase() }
+                </label>
+            ) :
+            display === "labelonright" ? (
+                <label className={styles.labelonright}>{label}
                 { switchSizeCase() }
                 </label>
             ) :

@@ -22,7 +22,7 @@ const displayNameMap = {
     // Add more mappings for other pages if needed
   };
 
-const AdvancedBreadcrumb = ({ numDossier, hideParams = false, hideButtons=false, hideDocs=false, isViewDoc=false, showError, showForm, showSuccess, onDocClick, onSuccessClose, onErrorClose, onClick, onAjouterDoc, onCloseDoc, dossierPk, errorMessages }) => {
+const AdvancedBreadcrumb = ({ numDossier, dossier, declaration, hideParams = false, hideButtons=false, hideDocs=false, isViewDoc=false, showError, showForm, showSuccess, onDocClick, onSuccessClose, onErrorClose, onClick, onAjouterDoc, onCloseDoc, dossierPk, errorMessages }) => {
 
   const location = useLocation();
   console.log(location);
@@ -82,6 +82,8 @@ const AdvancedBreadcrumb = ({ numDossier, hideParams = false, hideButtons=false,
                                     isView={isViewDoc}
                                     onAjouter={onAjouterDoc} 
                                     dossierPk={dossierPk}
+                                    dossier={dossier}
+                                    declaration={declaration}
                                     />}                  
                 </>
                 :
@@ -96,6 +98,7 @@ const AdvancedBreadcrumb = ({ numDossier, hideParams = false, hideButtons=false,
                                     isView={isViewDoc}
                                     onAjouter={onAjouterDoc} 
                                     dossierPk={dossierPk}
+                                    dossier={dossier}
                                     />}       
             </>
             :

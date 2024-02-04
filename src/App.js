@@ -33,6 +33,7 @@ import OptionsTransports from './pages/Layouts/OptionsTransports';
 import OptionsEntrepots from './pages/Layouts/OptionsEntrepots';
 import OptionsFactures from './pages/Layouts/OptionsFactures';
 import OptionsDocuments from './pages/Layouts/OptionsDocuments';
+import OptionsFraudes from './pages/Layouts/OptionsFraudes';
 
 
 
@@ -79,6 +80,7 @@ const App = () => {
           <Route path="/options/entrepots" element={<OptionsEntrepots/>}/>
           <Route path="/options/factures" element={<OptionsFactures/>}/>
           <Route path="/options/documents" element={<OptionsDocuments/>}/>
+          <Route path="/options/fraudes" element={<OptionsFraudes/>}/>
         </Routes>
       </div>
     </Router>

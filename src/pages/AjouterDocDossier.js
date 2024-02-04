@@ -86,36 +86,41 @@ const AjouterDocDossier = ({ onClose,onAjouter,onFileUpload,onFileUploadClick,in
     };
 
   return (
-    <div className={styles.tab}>
-      <form onSubmit={handleSubmit}>
-        <h2>Ajout Document</h2>
-        <div className={styles.fields_area}>
-          <label className={labelStyles.labelontop}>Document
-            <Select className={labelStyles.extralarge} styles={colorStyles} options={listeDocs} value={selectedDoc} placeholder="Sélectionner un nom" onChange={(e) => handleDocumentSelection(e)} isSearchable={true}/>
-          </label>  
-          <div className={styles.many_fields}> 
-              <InputField display="labelontop" label="N° Document" size="average" type="text" value={numDocument} onChange={(e) => setNumDocument(e.target.value)} />
-              <InputField display="labelontop" label="Date Etablissement" size="belowaverage" type="text" value={date} onChange={(e) => setDate(e.target.value)} />
-              <InputField display="labelontop" label="Lieu Etablissement" size="average" type="text" value={lieu} onChange={(e) => setLieu(e.target.value)} />
+    <div className={styles.container}>
+      <div className={styles.tab}>
+        <div className={styles.tab2}>
+          <form onSubmit={handleSubmit}>
+            <h2>Ajout Document</h2>
+            <div className={styles.fields_area}>
+              <label className={labelStyles.labelontop}>Document
+                <Select className={labelStyles.extralarge} styles={colorStyles} options={listeDocs} value={selectedDoc} placeholder="Sélectionner un nom" onChange={(e) => handleDocumentSelection(e)} isSearchable={true}/>
+              </label>  
+              <div className={styles.many_fields}> 
+                  <InputField display="labelontop" label="N° Document" size="average" type="text" value={numDocument} onChange={(e) => setNumDocument(e.target.value)} />
+                  <InputField display="labelontop" label="Date Etablissement" size="belowaverage" placeholder="dd/mm/yyyy" type="text" value={date} onChange={(e) => setDate(e.target.value)} />
+                  <InputField display="labelontop" label="Lieu Etablissement" size="average" type="text" value={lieu} onChange={(e) => setLieu(e.target.value)} />
 
-          </div>
-        </div>
-        <span className={styles.buttonSpan}>
-            <button className={buttonStyles.primaryButtonY} type="submit" >Ajouter</button>
-            <button className={buttonStyles.primaryButtonB} type="button" onClick={onClose}>Fermer</button>
-            <span className={styles.attacherDocSpan}>
-              <input
-                style={{ display: "none" }}
-                accept=".pdf, .jpeg, .jpg, .png"
-                ref={inputFile}
-                onChange={onFileUpload}
-                type="file"
-              />
-              <button className={buttonStyles.attacherdocument} type="button" onClick={onFileUploadClick}>Attacher Documents</button>
+              </div>
+            </div>
+            <span className={styles.buttonSpan}>
+                <button className={buttonStyles.primaryButtonY} type="submit" >Ajouter</button>
+                <button className={buttonStyles.primaryButtonB} type="button" onClick={onClose}>Fermer</button>
+                <span className={styles.attacherDocSpan}>
+                  <input
+                    style={{ display: "none" }}
+                    accept=".pdf, .jpeg, .jpg, .png"
+                    ref={inputFile}
+                    onChange={onFileUpload}
+                    type="file"
+                  />
+                  <button className={buttonStyles.attacherdocument} type="button" onClick={onFileUploadClick}>Attacher Documents</button>
+                </span>
             </span>
-        </span>
-      </form>
+          </form>
+        </div>
+      </div>
     </div>
+
   );
 };
 

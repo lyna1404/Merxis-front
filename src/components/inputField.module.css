@@ -10,6 +10,19 @@
     gap:8px;
   }
 
+  .labelonright {
+    display: inline-flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    color: var(--dark-violet, #2E2F5B);
+    font-family: Montserrat;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    gap:16px;
+  }
+
   .labelonleft {
     display: inline-flex;
     flex-direction: row;

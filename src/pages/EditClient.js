@@ -242,12 +242,12 @@ return (
                 </div>
                 <div className={styles.cadreInputs}>
                     <span className={styles.lineOfInputs}>
-                        <InputField display="labelonleft" label="Raison Sociale en arabe" size="extralarge" type="text" value={rsArabe} onChange={(e) => setRSArabe(e.target.value)} />
-                        <InputField display="labelonleft" label="N° RC en arabe" size="average" type="text" value={rcArabe} onChange={(e) => setrcArabe(e.target.value)} />
+                        <InputField display="labelonleft" dir='rtl' label="Raison Sociale en arabe" size="extralarge" type="text" value={rsArabe} onChange={(e) => setRSArabe(e.target.value)} />
+                        <InputField display="labelonleft" dir='rtl' label="N° RC en arabe" size="average" type="text" value={rcArabe} onChange={(e) => setrcArabe(e.target.value)} />
                        
                     </span>
                     <span className={styles.lineOfInputs}>
-                        <InputField display="labelonleft" label="Adresse en arabe" size="extralarge" type="text" value={adresseArabe} onChange={(e) => setAdresseArabe(e.target.value)} />
+                        <InputField display="labelonleft" dir='rtl' label="Adresse en arabe" size="extralarge" type="text" value={adresseArabe} onChange={(e) => setAdresseArabe(e.target.value)} />
                     </span>
                     <div className={styles.horizontalLine}></div>
                 </div>
