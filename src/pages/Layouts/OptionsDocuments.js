@@ -138,7 +138,6 @@ function OptionsDocuments() {
 
       // Suppression d'un document
       const handleDeleteClick = (event) => {
-        console.log("delete");
         const rowId = event.target.closest('tr').id;
         setDocToDelete(rowId);
         setShowDialog(true);
@@ -147,13 +146,11 @@ function OptionsDocuments() {
       const handleDelete = () => {
         setShowDialog(false);
         setIsLoaded(false);
-        console.log("delete");
         axios
          .delete(`/api/types-document-dossier/${docToDelete}/`)
          .then(() => {
             setShowDialog(false);
             setIsLoaded(true);
-            console.log("successfully deleted");
             handleSuccess();
             setDocToDelete(null);
          })

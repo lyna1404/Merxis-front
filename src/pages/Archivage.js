@@ -104,7 +104,6 @@ function Archivage() {
 
   // Suppression de dossier
   const handleDeleteClick = (event) => {
-    console.log("delete");
     const rowId = event.target.closest('tr').id;
     setDossierToDelete(rowId);
     setShowDialog(true);
@@ -113,13 +112,11 @@ function Archivage() {
   const handleDeleteDossier = () => {
     setShowDialog(false);
     setIsLoaded(false);
-    console.log("delete");
     axios
      .delete(`/api/dossiers/${dossierTodelete}/`)
      .then(() => {
         setShowDialog(false);
         setIsLoaded(true);
-        console.log("successfully deleted");
         handleSuccess();
         setDossierToDelete(null);
      })

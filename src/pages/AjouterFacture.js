@@ -3,15 +3,13 @@ import React from 'react';
 import styles from './listeFacture.module.css';
 import buttonStyles from '../components/button.module.css';
 import AdvancedBreadcrumb from '../components/advancedBreadcrumb'
-import ReusableTable from '../components/reusableTable';
 import InputField from '../components/InputField';
 import labelStyles from "../components/inputField.module.css";
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import TabDeboursPrestation from './TabDeboursPrestation';
-import { reloadPage , handleFilterChange} from '../Utils/actionUtils';
+import { reloadPage} from '../Utils/actionUtils';
 import axios from 'axios';
-import {formatDateFromAPI,formatDateToAPI} from '../Utils/dateUtils';
+import {formatDateToAPI} from '../Utils/dateUtils';
 
 
 function AjouterFacture() {
@@ -105,7 +103,6 @@ function AjouterFacture() {
     const handleTypeFactChange = (event) => {
         const selectedType = event.target.value;
         setTypeFacture(selectedType)
-        console.log(selectedType)
         {selectedType.toString() === "Proforma" ? setDisableInput(true) : setDisableInput(false)}
         
     };
@@ -161,7 +158,6 @@ function AjouterFacture() {
             .then((response) => {
                 setIsLoaded(true);
                 const clientResponse = response.data;
-                console.log(clientResponse);
                 handleSuccess();
             })
             .catch((error) => {
@@ -200,7 +196,6 @@ function AjouterFacture() {
             .then((response) => {
                 setIsLoaded(true);
                 const clientResponse = response.data;
-                console.log(clientResponse);
                 handleSuccess();
             })
             .catch((error) => {

@@ -15,7 +15,7 @@ import ErrorMessage from '../components/errorMessage';
 import CustomMessage from '../components/customMessage';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import {formatDateFromAPI,formatDateHoursToAPI,formatDateToAPI} from '../Utils/dateUtils';
+import {formatDateFromAPI,formatDateToAPI} from '../Utils/dateUtils';
 import SuccessMessage from '../components/succesMessage';
 import TabEmballages from './TabEmballages';
 import Select from 'react-select';
@@ -56,16 +56,16 @@ function EditDossier() {
             fournisseur,numFactureFournisseur,dateFactureFournisseur,montantFactureFournisseur,
         monnaie,moyenTransport,compagnieTransport,numTitreTransport,nbrTC,natureMarchandise,typeTransportExterieur,lieuEntreposage,
         dateAcquitement,dateArrivee,dateMainLevee,dateEchange,dateDeclaration,dateVisiteDouane,dateLiquidation,dateRecevabiliteCheque,dateRetraitBonEnlever,dateLivraison,lieuLivraison,parcAVide,observation,nomDeclarant,numDeclaration } = dossierResponse;
-           setNumDossier(numDossier);
-            setSelectedRaisonSocial({value:client.client_pk,label:client.raisonSociale}); // client done
-            setClientPk(client.client_pk); 
-            setNomClient(client.raisonSociale);
+           setNumDossier(numDossier?numDossier:'');
+            setSelectedRaisonSocial({value:client?client.client_pk:null,label:client?client.raisonSociale:''}); // client done
+            setClientPk(client?client.client_pk:null); 
+            setNomClient(client?client.raisonSociale:'');
             setIsLoadedDossier(true);
             setEtatDossier(etatDossier);
             setNatureDossier(natureDossier);
             const dateHR2 = dateHeureReception.split(" ");
             setDateHR(dateHR2);
-            setDateHeureReception1(dateHR2[0]);
+            setDateHeureReception1(formatDateFromAPI(dateHR2[0]));
             setDateHeureReception2(dateHR2[1]);
             setSelectedRaisonSocialFournisseur({value:fournisseur.fournisseur_pk, label:fournisseur.raisonSociale}); // fournisseur done
             setFournisseurPk(fournisseur.fournisseurPk); 
@@ -131,14 +131,14 @@ function EditDossier() {
                 nbrColis,poidsBrut,poidsNet,
                 paysAchatVente,paysProvenance,modeLivraison,modeFinancement,typeOperation,
                 bureauEnregistrement} = declarationResponse;
-            setNbrColis(nbrColis);
-            setNumRep(numRepertoire);
-            setRegimePk(regime.regimeDouanier_pk);
-            setRegime1(regime.code);
-            setRegime2(regime.designation);
-            setRegime({value:regime.regimeDouanier_pk, label:regime.code}); //
-            setGros1(anneeGros);
-            setGros2(numGros);
+            setNbrColis(nbrColis?nbrColis:'');
+            setNumRep(numRepertoire?numRepertoire:'');
+            setRegimePk(regime?regime.regimeDouanier_pk:'');
+            setRegime1(regime?regime.code:'');
+            setRegime2(regime?regime.designation:'');
+            setRegime({value:regime?regime.regimeDouanier_pk:null, label:regime?regime.code:''}); //
+            setGros1(anneeGros?anneeGros:'');
+            setGros2(numGros?numGros:'');
             setIsLoadedDeclaration(true);
             setArticle(numArticle);
             setSG(sg);
@@ -408,11 +408,11 @@ function EditDossier() {
     const [nomClient, setNomClient] = useState([dossierData.client].raisonSociale || '');
     const [natureDossier, setNatureDossier] = useState(dossierData.natureDossier || '');
     const [etatDossier, setEtatDossier] = useState(dossierData.etatDossier || '');
-    const [dateHeureReception1, setDateHeureReception1] = useState(dateHR[0] || '');
-    const [dateHeureReception2, setDateHeureReception2] = useState(dateHR[1] || '');
+    const [dateHeureReception1, setDateHeureReception1] = useState('');
+    const [dateHeureReception2, setDateHeureReception2] = useState('');
     const [nomFournisseur, setNomFournisseur] = useState([dossierData.fournisseur].raisonSociale || '');
     const [numFactFournisseur, setNumFactFournisseur] = useState(dossierData.numFactureFournisseur|| '');
-    const [dateFactFournisseur, setDateFactFournisseur] = useState(dossierData.dateFactureFournisseur || '');
+    const [dateFactFournisseur, setDateFactFournisseur] = useState('');
     const [montantFactFournisseur, setMontantFactFournisseur] = useState(dossierData.montantFactureFournisseur || '');
     const [monnaie, setMonnaie] = useState([dossierData.monnaie].code || '');
     const [moyenTransport, setMoyenTransport] = useState([dossierData.moyenTransport].nom || '');
@@ -423,16 +423,16 @@ function EditDossier() {
     const [nbrEmb, setNbrEmb] = useState(dossierData.nbrTC || '');
     const [nbrColis, setNbrColis] = useState(declarationData.nbrColis || ''); 
     const [lieuEntreposage, setLieuEntreposage] = useState([dossierData.lieuEntreposage].nom || '');
-    const [dateArrivée, setDateArrivée] = useState(dossierData.dateArrivee || '');
-    const [dateMainLevée, setDateMainLevée] = useState(dossierData.dateMainLevee || '');
-    const [dateEchange, setDateEchange] = useState(dossierData.dateEchange || '');
-    const [dateDeclaration, setDateDeclaration] = useState(dossierData.dateDeclaration || '');
-    const [dateVisiteDouane, setDateVisiteDouane] = useState(dossierData.dateVisiteDouane || '');
-    const [dateLiquidation, setDateLiquidation] = useState(dossierData.dateLiquidation || '');
-    const [dateRecevCheque, setDateRecevCheque] = useState(dossierData.dateRecevabiliteCheque || '');
-    const [dateAcquittement, setDateAcquittement] = useState(dossierData.dateAcquitement || '');
-    const [dateRetraitBonEnlever, setDateRetraitBonEnlever] = useState(dossierData.dateRetraitBonEnlever || '');
-    const [dateLivraison, setDateLivraison] = useState(dossierData.dateLivraison || '');
+    const [dateArrivée, setDateArrivée] = useState('');
+    const [dateMainLevée, setDateMainLevée] = useState('');
+    const [dateEchange, setDateEchange] = useState('');
+    const [dateDeclaration, setDateDeclaration] = useState('');
+    const [dateVisiteDouane, setDateVisiteDouane] = useState('');
+    const [dateLiquidation, setDateLiquidation] = useState('');
+    const [dateRecevCheque, setDateRecevCheque] = useState('');
+    const [dateAcquittement, setDateAcquittement] = useState('');
+    const [dateRetraitBonEnlever, setDateRetraitBonEnlever] = useState('');
+    const [dateLivraison, setDateLivraison] = useState('');
     const [lieuLivraison, setLieuLivraison] = useState([dossierData.lieuLivraison].nom || '');
     const [parcAVide, setParcAVide] = useState([dossierData.parcAVide].nom || '');
     const [nomDeclarant, setNomDeclarant] = useState(dossierData.nomDeclarant || '');
@@ -507,7 +507,6 @@ function EditDossier() {
 
     // Suppression d'emballage
       const handleDeleteClick = (event) => {
-        console.log("delete");
         const rowId = event.target.closest('tr').id;
         setEmballageToDelete(rowId);
         setShowDialog(true);
@@ -521,7 +520,6 @@ function EditDossier() {
          .then(() => {
             setShowDialog(false);
             setIsLoadedEmballage(true);
-            console.log("successfully deleted");
             handleSuccess();
             setEmballageToDelete(null);
          })
@@ -620,8 +618,6 @@ function EditDossier() {
           poidsBrutDSTR: data.poidsBrutDSTR? data.poidsBrutDSTR : '',
           poidsNetDSTR: data.poidsNetDSTR? data.poidsNetDSTR : '',
         };
-
-        console.log("emballage to post",emballageDossier);
        
         const emballageDossierCreated =  axios.post(`/api/dossiers/${id}/emballages/`, JSON.stringify(emballageDossier), {
           headers: {
@@ -738,7 +734,7 @@ function EditDossier() {
         // Controle d'envoie du dossier et déclaration modifiés
         const handleModifierDossier = (async () => {
 
-            const dateHR = dateHeureReception1 + " " + dateHeureReception2;
+            const dateHR = formatDateToAPI(dateHeureReception1) + " " + dateHeureReception2;
 
             setIsLoadedDeclaration(false);
             const declaration = {
@@ -766,7 +762,7 @@ function EditDossier() {
               client: selectedRaisonSocial.value, // objet
               natureDossier: natureDossier,
               etatDossier: etatDossier,
-              dateHeureReception: dateHR ? formatDateHoursToAPI(dateHR) : null,
+              dateHeureReception: dateHR ? dateHR : null,
               fournisseur: selectedRaisonSocialFournisseur.value, //objet
               numFactureFournisseur: numFactFournisseur,
               dateFactureFournisseur: dateFactFournisseur ? formatDateToAPI(dateFactFournisseur) : null,
@@ -886,7 +882,7 @@ function EditDossier() {
             </div>
             <div className={styles.mainContent}>
             {!(isLoadedDossier && isLoadedDeclaration && isLoadedEmballage) ? ( // Conditional rendering based on the loading state
-            <div className={stylesLoader.loader_container}><span className={stylesLoader.loader}></span> {console.log(isLoadedDossier)}</div> // Replace with your loader component or CSS
+            <div className={stylesLoader.loader_container}><span className={stylesLoader.loader}></span></div> // Replace with your loader component or CSS
             ) : (
               <>
                 {activeTab === "tab3" ?     
@@ -1032,9 +1028,10 @@ function EditDossier() {
                                 </option>
                             ))}
                         </select>          
-                                   
-                        <InputField display="labelonleft" label="Date et heure réception" size="average" type="texte" value={dateHeureReception1} onChange={(e) => setDateHeureReception1(e.target.value)} />
-                        <InputField size="verysmall" type="texte" value={dateHeureReception2} onChange={(e) => setDateHeureReception2(e.target.value)} />
+                        <label className={labelStyles.labelonleft}>Date et heure réception
+                            <DatePicker className={labelStyles.average} selected={dateHeureReception1} onChange={(e) => setDateHeureReception1(e)} dateFormat="dd/MM/yyyy" placeholderText="Selectionner une date" />
+                            <InputField size="verysmall" type="texte" value={dateHeureReception2} onChange={(e) => setDateHeureReception2(e.target.value)} />
+                            </label>
                         <label className={labelStyles.labelonleft}>Nom fournisseur </label>
                         <Select className={labelStyles.average} styles={colorStyles} options={listeRaisonsSocialFournisseurs} value={selectedRaisonSocialFournisseur} placeholder="Sélectionner un nom" onChange={(e) => handleFournisseurSelection(e)} isSearchable={true}/>
                         <InputField display="labelonleft" label="N° fact. fournisseur" size="average" type="texte" value={numFactFournisseur} onChange={(e) => setNumFactFournisseur(e.target.value)} />

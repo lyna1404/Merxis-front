@@ -14,6 +14,8 @@ const displayNameMap = {
     ViewClient: "Détails Client",
     EditClient : "Modification Client",
     facturation: "Facturation",
+    detailsFactureProforma: "Affichage Facture Proforma",
+    EditFactureProforma: "Modification Facture Proforma",
     archivage: "Archivage",
     EditDossier: "Modification de dossier",
     ViewDossier: "Affichage de dossier",

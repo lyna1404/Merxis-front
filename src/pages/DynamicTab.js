@@ -23,14 +23,12 @@ const DynamicTab = ({tabs}) => {
 
 
   const [activeTab, setActiveTab] = useState(tabs[0].id);
-  console.log(activeTab)
   
   return (
     <div className={styles.container}>
         <div className={styles.sidebar}>
             <ul className={styles.ul}>
             {tabs.map(tab => {
-              {console.log(tab.title)}
                   <TabNavItem id={tab.id} title={tab.title} activeTab={activeTab} setActiveTab={setActiveTab}/>
           })}
            </ul>

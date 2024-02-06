@@ -4,18 +4,16 @@ import styles from './gestionClients.module.css';
 import buttonStyles from '../components/button.module.css';
 import filterStyles from '../components/tableFilter.module.css';
 import ReusableTable from '../components/reusableTable';
-import AutocompleteInput from '../components/autoCompleteInput';
 import AjoutVersement from './AjoutVersement';
-import { useParams, useNavigate} from 'react-router-dom';
+import { useParams} from 'react-router-dom';
 import axios from 'axios';
 import InputField from '../components/InputField';
 import ErrorMessage from '../components/errorMessage';
 import SuccessMessage from '../components/succesMessage';
-import { openPageBasedOnId , reloadPage , openPage , handleFilterChange} from '../Utils/actionUtils';
+import { reloadPage } from '../Utils/actionUtils';
 
 const DetailsClient = () => {
     const { id } = useParams();
-    console.log(id);
 
     const [errorMessages, setErrorMessages] = useState({});
     const [showError, setShowError] = useState(false);
@@ -34,8 +32,6 @@ const DetailsClient = () => {
           .then((responses) => {
             const clientResponse = responses[0].data;
             const versementsResponse = responses[1].data;
-            console.log(clientResponse);
-            console.log(versementsResponse);
             setSelectedClient(clientResponse);
             setPaymentAmount(clientResponse.sommeDue)
             setVersements(versementsResponse);
@@ -89,8 +85,6 @@ const DetailsClient = () => {
     
     //Controler l'ajout d'un versement 
     const handleAjouter = (data) => {
-        console.log("this is the sent data");
-        console.log(data);
         setIsLoaded(false);
         axios
             .post(`/api/clients/${id}/versements/`, JSON.stringify(data), {
@@ -101,7 +95,6 @@ const DetailsClient = () => {
             .then((response) => {
                 setIsLoaded(true);
                 const clientResponse = response.data;
-                console.log(clientResponse);
                 handleSuccess();
             })
             .catch((error) => {

@@ -3,7 +3,9 @@ import { useParams } from 'react-router-dom';
 import React from 'react';
 import styles from './listeFacture.module.css';
 import buttonStyles from '../components/button.module.css';
-import AdvancedBreadcrumb from '../components/advancedBreadcrumb'
+import AdvancedBreadcrumb from '../components/advancedBreadcrumb';
+import styles2 from './gestionClients.module.css';
+import { IconDelete } from '../components/icons';
 import ReusableTable from '../components/reusableTable';
 import InputField from '../components/InputField';
 import labelStyles from "../components/inputField.module.css";
@@ -11,20 +13,31 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import TabDeboursPrestation from './TabDeboursPrestation';
 import axios from 'axios';
-import { reloadPage , handleFilterChange} from '../Utils/actionUtils';
+import { reloadPage} from '../Utils/actionUtils';
 import ErrorMessage from '../components/errorMessage';
 import SuccessMessage from '../components/succesMessage';
+import CustomMessage from '../components/customMessage';
 import {formatDateFromAPI,formatDateToAPI} from '../Utils/dateUtils';
+import Select from 'react-select';
+
 
 function EditFactureProforma() {
 
     const { id } = useParams();
-    console.log(id);
-    
+
     const [errorMessages, setErrorMessages] = useState({});
     const [showError, setShowError] = useState(false);
     const [showSuccess, setShowSuccess] = useState(false);
     const [isLoaded, setIsLoaded] = useState(false);
+    const [showDialog, setShowDialog] = useState(false);
+    const [DebPresToDelete, setDebPresToDelete] = useState({});
+    const [typeDebPresToDelete, setTypeDebPresToDelete] = useState('');
+    const [isLoadedClient, setIsLoadedClient] = useState(false);
+    const [isLoadedMarchandise, setIsLoadedMarchandise] = useState(false);
+  
+
+    const [listeClients, setListeClients] = useState([]);
+    const [listeMarchandises, setListeMarchandises] = useState([]);
 
     const [facture, setFacture] = useState({});
     const [prestations, setPrestations] = useState({});
@@ -33,13 +46,16 @@ function EditFactureProforma() {
 
     const[debpres,setDebPres] = useState([])
 
+    const [raisonSociale, setRaisonSociale] = useState('');
+    const [clientPk, setClientPk] = useState(''); 
 
+    const [natureMarchandise, setNatureMarchandise] = useState(''); 
+    const [natureMarchandisePk, setNatureMarchandisePk] = useState(''); 
 
     const [numDossier, setNumDossier] = useState('');
     const [numFact, setNumFacture] = useState('');
     const [typeFacture, setTypeFacture] = useState("Proforma");  
     const [date, setDate] = useState('');
-    const [client, setClient] = useState('');
     
     const [nbrTc, setNbrTc] = useState('');
     const [poids, setPoids] = useState('');
@@ -47,7 +63,6 @@ function EditFactureProforma() {
     const [natureMarch, setNatureMarch] = useState('');
     const [tauxTVA, setTauxTVA] = useState('');
     const [montantTVA, setMontantTVA] = useState('');
-    const [totalTTC, setTotalTTC] = useState('');
     const [totalPresTTC, setTotalPresTTC] = useState('');
     const [totalPresDebours, setTotalPresDebours] = useState('');
     const [totalPres, setTotalPres] = useState('');
@@ -56,11 +71,121 @@ function EditFactureProforma() {
     const [totalPayement, setTotalPayement] = useState('');
     const [avance, setAvance] = useState('');
     const [netPayement, setNetPayement] = useState('');
-    
+    const [total_ttc, setTotalTTC] = useState('');
     const [modes, setModes] = useState([]);
     const [types, setTypes] = useState([]);
     const [typesPres, setTypesPres] = useState([]);
 
+    const listeRaisonsSociales = listeClients.map(({client_pk, raisonSociale}) => ({ ['value'] : client_pk, ['label']:raisonSociale}))
+    const [selectedRaisonSociale, setSelectedRaisonSociale] = useState({value: clientPk, label:raisonSociale});
+
+    const listeNaturesMarchandise = listeMarchandises.map(({natureMarchandise_pk, designation}) => ({ ['value'] : natureMarchandise_pk, ['label']:designation}))
+    const [selectedNatureMarchandise, setSelectedNatureMarchandise] = useState({value: natureMarchandisePk, label:natureMarchandise});
+
+
+    const handleDialogClose = () => {
+        setDebPresToDelete(null);
+        setShowDialog(false);
+      };
+
+      const handleDeleteClick = (event) => {
+        const rowId = event.target.closest('tr').id;
+        const rowType = event.target.closest('tr').firstChild.innerText;
+        setDebPresToDelete(rowId);
+        setTypeDebPresToDelete(rowType);
+        setShowDialog(true);
+      };
+
+      const handleDeletePres = () => {
+        setShowDialog(false);
+        setIsLoaded(false);
+        axios
+         .delete(`/api/factures-proforma/${id}/prestations/${DebPresToDelete}`)
+         .then(() => {
+            setShowDialog(false);
+            setIsLoaded(true);
+            handleSuccess();
+            setDebPresToDelete(null);
+         })
+         .catch((error) => {
+            setShowDialog(false);
+            setIsLoaded(true);
+            console.log('Delete request error:', error);
+            handleError(error.request.response);
+            setDebPresToDelete(null);
+         });
+      };
+
+      const handleDeleteDebours = () => {
+        setShowDialog(false);
+        setIsLoaded(false);
+        axios
+         .delete(`/api/factures-proforma/${id}/debours/${DebPresToDelete}`)
+         .then(() => {
+            setShowDialog(false);
+            setIsLoaded(true);
+            handleSuccess();
+            setDebPresToDelete(null);
+         })
+         .catch((error) => {
+            setShowDialog(false);
+            setIsLoaded(true);
+            console.log('Delete request error:', error);
+            handleError(error.request.response);
+            setDebPresToDelete(null);
+         });
+      };
+
+      const tableActions = [
+        <IconDelete key="delete" onClick={handleDeleteClick} />,
+      ];
+
+          // Récupération de la liste de dossiers
+    useEffect(() => {
+        
+      const clients = axios.get('/api/clients/');
+      const marchandises = axios.get('/api/natures-marchandise/')
+  
+      Promise.all([clients, marchandises])
+      .then((responses) => {
+
+      const clientsData = responses[0].data;
+      if (typeof clientsData === 'object' && clientsData !== null) {
+        const extractedClient = Object.values(clientsData).map(item => ({
+          client_pk: item.client_pk,
+          raisonSociale: item.raisonSociale,
+        }));
+      setListeClients(extractedClient);
+      setIsLoadedClient(true)
+      }
+      else {
+      console.error('Response data is not a JSON object:', clientsData);
+      handleError(clientsData);
+      setIsLoadedClient(true);
+    }
+
+    const marchandisesData = responses[1].data;
+    if (typeof marchandisesData === 'object' && marchandisesData !== null) {
+      const extractedMarchandise = Object.values(marchandisesData).map(item => ({
+        natureMarchandise_pk: item.natureMarchandise_pk,
+        designation: item.designation,
+      }));
+    setListeMarchandises(extractedMarchandise);
+    setIsLoadedMarchandise(true)
+    }
+    else {
+    console.error('Response data is not a JSON object:', marchandisesData);
+    handleError(marchandisesData);
+    setListeMarchandises(true);
+  }
+
+      })
+      .catch((error) => {
+        console.log('Error:', error);
+        handleError(error.request.response);
+  
+      });
+  }, []);
 
     useEffect(() => {
         // Create axios requests for both data fetching
@@ -86,15 +211,6 @@ function EditFactureProforma() {
             const TypesDebours = responses[4].data;
             const modesData = responses[5].data;
             const typesPres = responses[6].data;
-
-
-            console.log(FactureResponse);
-            console.log(deboursResponse);
-            console.log(PrestationResponse);
-            console.log(calculsResponse);
-            console.log(modesData);
-            console.log(TypesDebours);
-            console.log(typesPres);
 
 
             if (typeof deboursResponse === 'object' && deboursResponse !== null && typeof PrestationResponse === 'object' && PrestationResponse !== null) {
@@ -127,28 +243,28 @@ function EditFactureProforma() {
                 value: type.typeDebours_pk,
                 label: type.designation
             }));
-            console.log(extractedTypes);
             setTypes(extractedTypes);
             const extractedTypesPres = typesPres.map(type => ({
                 id: type.typePrestation_pk,
                 value: type.typePrestation_pk,
                 label: type.designation
             }));
-            console.log(extractedTypesPres);
             setTypesPres(extractedTypesPres);
             setFacture(FactureResponse);
             setCalculs(calculsResponse);
             setNumFacture(FactureResponse.numFacture);
-            setDate(new Date(FactureResponse.date));
-            setClient(FactureResponse.client.raisonSociale);
+            setDate(FactureResponse.date?formatDateFromAPI(FactureResponse.date):null);
+            setClientPk(FactureResponse.client?FactureResponse.client.client_pk:null);
+            setSelectedRaisonSociale({value: FactureResponse.client?FactureResponse.client.client_pk:null, label:FactureResponse.client?FactureResponse.client.raisonSociale:""});
             setNbrColis(FactureResponse.nbrColis);
-            setNatureMarch(FactureResponse.natureMarchandise);
+            setNatureMarchandisePk(FactureResponse.natureMarchandise?FactureResponse.natureMarchandise.natureMarchandise_pk:null);
+            setSelectedNatureMarchandise({value:FactureResponse.natureMarchandise?FactureResponse.natureMarchandise.natureMarchandise_pk:null, label:FactureResponse.natureMarchandise?FactureResponse.natureMarchandise.designation:""});
             setTotalDebours(calculsResponse.total_debours);
             setTotalPres(calculsResponse.total_prestations);
             setTotalPresDebours(calculsResponse.total_prestation_debours);
             setMontantTVA(calculsResponse.montant_TVA);
-            setTotalTTC(FactureResponse.total_TTC);
             setTotalPresTTC(calculsResponse.total_prestation_TTC);
+            setTotalTTC(FactureResponse.total_TTC);
             setTauxTVA(FactureResponse.taux_tva)
             setTotalDebours(calculsResponse.total_debours);
             setTotalPres(calculsResponse.total_prestation);
@@ -164,7 +280,7 @@ function EditFactureProforma() {
       }, [id]); // Add 'id' as a dependency
 
     //entete du tableau des debours
-    const headers = ['Type', 'Debours/Prestation', 'Montant'];
+    const headers = ['Type', 'Debours/Prestation', 'Montant', 'Action à faire'];
 
 
     const [disableInput, setDisableInput] = useState(false);
@@ -217,8 +333,6 @@ function EditFactureProforma() {
       };
     
     const handleAjouterDeb = (data) => {
-        console.log("this is the sent data");
-        console.log(data);
         setIsLoaded(false);
         axios
             .post(`/api/factures-proforma/${id}/debours/`, JSON.stringify(data), {
@@ -229,7 +343,6 @@ function EditFactureProforma() {
             .then((response) => {
                 setIsLoaded(true);
                 const clientResponse = response.data;
-                console.log(clientResponse);
                 handleSuccess();
             })
             .catch((error) => {
@@ -240,8 +353,6 @@ function EditFactureProforma() {
     };
     
     const handleAjouterPres = (data) => {
-        console.log("this is the sent data");
-        console.log(data);
         setIsLoaded(false);
         axios
             .post(`/api/factures-proforma/${id}/prestations/`, JSON.stringify(data), {
@@ -252,7 +363,6 @@ function EditFactureProforma() {
             .then((response) => {
                 setIsLoaded(true);
                 const clientResponse = response.data;
-                console.log(clientResponse);
                 handleSuccess();
             })
             .catch((error) => {
@@ -268,15 +378,14 @@ function EditFactureProforma() {
             numFacture : numFact,
             date : date ? formatDateToAPI(date) : null,
             taux_tva : tauxTVA,
-            natureMarchandise : natureMarch,
+            natureMarchandise : natureMarchandisePk,
             nbrTC : nbrTc,
             nbrColis : nbrColis,
             poids : poids,
-            total_TTC : totalTTC,
-            client : facture.client.client_pk
+            client : clientPk,
+            total_TTC: totalPresDebours,
         };
         
-        console.log(fact);
         axios
         .put(`/api/factures-proforma/${id}/`, fact, {
         headers: {
@@ -292,14 +401,63 @@ function EditFactureProforma() {
         });
     };
 
+    const handleMarchandiseSelection = (searchTerm) => {
+      setSelectedNatureMarchandise(searchTerm);
+      setNatureMarchandise(searchTerm.label);
+      setNatureMarchandisePk(searchTerm.value);
+    };
+
+    const handleClientSelection = (searchTerm) => {
+      setSelectedRaisonSociale(searchTerm);
+      setRaisonSociale(searchTerm.label);
+      setClientPk(searchTerm.value); 
+  };
+
+    // Styling des searchable dropdown de react-select
+    const colorStyles = {
+          
+      control : styles => ({...styles, backgroundColor:'white',border:'none','box-shadow':'none', fontFamily:'Montserrat'}),
+      option: (styles, {isFocused, isSelected}) => ({
+        ...styles,
+        backgroundColor: isFocused? '#e4e1e1' : isSelected? '#a3a7d8' : 'white',
+        fontFamily: 'Montserrat',
+      }),
+      singleValue : styles => ({...styles, color:'black', fontFamily:'Montserrat', fontSize:'16px'})
+    };
+
+    const handlePrint = () =>{
+      axios.get(`/api/factures-proforma/${id}/pdf/`, { responseType: 'blob'})
+
+      .then((response) => {
+          const facturePDF = response.data;
+          const file = new Blob(
+            [response.data], 
+            {type: 'application/pdf'});
+
+          const pdfURL = URL.createObjectURL(file);
+          window.open(pdfURL)
+          
+      })
+      .catch((error) => {
+          console.log('Error:', error);
+  
+          if (error.response) {
+            console.log('Status Code:', error.response.status);
+            console.log('Response Data:', error.response.data);
+          }       
+        })
+  }
+
     return (
         <>
-            <AdvancedBreadcrumb numDossier={numDossier} />
+            <AdvancedBreadcrumb numDossier={numDossier} hideButtons={true} hideDocs={true} hidePrintable={false} onPrint={handlePrint}/>
+            {!(isLoaded && isLoadedClient && isLoadedMarchandise) ? ( // Conditional rendering based on the loading state
+            <div className={styles2.loader_container}><span className={styles2.loader}></span></div> // Replace with your loader component or CSS
+            ) : (
             <div className={styles.main_grid}>
                 <span className={styles.info_grid}>
                     <div className={styles.label_wrapper}>
                                         <label className={styles.info_field}>
-                                            <label className={labelStyles.labelonleft}>Type Facture</label>
                                                 <InputField 
                                                         display="labelonleft" 
                                                         label="Type Facture" 
@@ -320,26 +478,19 @@ function EditFactureProforma() {
                                             />
                                             </label>
                                             <label className={styles.info_field}>
-                                                <label className={labelStyles.labelonleft}>Date</label>
+                                                <label className={labelStyles.labelonleft}>Date
                                                 <DatePicker selected={date} onChange={(e) => setDate(e)} dateFormat="dd/MM/yyyy" placeholderText="Selectionner une date" />
+                                                </label>
                                             </label>
                                             <label className={styles.info_field}>
-                                                    <InputField 
-                                                            display="labelonleft" 
-                                                            label="Nom Client" 
-                                                            size="average" 
-                                                            type="text" 
-                                                            value={client} 
-                                                            readOnly={true}
-                                                            />
+                                              <label className={labelStyles.labelonleft}>Client
+                                                <Select className={labelStyles.overaverage} styles={colorStyles} options={listeRaisonsSociales} value={selectedRaisonSociale} placeholder="Sélectionner un client" onChange={(e) => handleClientSelection(e)} isSearchable={true}/>
+                                              </label>
                                             </label>
-                                            <label className={styles.info_field}><InputField className={styles.info_field} display="labelonleft" 
-                                                        label="Nature Marchandise" 
-                                                        size="average" 
-                                                        type="text" 
-                                                        value={natureMarch} 
-                                                        onChange={(e) => setNatureMarch(e.target.value)} 
-                                                />
+                                            <label className={styles.info_field}>
+                                              <label className={labelStyles.labelonleft}>Nature Marchandise
+                                                  <Select className={labelStyles.large} styles={colorStyles} options={listeNaturesMarchandise} value={selectedNatureMarchandise} placeholder="Sélectionner une nature marchandise" onChange={(e) => handleMarchandiseSelection(e)} isSearchable={true}/>
+                                              </label>
                                             </label>
                                             <label className={styles.info_field}><InputField className={styles.info_field} display="labelonleft" 
                                                     label="Nbr TC" 
@@ -369,20 +520,23 @@ function EditFactureProforma() {
                     <div className={styles.horizontalLine}></div>
                 </span>
                 <span className={styles.table_grid}>
-                    <ReusableTable data={debpres} headers={headers} itemsPerPage={5} addlink={false}/> 
+                    <ReusableTable data={debpres} headers={headers} itemsPerPage={5} addlink={false} addactions={true} actionIcons={tableActions}/> 
+                    {showDialog && <CustomMessage onClose={handleDialogClose} onConfirm={typeDebPresToDelete==='Debours'?handleDeleteDebours:handleDeletePres} message={"Souhaitez-vous vraiment supprimer ce debours/prestation ?"} />}
+                    {showSuccess && <SuccessMessage onClose={handleSuccessClose} />}
+           
                     <span className={styles.container}>
                         <label className={styles.label_style}>Total</label>
-                        <input className={styles.input}
+                        <input className={styles.total}
                             value={totalPresDebours}
                             onChange={(e) => setTotalPresDebours(e.target.value)} 
                             />
                         <label className={styles.label_style}>Total Debours</label>
-                        <input className={styles.input}
+                        <input className={styles.total}
                             value={totalDebours}
                             onChange={(e) => setTotalDebours(e.target.value)} 
                         />
                         <label className={styles.label_style}>Total Prestations</label>
-                        <input className={styles.input}
+                        <input className={styles.total}
                             value={totalPres}
                             onChange={(e) => setTotalPres(e.target.value)} 
                             />
@@ -428,16 +582,6 @@ function EditFactureProforma() {
                     <label className={styles.info_field}>
                         <InputField 
                                 display="labelontop" 
-                                label="Total TTC" 
-                                size="small" 
-                                type="number" 
-                                value={totalTTC}
-                                readOnly={true}
-                        />
-                    </label>
-                    <label className={styles.info_field}>
-                        <InputField 
-                                display="labelontop" 
                                 label="Total prestation TTC" 
                                 size="overaverage" 
                                 type="number" 
@@ -455,14 +599,19 @@ function EditFactureProforma() {
                                 readOnly={true}
                                 />
                     </label>
-                    
-                    
-                    <div className={styles.footerSpace}></div>
+   
             </span>
-            </div>
+
+
+            </div>  
+                   )}
+            <div className={styles.footerSpace}></div>    
+
             {showError && <ErrorMessage onClose={handleErrorClose} errors={errorMessages} />}
             {showSuccess && <SuccessMessage onClose={handleSuccessClose} />}
+                
         </>
+        
     );
 }
 

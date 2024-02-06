@@ -11,8 +11,8 @@ import ErrorMessage from '../../components/errorMessage';
 import CustomMessage from '../../components/customMessage';
 import SuccessMessage from '../../components/succesMessage';
 import axios from 'axios';
-import { reloadPage , handleFilterChange, openPageBasedOnId} from '../../Utils/actionUtils';
-import { useState, useEffect, useRef } from 'react';
+import { reloadPage , handleFilterChange} from '../../Utils/actionUtils';
+import { useState, useEffect } from 'react';
 import { IconDelete, IconEdit } from '../../components/icons';
 import TabBureaux from './Tabs/TabBureaux'
 import TabRegimes from './Tabs/TabRegimes';
@@ -353,9 +353,7 @@ function OptionsBureaux() {
     
       // Suppression d'un bureau
       const handleBureauDeleteClick = (event) => {
-        console.log("delete toggled");
         const rowId = event.target.closest('tr').id;
-        console.log("rowID", rowId)
         setBureauToDelete(rowId);
         setShowBureauxDialog(true);
       };
@@ -368,7 +366,6 @@ function OptionsBureaux() {
          .then(() => {
             setShowBureauxDialog(false);
             setIsLoadedBureaux(true);
-            console.log("successfully deleted");
             handleBureauxSuccess();
             setBureauToDelete(null);
          })
@@ -383,9 +380,7 @@ function OptionsBureaux() {
 
       // Suppression d'un regime
       const handleRegimeDeleteClick = (event) => {
-        console.log("delete toggled");
         const rowId = event.target.closest('tr').id;
-        console.log("rowID", rowId)
         setRegimeToDelete(rowId);
         setShowRegimesDialog(true);
       };
@@ -398,7 +393,6 @@ function OptionsBureaux() {
          .then(() => {
             setShowRegimesDialog(false);
             setIsLoadedRegimes(true);
-            console.log("successfully deleted");
             handleRegimesSuccess();
             setRegimeToDelete(null);
          })

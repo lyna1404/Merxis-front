@@ -51,7 +51,6 @@ const NouveauClient = () => {
            .get('/api/statuts-juridiques')
            .then((response) => {
               const statuts = response.data;
-              console.log(response.data);
               setListeSJ(statuts.results);
               setIsLoaded(true);
     
@@ -118,9 +117,7 @@ const NouveauClient = () => {
             adresseArabe: adresseArabe,
             numRCArabe: rcArabe
         };
-        
-        console.log(client);
-        
+                
         axios
             .post('/api/clients/', JSON.stringify(client), {
                 headers: {
@@ -130,7 +127,6 @@ const NouveauClient = () => {
             .then((response) => {
                 setIsLoaded(true);
                 const clientResponse = response.data;
-                console.log(clientResponse);
                 handleSuccess();
             })
             .catch((error) => {

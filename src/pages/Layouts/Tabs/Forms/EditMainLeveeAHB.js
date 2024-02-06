@@ -32,7 +32,6 @@ function EditMainLeveeAHB({id, dossier, declaration, onAjouter, onClose}) {
 
         .then((response) => {
             const docData = response.data;
-            console.log("dml bureau reçu", docData);
             setDateArrivee(docData.dateArrivee);
             setNumLTA(docData.numLTA);
             setNumSousLTA(docData.sousLTA);

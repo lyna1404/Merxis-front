@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import React from 'react';
 import styles from './listeBordereau.module.css';
@@ -17,7 +17,6 @@ function ViewBordereau() {
 
     const [bordereauData, setBordereauData] = useState({});
     const [documentData, setDocumentData] = useState();
-    console.log(documentData)
     const [errorMessages, setErrorMessages] = useState({});
     const [showError, setShowError] = useState(false);
     const [isLoaded, setIsLoaded] = useState(false);    
@@ -74,7 +73,6 @@ function ViewBordereau() {
     
           .then((response) => {
             const documentsData = response.data;
-            console.log("data",response.data)
             if (typeof documentsData === 'object' && documentsData !== null) {
                 const extractedDocs= Object.values(documentsData).map(item => ({
                   id: item.documentBordereau_pk,

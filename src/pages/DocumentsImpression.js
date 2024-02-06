@@ -7,10 +7,8 @@ import DocumentsTable from '../components/documentsTable'
 import {IconPrint, IconEdit} from '../components/icons';
 import SuccessMessage from '../components/succesMessage';
 import ErrorMessage from '../components/errorMessage';
-import CustomMessage from '../components/customMessage';
 import {reloadPage} from '../Utils/actionUtils';
 import EditDocImpressions from './EditDocImpressions';
-import { Document, Page } from 'react-pdf';
 
 function DocumentsImpression({onClose,onAjouter,dossierPk,dossier,declaration}) {
   
@@ -87,14 +85,12 @@ function DocumentsImpression({onClose,onAjouter,dossierPk,dossier,declaration}) 
     };
 
     const handleEditclick = (event) => {
-        console.log("edit");
         const rowId = event.target.closest('tr').id;
         setDocToEdit(rowId);
         setShowForm(true);
     }
 
     const handlePrintclick = (event) => {
-      console.log("print");
       const rowId = event.target.closest('tr').id;
       { rowId==1?
           axios.get(`/api/dossiers/${dossierPk}/bulletin-scanner/pdf/`, { responseType: 'blob'})
@@ -126,7 +122,6 @@ function DocumentsImpression({onClose,onAjouter,dossierPk,dossier,declaration}) 
   
           .then((response) => {
               const d41PDF = response.data;
-              console.log("resp", d41PDF)
               const file = new Blob(
                 [response.data], 
                 {type: 'application/pdf'});
@@ -298,7 +293,6 @@ function DocumentsImpression({onClose,onAjouter,dossierPk,dossier,declaration}) 
     
           .then((response) => {
             const documentsData = response.data;
-            console.log("data",response.data)
             if (typeof documentsData === 'object' && documentsData !== null) {
                 const extractedDocs= Object.values(documentsData).map(item => ({
                   id: item.documentDossier_pk,

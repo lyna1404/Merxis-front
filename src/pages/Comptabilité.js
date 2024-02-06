@@ -9,7 +9,7 @@ import TableFilter from '../components/tableFilter';
 import axios from 'axios';
 import ErrorMessage from '../components/errorMessage';
 import {IconView} from '../components/icons';
-import { openPageBasedOnId , reloadPage , openPage , handleFilterChange} from '../Utils/actionUtils';
+import { openPageBasedOnId , reloadPage , handleFilterChange} from '../Utils/actionUtils';
 
 
 const headers = ['N° Dossier', 'N° Rep', 'Regime douanier', 'Client', 'Nature marchandise', 'Statut dossier', 'Action'];
@@ -47,8 +47,7 @@ function Comptabilite() {
       .then((responses) => {
         const dossiersData = responses[0].data;
         const etatsData = responses[1].data;
-        console.log(dossiersData);
-        console.log(etatsData);
+
         if (typeof dossiersData === 'object' && dossiersData !== null) {
           const extractedDossiers = Object.values(dossiersData).map(item => ({
             id: item.dossier_pk,
@@ -59,14 +58,12 @@ function Comptabilite() {
             natureMarch: item.natureMarchandise ? (item.natureMarchandise.designation ? item.natureMarchandise.designation : null) : null,
             statutDossier: item.etatDossier
           }));
-          console.log(extractedDossiers);
           setDossiers(extractedDossiers);
           setFilteredData(extractedDossiers);
           const extractedEtats = etatsData.results.map(status => ({
             value: status,
             label: status
           }));
-          console.log(extractedEtats);
           setEtats(extractedEtats);
           setIsLoaded(true);
         } else {

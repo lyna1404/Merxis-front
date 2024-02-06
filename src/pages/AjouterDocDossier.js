@@ -22,7 +22,6 @@ const AjouterDocDossier = ({ onClose,onAjouter,onFileUpload,onFileUploadClick,in
     
     const listeDocs = docs.map(({typeDocumentDossier_pk, designation}) => ({ ['value'] : typeDocumentDossier_pk, ['label']:designation}))
 
-  console.log(docs);
   const [errorMessages, setErrorMessages] = useState();
   const [showError, setShowError] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);

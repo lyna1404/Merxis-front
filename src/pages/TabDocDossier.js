@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import AjouterDocDossier from "./AjouterDocDossier";
 import styles from './popupForm.module.css'
 import TabNavItem from "../components/tabNavItem";
 import TabContent from "../components/tabContent";
@@ -18,7 +17,6 @@ const TabDocDossier = ({onClose, isView=false, onAjouter, onFileUpload, onFileUp
   const [showError, setShowError] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
 
-  console.log(activeTab)
 
   const handleSuccess = () => {
     setShowSuccess(true);

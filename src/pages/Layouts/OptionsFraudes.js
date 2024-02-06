@@ -336,7 +336,6 @@ function OptionsFraudes() {
 
       // Suppression d'un Inspections
       const handleInspectionsDeleteClick = (event) => {
-        console.log("delete toggled");
         const rowId = event.target.closest('tr').id;
         setInspectionsToDelete(rowId);
         setShowInspectionsDialog(true);
@@ -350,7 +349,6 @@ function OptionsFraudes() {
          .then(() => {
             setShowInspectionsDialog(false);
             setIsLoadedInspections(true);
-            console.log("successfully deleted");
             handleInspectionsSuccess();
             setInspectionsToDelete(null);
          })
@@ -365,7 +363,6 @@ function OptionsFraudes() {
 
       // Suppression d'un Arrivees
       const handleArriveesDeleteClick = (event) => {
-        console.log("delete toggled");
         const rowId = event.target.closest('tr').id;
         setArriveesToDelete(rowId);
         setShowArriveesDialog(true);
@@ -379,7 +376,6 @@ function OptionsFraudes() {
          .then(() => {
             setShowArriveesDialog(false);
             setIsLoadedArrivees(true);
-            console.log("successfully deleted");
             handleArriveesSuccess();
             setArriveesToDelete(null);
          })

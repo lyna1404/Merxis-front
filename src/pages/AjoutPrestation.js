@@ -22,7 +22,6 @@ const AjoutPrestation = ({ onClose,onAjouter,onFileUpload,onFileUploadClick,inpu
       setSelectedPres({ value: selectedPresKey, label: selectedOption ? selectedOption.label : '' });
       setpresPk(selectedPresKey);
       setPrestation(selectedPresKey)
-      console.log(selectedPresKey);
     };
     const handleSubmit = (event) => {
         event.preventDefault();

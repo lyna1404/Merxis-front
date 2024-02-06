@@ -7,9 +7,7 @@ import AjouterBordereau from "./AjouterBordereau";
 const TabBoredereau = ({onClose, onAjouter, listeDossiers, isLoaded, onFileUpload, onFileUploadClick,inputFile}) => {
 
 
-  const [activeTab, setActiveTab] = useState("tab1");
-  console.log(activeTab)
-  
+  const [activeTab, setActiveTab] = useState("tab1");  
   return (
     <div className={styles.container}>
         <div className={styles.sidebar}>

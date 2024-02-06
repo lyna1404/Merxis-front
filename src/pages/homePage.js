@@ -9,7 +9,6 @@ const HomePage = () => {
     <div className={styles.homePage}> {/* Use the CSS module class */}
       <div className={styles.sectionButtons}> {/* Use the CSS module class */}
         <Link to="/archivage" className={styles.button}>Archivage</Link>
-        <Link to="/declaration" className={styles.button}>Déclaration</Link>
         <Link to="/comptabilite" className={styles.button}>Comptabilité</Link>
         <Link to="/facturation" className={styles.button}>Facturation</Link>
         <Link to="/gestionClients" className={styles.button} name = 'Gestion des clients'>Gestion des clients</Link>

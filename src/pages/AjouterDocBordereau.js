@@ -25,7 +25,6 @@ const AjouterDocBordereau = ({ onClose,onAjouter,onFileUpload,onFileUploadClick,
     
     const listeDocs = docs.map(({documentDossier_pk, typeDocument}) => ({ ['value'] : documentDossier_pk, ['label']:typeDocument.designation}))
 
-  console.log(docs);
     const [errorMessages, setErrorMessages] = useState();
     const [showError, setShowError] = useState(false);
     const [showSuccess, setShowSuccess] = useState(false);

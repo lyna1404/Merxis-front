@@ -122,7 +122,6 @@ const handleSuccess = () => {
   const handleSJChange = (event) => {
     const selectedSJ = event.target.value;
     setSJ(selectedSJ);
-    console.log(statutJuridique);
   };
 
 const handleModifierClient = () => {
@@ -155,7 +154,6 @@ const handleModifierClient = () => {
         numRCArabe: rcArabe
     };
     
-    console.log(client);
     axios
     .put(`/api/clients/${id}/`, client, {
     headers: {

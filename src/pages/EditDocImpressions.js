@@ -59,7 +59,6 @@ function EditDocImpressions({id, dossier, declaration, onAjouter, onClose}) {
             emballages: data.emballages
           }
 
-          console.log("to put", bs)
           const bsEdited =  axios.put(`/api/dossiers/${dossier.dossier_pk}/bulletin-scanner/`, JSON.stringify(bs), {
             headers: {
               'Content-Type': 'application/json',
@@ -92,7 +91,6 @@ function EditDocImpressions({id, dossier, declaration, onAjouter, onClose}) {
             date: data.date,
           }
 
-          console.log("to put", d41)
           const d41Edited =  axios.put(`/api/dossiers/${dossier.dossier_pk}/d41/`, JSON.stringify(d41), {
             headers: {
               'Content-Type': 'application/json',
@@ -119,7 +117,6 @@ function EditDocImpressions({id, dossier, declaration, onAjouter, onClose}) {
               numBadge: data.numBadge,
             }
   
-            console.log("to put", dmlAHB)
             const dmlAHBEdited =  axios.put(`/api/dossiers/${dossier.dossier_pk}/demande-main-levee-ahb/`, JSON.stringify(dmlAHB), {
               headers: {
                 'Content-Type': 'application/json',
@@ -149,7 +146,6 @@ function EditDocImpressions({id, dossier, declaration, onAjouter, onClose}) {
             date: data.date,
           }
 
-          console.log("to put", dmlBureau)
           const dmlBureauEdited =  axios.put(`/api/dossiers/${dossier.dossier_pk}/demande-main-levee-bureau/`, JSON.stringify(dmlBureau), {
             headers: {
               'Content-Type': 'application/json',
@@ -188,7 +184,6 @@ function EditDocImpressions({id, dossier, declaration, onAjouter, onClose}) {
             date: data.date
           }
 
-          console.log("to put", e1030Bureau)
           const e1030BureauEdited =  axios.put(`/api/dossiers/${dossier.dossier_pk}/engagement-1030/`, JSON.stringify(e1030Bureau), {
             headers: {
               'Content-Type': 'application/json',
@@ -247,7 +242,6 @@ function EditDocImpressions({id, dossier, declaration, onAjouter, onClose}) {
           "تاريخ_الوصول": data.dateArrivee
           }
 
-          console.log("to put", fraude)
           const fraudeEdited =  axios.put(`/api/dossiers/${dossier.dossier_pk}/fraude/`, JSON.stringify(fraude), {
             headers: {
               'Content-Type': 'application/json',
@@ -283,7 +277,6 @@ function EditDocImpressions({id, dossier, declaration, onAjouter, onClose}) {
             verbe: data.verbe
           }
 
-          console.log("to put", onml)
           const onmlEdited =  axios.put(`/api/dossiers/${dossier.dossier_pk}/onml/`, JSON.stringify(onml), {
             headers: {
               'Content-Type': 'application/json',

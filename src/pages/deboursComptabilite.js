@@ -8,7 +8,6 @@ import buttonStyles from '../components/button.module.css';
 import AdvancedBreadcrumb from '../components/advancedBreadcrumb'
 import ReusableTable from '../components/reusableTable';
 import TableFilter from '../components/tableFilter';
-import AjoutDebours from './AjoutDebours';
 import { reloadPage , handleFilterChange} from '../Utils/actionUtils';
 import ErrorMessage from '../components/errorMessage';
 import SuccessMessage from '../components/succesMessage';
@@ -22,7 +21,6 @@ import TabDebours from './TabDebours';
 function DeboursComptabilite() { 
     useEffect(() => {
         // Create axios requests for both data fetching
-        console.log(id)
         const debours = axios.get(`/api/dossiers/${id}/debours/`); 
         const modes = axios.get(`/api/modes-paiement-debours/`);
         const dossier = axios.get(`/api/dossiers/${id}/`); 
@@ -34,10 +32,7 @@ function DeboursComptabilite() {
             const modesData = responses[1].data;
             const dossierData = responses[2].data;
             const typesData = responses[3].data;
-            console.log(deboursData);
-            console.log(modesData);
-            console.log(dossierData);
-            console.log(typesData);
+
             if (typeof deboursData === 'object' && deboursData !== null) {
               const extractedDebours = Object.values(deboursData).map(item => ({
                 id: item.debours_pk,
@@ -45,7 +40,6 @@ function DeboursComptabilite() {
                 mode: item.modePaiment,
                 mont: item.montant
               }));
-              console.log(extractedDebours);
               setDebours(extractedDebours);
               setFilteredData(extractedDebours);
               setDossier(dossierData);
@@ -59,14 +53,12 @@ function DeboursComptabilite() {
                 value: status,
                 label: status
               }));
-              console.log(extractedModes);
               setModes(extractedModes);
               const extractedTypes = typesData.map(type => ({
                 id: type.typeDebours_pk,
                 value: type.typeDebours_pk,
                 label: type.designation
               }));
-              console.log(extractedTypes);
               setTypes(extractedTypes);
               setIsLoaded(true);
             } else {
@@ -88,7 +80,7 @@ function DeboursComptabilite() {
       }, []);     
     //Recuperer le numero dossier choisie
     const { id } = useParams();
-    console.log(id);
+
     //Trouver le numero du dossier à partir de la liste des dossies existants
     const [errorMessages, setErrorMessages] = useState({});
     const [showError, setShowError] = useState(false);
@@ -156,8 +148,7 @@ function DeboursComptabilite() {
     
     //Controler l'ajout d'un debours 
     const handleAjouter = (data) => {
-      console.log("this is the sent data");
-      console.log(data);
+
       setIsLoaded(false);
       axios
           .post(`/api/dossiers/${id}/debours/`, JSON.stringify(data), {
@@ -168,7 +159,6 @@ function DeboursComptabilite() {
           .then((response) => {
               setIsLoaded(true);
               const clientResponse = response.data;
-              console.log(clientResponse);
               handleSuccess();
           })
           .catch((error) => {

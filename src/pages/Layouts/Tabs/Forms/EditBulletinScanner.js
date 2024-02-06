@@ -17,7 +17,6 @@ function EditBulletinScanner({id, dossier, declaration, onAjouter, onClose}) {
     const [inspecteur, setInspecteur] = useState('');
     const [service, setService] = useState('');
     const [emballages, setEmballages] = useState();
-    console.log(emballages)
     const [numDeclaration, setNumDeclaration] = useState('');
     const [dateDeclaration,setDateDeclaration] = useState('');
     const [natureMarchandisePk, setNatureMarchandisePk] = useState(dossier.natureMarchandise?dossier.natureMarchandise.natureMarchandise_pk:'');
@@ -59,7 +58,6 @@ function EditBulletinScanner({id, dossier, declaration, onAjouter, onClose}) {
             setIsLoadedEmb(true);
           }
           const docData = responses[1].data;
-            console.log("bs reçu", docData);
             setNatureMarchandise(docData.natureMarchandise);
             setNumDeclaration(docData.numDeclaration);
             setDateDeclaration(docData.dateDeclaration);

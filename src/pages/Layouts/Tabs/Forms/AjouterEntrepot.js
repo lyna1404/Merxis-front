@@ -17,7 +17,6 @@ const AjouterEntrepot = ({ onClose,onAjouter}) => {
     const [type, setType] = useState('');
     const [listeTypesEntrepots, setListeTypesEntrepots] = useState([]);
 
-    console.log(listeTypesEntrepots)
 
     const [errorMessages, setErrorMessages] = useState();
     const [showError, setShowError] = useState(false);

@@ -6,7 +6,6 @@ import labelStyles from "../../../../components/inputField.module.css";
 import filterStyles from '../../../../components/tableFilter.module.css'
 import axios from 'axios';
 import stylesLoader from '../../../gestionClients.module.css'
-import selectStyles from '../../../listeBordereau.module.css';
 
 
 

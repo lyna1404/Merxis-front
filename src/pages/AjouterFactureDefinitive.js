@@ -1,4 +1,4 @@
-import React , {useState} from 'react';
+import React , {useState, useEffect} from 'react';
 import styles from './popupForm.module.css'
 import buttonStyles from '../components/button.module.css'
 import InputField from '../components/InputField'
@@ -8,20 +8,19 @@ import 'react-datepicker/dist/react-datepicker.css';
 import Select from 'react-select';
 import stylesLoader from './gestionClients.module.css'
 
-const AjouterBordereau = ({ onClose,onAjouter, listeDossiers, isLoaded, onFileUpload,onFileUploadClick,inputFile }) => {
+const AjouterFactureDefinitive = ({ onClose,onAjouter, listeDossiers, isLoaded, onFileUpload,onFileUploadClick,inputFile }) => {
     
-    const [numBE, setNumBE] = useState('');
+    const [numFacture, setNumFacture] = useState('');
     const [date, setDate] = useState('');
-    const listeEtatRecup = [ {index:"1", etat:"Non Reçu"},{index:"2", etat:"Reçu"}]; // à récupérer
-    const [etatRecup, setEtatRecup] = useState(listeEtatRecup[0].etat);  
+    const [numDossier, setNumDossier] = useState('');
+    const [dossierPk, setDossierPk] = useState(''); 
+    const [taux_tva, setTauxTVA] = useState(''); 
+    const [avanceClient, setAvanceClient] = useState(''); 
+    const [taux_droitTimbre, setTauxDroitTimbre] = useState(''); 
 
     const [errorMessages, setErrorMessages] = useState();
     const [showError, setShowError] = useState(false);
     const [showSuccess, setShowSuccess] = useState(false);
-
-    const [numDossier, setNumDossier] = useState('');
-    const [dossierPk, setDossierPk] = useState(''); // à récupérer
-
 
     const listeNumDossiers = listeDossiers.map(({dossierPk, numDossier}) => ({ ['value'] : dossierPk, ['label']:numDossier}))
 
@@ -35,14 +34,10 @@ const AjouterBordereau = ({ onClose,onAjouter, listeDossiers, isLoaded, onFileUp
     setDossierPk(searchTerm.value); 
 };
 
-    const handleEtatRecupChange = (event) => {
-        setEtatRecup(event.target.value)        
-    };
-
     const handleSubmit = (event) => {
         event.preventDefault();
         // Appeler la fonction onAjouter pour ajouter le nouveau bordereau
-        onAjouter({numBE, dossierPk, date, etatRecup});
+        onAjouter({numFacture, numDossier, dossierPk, date, taux_tva, avanceClient, taux_droitTimbre});
 
         // Fermer le Pop Up
         onClose();
@@ -83,7 +78,7 @@ const AjouterBordereau = ({ onClose,onAjouter, listeDossiers, isLoaded, onFileUp
   return (
     <div className={styles.tab}>
       <form onSubmit={handleSubmit}>
-        <h2>Ajout Bordereau</h2>
+        <h2>Ajout Facture Définitive</h2>
         {!(isLoaded) ? ( // Conditional rendering based on the loading state
             <div className={stylesLoader.loader_container}>
             <span className={stylesLoader.loader}></span></div> // Replace with your loader component or CSS
@@ -91,27 +86,20 @@ const AjouterBordereau = ({ onClose,onAjouter, listeDossiers, isLoaded, onFileUp
             <>
         <div className={styles.fields_area}>
             <div className={styles.many_fields}>   
-                <InputField display="labelontop" label="N° Bordereau" size="overaverage" type="text" value={numBE} onChange={(e) => setNumBE(e.target.value)} />
+                <InputField display="labelontop" label="N° Facture" size="average" type="text" value={numFacture} onChange={(e) => setNumFacture(e.target.value)} />
                 <label className={labelStyles.labelontop}>Date
                 <DatePicker selected={date} onChange={(e) => setDate(e)} dateFormat="dd/MM/yyyy" placeholderText="Selectionner une date" />
                 </label>   
+                <label className={labelStyles.labelontop}>N° Dossier
+                  <Select className={labelStyles.overaverage} styles={colorStyles} options={listeNumDossiers} value={selectedDossier} placeholder="Sélectionner un dossier" onChange={(e) => handleDossierSelection(e)} isSearchable={true}/>
+                </label>
             </div>
-            <div className={styles.many_fields}>        
-              <label className={labelStyles.labelontop}>N° Dossier
-                <Select className={labelStyles.overaverage} styles={colorStyles} options={listeNumDossiers} value={selectedDossier} placeholder="Sélectionner un dossier" onChange={(e) => handleDossierSelection(e)} isSearchable={true}/>
-              </label>
-              <label className={labelStyles.labelontop}>Etat Récupération
-                <select className={labelStyles.overaverage} value={etatRecup} onChange={handleEtatRecupChange}>
-                    <option value="">Sélectionner</option>
-                    {listeEtatRecup.map((etat) => (
-                    <option key={etat.index} value={etat.etat}>
-                            {etat.etat}
-                    </option>
-                    ))}
-                </select>
-              </label>    
+            <div className={styles.many_fields}>   
+            <InputField display="labelontop" label="Taux TVA" size="small" type="text" value={taux_tva} onChange={(e) => setTauxTVA(e.target.value)} />
+            <InputField display="labelontop" label="Droit de Timbre" size="belowaverage" type="text" value={taux_droitTimbre} onChange={(e) => setTauxDroitTimbre(e.target.value)} />
+            <InputField display="labelontop" label="Avance Client" size="average" type="text" value={avanceClient} onChange={(e) => setAvanceClient(e.target.value)} />
             </div>
-            </div>
+          </div>
             <span className={styles.buttonSpan}>
                 <button className={buttonStyles.primaryButtonY} type="submit" >Ajouter</button>
                 <button className={buttonStyles.primaryButtonB} type="button" onClick={onClose}>Fermer</button>
@@ -133,4 +121,4 @@ const AjouterBordereau = ({ onClose,onAjouter, listeDossiers, isLoaded, onFileUp
   );
 };
 
-export default AjouterBordereau;
+export default AjouterFactureDefinitive;

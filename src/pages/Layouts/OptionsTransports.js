@@ -687,7 +687,6 @@ function OptionsTransports() {
 
       // Suppression d'un moyen
        const handleMoyenDeleteClick = (event) => {
-        console.log("delete");
         const rowId = event.target.closest('tr').id;
         setMoyenToDelete(rowId);
         setShowMoyenDialog(true);
@@ -701,7 +700,6 @@ function OptionsTransports() {
          .then(() => {
             setShowMoyenDialog(false);
             setIsLoadedMoyen(true);
-            console.log("successfully deleted");
             handleMoyenSuccess();
             setMoyenToDelete(null);
          })
@@ -716,7 +714,6 @@ function OptionsTransports() {
 
       // Suppression d'une compagnie
       const handleCompagnieDeleteClick = (event) => {
-        console.log("delete toggled");
         const rowId = event.target.closest('tr').id;
         setCompagnieToDelete(rowId);
         setShowCompagniesDialog(true);
@@ -730,7 +727,6 @@ function OptionsTransports() {
          .then(() => {
             setShowCompagniesDialog(false);
             setIsLoadedCompagnies(true);
-            console.log("successfully deleted");
             handleCompagniesSuccess();
             setCompagnieToDelete(null);
          })
@@ -745,7 +741,6 @@ function OptionsTransports() {
 
       // Suppression d'un type
       const handleTypeDeleteClick = (event) => {
-        console.log("delete toggled");
         const rowId = event.target.closest('tr').id;
         setTypeToDelete(rowId);
         setShowTypesDialog(true);
@@ -759,7 +754,6 @@ function OptionsTransports() {
          .then(() => {
             setShowTypesDialog(false);
             setIsLoadedTypes(true);
-            console.log("successfully deleted");
             handleTypesSuccess();
             setTypeToDelete(null);
          })
@@ -774,7 +768,6 @@ function OptionsTransports() {
 
       // Suppression d'un emballage
       const handleEmballageDeleteClick = (event) => {
-        console.log("delete toggled");
         const rowId = event.target.closest('tr').id;
         setEmballageToDelete(rowId);
         setShowEmballagesDialog(true);
@@ -788,7 +781,6 @@ function OptionsTransports() {
          .then(() => {
             setShowEmballagesDialog(false);
             setIsLoadedEmballages(true);
-            console.log("successfully deleted");
             handleEmballagesSuccess();
             setEmballageToDelete(null);
          })

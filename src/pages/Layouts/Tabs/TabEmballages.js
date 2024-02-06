@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import styles from '../../popupForm.module.css'
 import TabNavItem from "../../../components/tabNavItem";
 import TabContent from "../../../components/tabContent";
@@ -10,8 +10,6 @@ const TabEmballages = ({onClose, onAjouter, onFileUpload, onFileUploadClick,inpu
 
 
   const [activeTab, setActiveTab] = useState("tab1");
-  const [showError, setShowError] = useState(false);
-  const [errorMessages, setErrorMessages] = useState({});
 
 
   return (

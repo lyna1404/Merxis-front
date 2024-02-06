@@ -24,7 +24,6 @@ const ViewClient = () => {
   useEffect(() => {
     axios.get(`/api/clients/${id}`)
       .then((response) => {
-        console.log(response.data);
         setClientData(response.data);
         setIsLoaded(true);
       })

@@ -512,9 +512,7 @@ function OptionsEntrepots() {
 
       // Suppression d'un entrepot
       const handleEntrepotDeleteClick = (event) => {
-        console.log("delete toggled");
         const rowId = event.target.closest('tr').id;
-        console.log("rowID", rowId)
         setentrepotToDelete(rowId);
         setShowEntrepotsDialog(true);
       };
@@ -522,13 +520,11 @@ function OptionsEntrepots() {
       const handleDeleteentrepot = () => {
         setShowEntrepotsDialog(false);
         setIsLoadedEntrepots(false);
-        console.log(entrepotToDelete);
         axios
          .delete(`/api/entrepots/${entrepotToDelete}/`)
          .then(() => {
             setShowEntrepotsDialog(false);
             setIsLoadedEntrepots(true);
-            console.log("successfully deleted");
             handleEntrepotsSuccess();
             setentrepotToDelete(null);
          })
@@ -543,9 +539,7 @@ function OptionsEntrepots() {
 
       // Suppression d'un type
       const handleTypeDeleteClick = (event) => {
-        console.log("delete toggled");
         const rowId = event.target.closest('tr').id;
-        console.log("rowID", rowId)
         setTypeToDelete(rowId);
         setShowTypesDialog(true);
       };
@@ -553,13 +547,11 @@ function OptionsEntrepots() {
       const handleDeleteType = () => {
         setShowTypesDialog(false);
         setIsLoadedTypes(false);
-        console.log(typeToDelete);
         axios
          .delete(`/api/types-entrepot/${typeToDelete}/`)
          .then(() => {
             setShowTypesDialog(false);
             setIsLoadedTypes(true);
-            console.log("successfully deleted");
             handleTypesSuccess();
             setTypeToDelete(null);
          })
@@ -574,9 +566,7 @@ function OptionsEntrepots() {
 
       // Suppression d'un lieu
       const handlelieuDeleteClick = (event) => {
-        console.log("delete toggled");
         const rowId = event.target.closest('tr').id;
-        console.log("rowID", rowId)
         setlieuToDelete(rowId);
         setShowLieuxDialog(true);
       };
@@ -584,13 +574,11 @@ function OptionsEntrepots() {
       const handleDeletelieu = () => {
         setShowLieuxDialog(false);
         setIsLoadedLieux(false);
-        console.log(lieuToDelete);
         axios
          .delete(`/api/lieux-livraison/${lieuToDelete}/`)
          .then(() => {
             setShowLieuxDialog(false);
             setIsLoadedLieux(true);
-            console.log("successfully deleted");
             handleLieuxSuccess();
             setlieuToDelete(null);
          })

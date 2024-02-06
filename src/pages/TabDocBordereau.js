@@ -8,7 +8,6 @@ const TabDocBordereau = ({onClose, onAjouter, onFileUpload, onFileUploadClick,in
 
 
   const [activeTab, setActiveTab] = useState("tab1");
-  console.log(activeTab)
   
   return (
     <div className={styles.container}>

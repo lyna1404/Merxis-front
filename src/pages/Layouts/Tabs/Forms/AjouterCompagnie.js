@@ -17,8 +17,6 @@ const AjouterCompagnie = ({ onClose,onAjouter}) => {
     const [type, setType] = useState('');
     const [listeTypesCompagnie, setListeTypesCompagnie] = useState([]);
 
-    console.log(listeTypesCompagnie)
-
     const [errorMessages, setErrorMessages] = useState();
     const [showError, setShowError] = useState(false);
 

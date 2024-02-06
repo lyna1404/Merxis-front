@@ -271,7 +271,6 @@ function ViewDossier() {
 
     // Partie document
     const handleDocumentClick = () => {
-      console.log("clicked")
       setShowDocumentForm(true);
     };
 

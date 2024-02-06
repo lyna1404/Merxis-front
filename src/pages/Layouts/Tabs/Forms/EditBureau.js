@@ -9,7 +9,6 @@ import stylesLoader from '../../../gestionClients.module.css'
 
 const EditBureau = ({ onClose,onAjouter,toModify}) => {
 
-  console.log("rec", toModify)
     
   const [bureauData, setBureauData] = useState('');
   const [isLoaded, setIsLoaded] = useState(false);

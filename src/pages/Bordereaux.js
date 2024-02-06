@@ -8,12 +8,12 @@ import buttonStyles from '../components/button.module.css';
 import TableFilter from '../components/tableFilter';
 import TabBoredereau from './TabBordereau';
 import {IconView,IconEdit,IconDelete} from '../components/icons';
-import { openPageBasedOnId , reloadPage , openPage , handleFilterChange} from '../Utils/actionUtils';
+import { openPageBasedOnId , reloadPage , handleFilterChange} from '../Utils/actionUtils';
 import ErrorMessage from '../components/errorMessage';
 import SuccessMessage from '../components/succesMessage';
 import CustomMessage from '../components/customMessage';
 import axios from 'axios';
-import {formatDateToAPI, formatDateFromAPI} from '../Utils/dateUtils';
+import {formatDateToAPI} from '../Utils/dateUtils';
 
 
 // Revoir ou placer la récupération de dossier soit ici soit dans AjouterBordereau
@@ -235,7 +235,7 @@ function Bordereaux() {
                                     onAjouter={handleAjouter} 
                                     listeDossiers={listeDossiers}
                                     isLoaded={isLoadedDossier}
-                                    />}  
+                                    />}   
             </span>
         </span>
         {!isLoaded ? ( // Conditional rendering based on the loading state

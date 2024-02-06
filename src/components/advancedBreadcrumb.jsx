@@ -15,6 +15,10 @@ const displayNameMap = {
     comptabilite: "Comptabilité",
     deboursComptabilite: "Liste des debours",
     facturation : "Facturation",
+    detailsFactureProforma: "Proforma",
+    EditFactureProforma: "Proforma",
+    detailsFacture: "Affichage",
+    EditFacture: "Modification",
     archivage: "Archivage",
     EditDossier: "Modification",
     ViewDossier: "Affichage Dossier",
@@ -22,10 +26,9 @@ const displayNameMap = {
     // Add more mappings for other pages if needed
   };
 
-const AdvancedBreadcrumb = ({ numDossier, dossier, declaration, hideParams = false, hideButtons=false, hideDocs=false, isViewDoc=false, showError, showForm, showSuccess, onDocClick, onSuccessClose, onErrorClose, onClick, onAjouterDoc, onCloseDoc, dossierPk, errorMessages }) => {
+const AdvancedBreadcrumb = ({ numDossier, dossier, declaration, hideParams = false, hideButtons=false, hideDocs=false, hidePrintable=true, isViewDoc=false, showError, showForm, showSuccess, onPrint, onDocClick, onSuccessClose, onErrorClose, onClick, onAjouterDoc, onCloseDoc, dossierPk, errorMessages }) => {
 
   const location = useLocation();
-  console.log(location);
   const pathnames = location.pathname.split("/").filter((x) => x);
 
   // Generate breadcrumb items based on pathnames
@@ -73,7 +76,6 @@ const AdvancedBreadcrumb = ({ numDossier, dossier, declaration, hideParams = fal
             <>
               <button className={buttonStyles.primaryButtonY} type="submit" onClick={onClick} >Enregistrer</button>
               {showError && <ErrorMessage onClose={onErrorClose} errors={errorMessages} />}
-              {console.log("errors breadcrumb",errorMessages)}
               {showSuccess && <SuccessMessage onClose={onSuccessClose} />}
               {!hideDocs?
                 <>
@@ -84,12 +86,16 @@ const AdvancedBreadcrumb = ({ numDossier, dossier, declaration, hideParams = fal
                                     dossierPk={dossierPk}
                                     dossier={dossier}
                                     declaration={declaration}
-                                    />}                  
+                                    />}         
                 </>
                 :
                 <>
                 </>
               }
+              {!hidePrintable? 
+                    <button className={`${buttonStyles.third}`} children='Impression' onClick={onPrint} />  
+                  : <></>
+                }    
             </>
             : !hideDocs?
             <>
@@ -99,12 +105,16 @@ const AdvancedBreadcrumb = ({ numDossier, dossier, declaration, hideParams = fal
                                     onAjouter={onAjouterDoc} 
                                     dossierPk={dossierPk}
                                     dossier={dossier}
-                                    />}       
+                                    />}  
+              {!hidePrintable? 
+                    <button className={`${buttonStyles.third}`} children='Impression' onClick={onPrint} />  
+                  : <></>
+                }      
             </>
-            :
-            <>
-            </>
-          } 
+            :!hidePrintable? 
+              <button className={`${buttonStyles.third}`} children='Impression' onClick={onPrint} />  
+            : <></>
+              }
       </div>   
       </ol>
     </nav>

@@ -42,7 +42,6 @@ function DocumentsDossier({onClose,onAjouter,onFileUpload,onFileUploadClick,inpu
 
       // Suppression d'un document
       const handleDeleteClick = (event) => {
-        console.log("delete");
         const rowId = event.target.closest('tr').id;
         setDocToDelete(rowId);
         setShowDialog(true);
@@ -51,13 +50,11 @@ function DocumentsDossier({onClose,onAjouter,onFileUpload,onFileUploadClick,inpu
       const handleDelete = () => {
         setShowDialog(false);
         setIsLoadedDocument(false);
-        console.log("delete");
         axios
          .delete(`/api/dossiers/${dossierPk}/documents/${docToDelete}/`)
          .then(() => {
             setShowDialog(false);
             setIsLoadedDocument(true);
-            console.log("successfully deleted");
             handleSuccess();
             setDocToDelete(null);
          })
@@ -132,7 +129,6 @@ function DocumentsDossier({onClose,onAjouter,onFileUpload,onFileUploadClick,inpu
     
           .then((response) => {
             const documentsData = response.data;
-            console.log("data",response.data)
             if (typeof documentsData === 'object' && documentsData !== null) {
                 const extractedDocs= Object.values(documentsData).map(item => ({
                   id: item.documentDossier_pk,

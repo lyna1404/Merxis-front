@@ -18,7 +18,6 @@ const AjoutDebours = ({ onClose,onAjouter,onFileUpload,onFileUploadClick,inputFi
     const [beneficiaire, setBeneficiaire] = useState('');
     
     const listeDebours = types.map(({id, value, label}) => ({ ['value'] : value, ['label']:label}))
-    console.log(listeDebours)
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -33,7 +32,6 @@ const AjoutDebours = ({ onClose,onAjouter,onFileUpload,onFileUploadClick,inputFi
       setDebours(searchTerm.label);
       setDeboursPk(searchTerm.value); 
       const deb = types.filter((debours) => debours.label.toString().includes(searchTerm.label.toString()))[0];
-      console.log("deb", deb);
       setTypeDebours(deb.id);
 
   };

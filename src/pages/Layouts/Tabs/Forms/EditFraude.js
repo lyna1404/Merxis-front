@@ -88,19 +88,16 @@ function EditFraude({id, dossier, declaration, onAjouter, onClose}) {
       };
 
     const handleDouaneInit = (searchTerm) => {
-        console.log("douane init...");
         const douanes = listeDouanes.filter((douanes) => douanes.nom.toString().includes(searchTerm.toString()))[0];
         setSelectedDouane({value:douanes.inspectionFrontiere_pk, label:searchTerm})
     }
 
     const handleLieuInit = (searchTerm) => {
-        console.log("lieu init...");
         const lieux = listeLieux.filter((lieux) => lieux.nom.toString().includes(searchTerm.toString()))[0];
         setSelectedLieu({value:lieux.paysArrivee_pk, label:searchTerm})
     }
 
     const handleWilayaInit = (searchTerm) => {
-        console.log("wilaya init...");
         const wilayas = listeWilayas.filter((wilayas) => wilayas.nomArabe.toString().includes(searchTerm.toString()))[0];
         setSelectedWilaya({value:wilayas.wilaya_pk, label:searchTerm})
     }
@@ -130,7 +127,6 @@ function EditFraude({id, dossier, declaration, onAjouter, onClose}) {
         .then((response) => {
 
           const docData = response.data;
-            console.log("bs reçu", docData);
             setDirectionCommerciale(docData.مديرية_التجارة);
             setDouane(docData.مفتشية_الحدود);
             setRaisonSociale(docData.المستورد);

@@ -9,17 +9,18 @@ import TableFilter from '../components/tableFilter';
 import ListChoices from '../components/ListChoices';
 import axios from 'axios';
 import ErrorMessage from '../components/errorMessage';
-import CustomMessage from '../components/customMessage';
+import {formatDateToAPI} from '../Utils/dateUtils';
+import TabFacture from './TabFacture';
 import SuccessMessage from '../components/succesMessage';
-import { openPageBasedOnId , reloadPage , openPage , handleFilterChange} from '../Utils/actionUtils';
-import {IconView,IconEdit,IconDelete,IconCash} from '../components/icons';
+import { openPageBasedOnId , reloadPage , handleFilterChange} from '../Utils/actionUtils';
+import {IconView,IconEdit} from '../components/icons';
 
 
 
 
 function Facturation() {
 
-    const [headers,setHeaders] = useState(['N° Facture', 'N° Dossier', 'Date', 'Client', 'Net à payer', 'Etat Paiement', 'Date Paiement', 'actions']);
+    const [headers,setHeaders] = useState(['N° Facture', 'N° Dossier', 'Date', 'Client', 'Net à payer', 'Etat Paiement', 'Date Paiement', 'Actions']);
     const radios = [{name:'Facture Définitive'},{name:'Facture Proforma'}];
     const [selectedRadio ,setSelectedRadio] = useState(radios[0].name);
     const [data, setFilteredData] = useState([]);
@@ -28,6 +29,7 @@ function Facturation() {
     const [filteredDataDef, setFilteredDataDef] = useState([]);
     const [filteredDataPro, setFilteredDataPro] = useState([]);
 
+    const [showForm, setShowForm] = useState(false); 
     const [errorMessages, setErrorMessages] = useState({});
     const [showError, setShowError] = useState(false);
     const [isLoaded, setIsLoaded] = useState(false);
@@ -64,6 +66,14 @@ function Facturation() {
     const handleSuccess = () => {
         setShowSuccess(true);
     };
+
+    const handleNouveauClick = () => {
+        setShowForm(true);
+      };
+
+      const handleFormClose = () => {
+        setShowForm(false);
+      };
     
     const handleSuccessClose = () => {
         setShowSuccess(false);
@@ -80,8 +90,7 @@ function Facturation() {
           .then((responses) => {
             const factdefres = responses[0].data;
             const factprores = responses[1].data;
-            console.log(factdefres);
-            console.log(factprores);
+
             if (typeof factdefres === 'object' && factdefres !== null && typeof factprores === 'object' && factprores !== null) {
                 const extractedFactDef = Object.values(factdefres).map(item => ({
                   id: item.facture_pk,
@@ -105,7 +114,6 @@ function Facturation() {
                 setFilteredData(extractedFactDef)
                 setFilteredDataDef(extractedFactDef);
                 setFilteredDataPro(extractedFactPro);
-                console.log(filteredDataDef)
                 setIsLoaded(true);
               } else {
                 console.error('Response data is not a JSON object:', factdefres);
@@ -133,7 +141,7 @@ function Facturation() {
                             <>
                                 {setFilteredData(originalDataPro)}                            
                                 {setFilteredDataPro(originalDataPro)}
-                                {setHeaders(['N° Facture Proforma', 'Date', 'Client', 'Total TTC', 'Actions'])}
+                                {setHeaders(['N° Facture Proforma', 'Date', 'Client', 'Total Debours et Prestations', 'Actions à faire'])}
                             </>                    
 
     }
@@ -150,6 +158,70 @@ function Facturation() {
     const openBordereaux = () => {
         window.open("/facturation/Bordereaux", '_blank')
     };
+
+    const handleAjouterDéfinitive = (data) => {
+        
+        setIsLoaded(false);
+
+        const facture = {
+          numFacture: data.numFacture,
+          date: data.date? formatDateToAPI(data.date): null,
+          dossier: data.dossierPk,
+          taux_tva:data.taux_tva,
+          avanceClient:data.avanceClient,
+          taux_droitTimbre:data.taux_droitTimbre,
+          numDossier:data.numDossier,
+        };
+       
+        const factureCreated =  axios.post(`/api/factures-definitives/`, JSON.stringify(facture), {
+          headers: {
+            'Content-Type': 'application/json',
+          }
+          })
+          .then((response) => {
+              const factureResponse = response.data;   
+              setIsLoaded(true);
+              handleSuccess();
+          })
+          .catch((error) => {
+              setIsLoaded(true)
+              console.log(error.request.response);  
+              handleError(error.request.response);
+          });
+    };
+
+    const handleAjouterProforma = (data) => {
+        
+        setIsLoaded(false);
+
+        const facture = {
+            numFacture: data.numFacture,
+            date: data.date? formatDateToAPI(data.date): null,
+            client:data.clientPk,
+            natureMarchandise: data.natureMarchandisePk,
+            nbrTC: data.nbrTC,
+            poids: data.poids,
+            nbrColis: data.nbrColis,
+            taux_tva:data.taux_tva,
+          };
+       
+        const factureCreated =  axios.post(`/api/factures-proforma/`, JSON.stringify(facture), {
+          headers: {
+            'Content-Type': 'application/json',
+          }
+          })
+          .then((response) => {
+              const factureResponse = response.data;   
+              setIsLoaded(true);
+              handleSuccess();
+          })
+          .catch((error) => {
+              setIsLoaded(true)
+              console.log(error.request.response);  
+              handleError(error.request.response);
+          });
+    };
+
 
     
     return(
@@ -187,7 +259,11 @@ function Facturation() {
                 }
                 <span className={styles.buttons_span}>
                     <button className={`${buttonStyles.secondary}`}  onClick={() => handleReloadClick()} children='Actualiser' />  
-                    <button className={`${buttonStyles.primaryButtonY}`} children='Nouveau'  onClick={() => openNewFacture()}/>  
+                    <button className={`${buttonStyles.primaryButtonY}`} children='Nouveau'  onClick={() => handleNouveauClick()}/>  
+                    {showForm && <TabFacture onClose={handleFormClose} 
+                                    onAjouterDéfinitive={handleAjouterDéfinitive} 
+                                    onAjouterProforma={handleAjouterProforma}
+                                    />}  
                     <button className={`${buttonStyles.primaryButtonB}`} children="Bordereaux d'envoi"  onClick={() => openBordereaux()}/>  
                 </span>
             </span>

@@ -8,7 +8,6 @@ const TabEmballages = ({onClose, onAjouter, onFileUpload, onFileUploadClick,inpu
 
 
   const [activeTab, setActiveTab] = useState("tab1");
-  console.log(activeTab)
   
   return (
     <div className={styles.container}>

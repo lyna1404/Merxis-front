@@ -148,6 +148,11 @@
     cursor: pointer;
 }
 
+.third:active {
+    cursor: pointer;
+    color: var(--white, #ffffffc0);
+}
+
 .attacherdocument {
     color: var(--darkviolet, #2e2f5b);
     background-color: transparent;

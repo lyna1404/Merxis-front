@@ -1,13 +1,10 @@
 
 import { useState, useRef, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import React from 'react';
 import styles from './listeFacture.module.css';
-import buttonStyles from '../components/button.module.css';
 import AdvancedBreadcrumb from '../components/advancedBreadcrumb'
 import ReusableTable from '../components/reusableTable';
-import TableFilter from '../components/tableFilter';
-import AjoutDebours from './AjoutDebours';
 import InputField from '../components/InputField';
 import axios from 'axios';
 import styles2 from './gestionClients.module.css';
@@ -17,7 +14,6 @@ function ViewFactures() {
    
     //Recuperer le numero dossier choisie
     const { id } = useParams();
-    console.log(id);
     
     const [errorMessages, setErrorMessages] = useState({});
     const [showError, setShowError] = useState(false);
@@ -50,10 +46,6 @@ function ViewFactures() {
             const PrestationResponse = responses[2].data;
             const calculsResponse = responses[3].data;
 
-            console.log(FactureResponse);
-            console.log(deboursResponse);
-            console.log(PrestationResponse);
-            console.log(calculsResponse);
             if (typeof deboursResponse === 'object' && deboursResponse !== null && typeof PrestationResponse === 'object' && PrestationResponse !== null) {
                 const extractedDebours = Object.values(deboursResponse).map(item => ({
                   id: item.debours_pk,
@@ -145,10 +137,33 @@ function ViewFactures() {
         setFilteredData((prevFilteredData) => [data,...prevFilteredData]);
       };
 
+    const handlePrint = () =>{
+        axios.get(`/api/factures-definitives/${id}/pdf/`, { responseType: 'blob'})
+
+        .then((response) => {
+            const facturePDF = response.data;
+            const file = new Blob(
+              [response.data], 
+              {type: 'application/pdf'});
+  
+            const pdfURL = URL.createObjectURL(file);
+            window.open(pdfURL)
+            
+        })
+        .catch((error) => {
+            console.log('Error:', error);
+    
+            if (error.response) {
+              console.log('Status Code:', error.response.status);
+              console.log('Response Data:', error.response.data);
+            }       
+          })
+    }
+
 
     return (
         <>
-            <AdvancedBreadcrumb numDossier={facture.numDossier} hideParams={false}/>
+            <AdvancedBreadcrumb numDossier={facture.dossier?facture.dossier.numDossier:facture.numDossier} hideParams={false} hideButtons={true} hideDocs={true} hidePrintable={false} onPrint={handlePrint}/>
             {!isLoaded ? ( // Conditional rendering based on the loading state
             <div className={styles2.loader_container}><span className={styles2.loader}></span></div> // Replace with your loader component or CSS
             ) : (
@@ -159,7 +174,7 @@ function ViewFactures() {
                             <InputField 
                                     display="labelonleft" 
                                     label="N° Facture" 
-                                    size="small" 
+                                    size="belowaverage" 
                                     type="text" 
                                     value={facture.numFacture} 
                                     onChange=""
@@ -170,7 +185,7 @@ function ViewFactures() {
                           <InputField 
                                     display="labelonleft" 
                                     label="Date" 
-                                    size="small" 
+                                    size="belowaverage" 
                                     type="text" 
                                     value={facture.date} 
                                     onChange=""
@@ -181,7 +196,7 @@ function ViewFactures() {
                             <InputField 
                                     display="labelonleft" 
                                     label="Nom Client" 
-                                    size="average" 
+                                    size="large" 
                                     type="text" 
                                     value={facture.dossier.client.raisonSociale} 
                                     onChange=""
@@ -191,7 +206,7 @@ function ViewFactures() {
                         <label className={styles.info_field}>
                             <InputField className={styles.info_field} display="labelonleft" 
                                     label="N° Declaration" 
-                                    size="small" 
+                                    size="average" 
                                     type="text" 
                                     value={facture.numDeclaration} 
                                     onChange=""
@@ -211,7 +226,7 @@ function ViewFactures() {
                         <label className={styles.info_field}>
                             <InputField className={styles.info_field} display="labelonleft" 
                                     label="N° Fact. Fournisseur" 
-                                    size="small" 
+                                    size="average" 
                                     type="text" 
                                     value={facture.numFactureFournisseur} 
                                     onChange=""
@@ -221,7 +236,7 @@ function ViewFactures() {
                         <label className={styles.info_field}>
                             <InputField className={styles.info_field} display="labelonleft" 
                                     label="Montant" 
-                                    size="small" 
+                                    size="belowaverage" 
                                     type="text" 
                                     value={facture.montantFactureFournisseur} 
                                     onChange=""
@@ -257,7 +272,7 @@ function ViewFactures() {
                         </label>
                     <label className={styles.info_field}><InputField className={styles.info_field} display="labelonleft" 
                                     label="Nature Marchandise" 
-                                    size="overaverage" 
+                                    size="verylarge" 
                                     type="text" 
                                     value={facture.dossier.natureMarchandise} 
                                     onChange=""
@@ -271,17 +286,17 @@ function ViewFactures() {
                     <ReusableTable data={debpres} headers={headers} itemsPerPage={5} addlink={false}/> 
                     <span className={styles.container}>
                         <label className={styles.label_style}>Total</label>
-                        <input className={styles.input}
+                        <input className={styles.total}
                             value={calcul.total_prestation_debours}
                             readOnly={true}
                         />
                         <label className={styles.label_style}>Total Debours</label>
-                        <input className={styles.input}
+                        <input className={styles.total}
                             value={calcul.total_debours}
                             readOnly={true}
                         />
                         <label className={styles.label_style}>Total Prestations</label>
-                        <input className={styles.input}
+                        <input className={styles.total}
                             value={calcul.total_prestation}
                             readOnly={true}
                         />

@@ -336,7 +336,6 @@ function OptionsFactures() {
 
       // Suppression d'un debours
       const handledeboursDeleteClick = (event) => {
-        console.log("delete toggled");
         const rowId = event.target.closest('tr').id;
         setdeboursToDelete(rowId);
         setShowDeboursDialog(true);
@@ -350,7 +349,6 @@ function OptionsFactures() {
          .then(() => {
             setShowDeboursDialog(false);
             setIsLoadedDebours(true);
-            console.log("successfully deleted");
             handleDeboursSuccess();
             setdeboursToDelete(null);
          })
@@ -365,7 +363,6 @@ function OptionsFactures() {
 
       // Suppression d'un prestations
       const handleprestationsDeleteClick = (event) => {
-        console.log("delete toggled");
         const rowId = event.target.closest('tr').id;
         setprestationsToDelete(rowId);
         setShowPrestationsDialog(true);
@@ -379,7 +376,6 @@ function OptionsFactures() {
          .then(() => {
             setShowPrestationsDialog(false);
             setIsLoadedPrestations(true);
-            console.log("successfully deleted");
             handlePrestationsSuccess();
             setprestationsToDelete(null);
          })

@@ -3,20 +3,13 @@ import styles from './popupForm.module.css'
 import stylesLine from './listeFacture.module.css';
 import stylesLoader from './gestionClients.module.css'
 import AdvancedBreadcrumb from '../components/advancedBreadcrumb'
-
 import InputField from '../components/InputField';
-
 import labelStyles from "../components/inputField.module.css";
 import { useState, useRef, useEffect  } from 'react';
-import { useParams } from 'react-router-dom';
 import axios from 'axios';
-import ErrorMessage from '../components/errorMessage';
-import CustomMessage from '../components/customMessage';
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
 import {formatDateHoursToAPI,formatDateToAPI} from '../Utils/dateUtils';
-import SuccessMessage from '../components/succesMessage';
 import Select from 'react-select';
+import DatePicker from 'react-datepicker';
 
 // Date et heure reception a utilisé avec datepicker
 

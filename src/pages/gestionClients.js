@@ -58,7 +58,6 @@ const GestionClients = () => {
       .get('/api/clients/')
       .then((response) => {
         const clientsData = response.data;
-        console.log(clientsData);
   
         if (typeof clientsData === 'object' && clientsData !== null) {
           const extractedClients = Object.values(clientsData).map(item => ({
@@ -86,7 +85,6 @@ const GestionClients = () => {
   }, []);
   
     const handleDeleteClick = (event) => {
-      console.log("delete");
       const rowId = event.target.closest('tr').id;
       setClientToDelete(rowId);
       setShowDialog(true);
@@ -95,14 +93,11 @@ const GestionClients = () => {
     const handleDeleteClient = () => {
       setShowDialog(false);
       setIsLoaded(false);
-      console.log("delete");
-      console.log(clientTodelete);
       axios
        .delete(`/api/clients/${clientTodelete}/`)
        .then(() => {
           setShowDialog(false);
           setIsLoaded(true);
-          console.log("successfully deleted");
           handleSuccess();
           setClientToDelete(null);
        })

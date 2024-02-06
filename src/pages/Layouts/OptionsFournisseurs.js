@@ -30,7 +30,6 @@ function OptionsFournisseurs() {
 
     // Champs de la parties marchandises
    const [fournisseurs, setFournisseurs] = useState([]);
-   console.log(fournisseurs)
    const [fournisseurToDelete, setFournisseurToDelete] = useState([]);
    const [fournisseurToModify, setFournisseurToModify] = useState([]);
 
@@ -186,7 +185,6 @@ function OptionsFournisseurs() {
        };
 
        const handleDeleteClick = (event) => {
-        console.log("delete");
         const rowId = event.target.closest('tr').id;
         setFournisseurToDelete(rowId);
         setShowDialog(true);
@@ -200,7 +198,6 @@ function OptionsFournisseurs() {
          .then(() => {
             setShowDialog(false);
             setIsLoaded(true);
-            console.log("successfully deleted");
             handleSuccess();
             setFournisseurToDelete(null);
          })

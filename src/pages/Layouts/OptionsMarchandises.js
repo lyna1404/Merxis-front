@@ -138,7 +138,6 @@ function OptionsDevises() {
        };
 
        const handleDeleteClick = (event) => {
-        console.log("delete");
         const rowId = event.target.closest('tr').id;
         setMarchandiseToDelete(rowId);
         setShowDialog(true);
@@ -152,7 +151,6 @@ function OptionsDevises() {
          .then(() => {
             setShowDialog(false);
             setIsLoaded(true);
-            console.log("successfully deleted");
             handleSuccess();
             setMarchandiseToDelete(null);
          })

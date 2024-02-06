@@ -41,7 +41,6 @@ function EditD41({id, dossier, declaration, onAjouter, onClose}) {
 
         .then((response) => {
             const docData = response.data;
-            console.log("d41 reçu", docData);
             setLieu(docData.lieu);
             setDate(docData.date);
             setIsLoaded(true);

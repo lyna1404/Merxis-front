@@ -9,7 +9,6 @@ const TabDeboursPrestation = ({onClose, onAjouterDeb,onAjouterPres, onFileUpload
 
 
   const [activeTab, setActiveTab] = useState("tab1");
-  console.log(activeTab)
   
   return (
     <div className={styles.container}>

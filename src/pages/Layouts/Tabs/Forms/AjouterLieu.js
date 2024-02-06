@@ -14,8 +14,6 @@ const AjouterLieu = ({ onClose,onAjouter}) => {
     const [wilaya, setWilaya] = useState('');
     const [listeWilayas, setListeWilayas] = useState([]);
 
-    console.log(listeWilayas)
-
     const [errorMessages, setErrorMessages] = useState();
     const [showError, setShowError] = useState(false);
 

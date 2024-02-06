@@ -11,20 +11,32 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import TabDeboursPrestation from './TabDeboursPrestation';
 import axios from 'axios';
-import { reloadPage , handleFilterChange} from '../Utils/actionUtils';
+import { reloadPage} from '../Utils/actionUtils';
 import ErrorMessage from '../components/errorMessage';
 import SuccessMessage from '../components/succesMessage';
 import {formatDateFromAPI,formatDateToAPI} from '../Utils/dateUtils';
+import Select from 'react-select';
+import styles2 from './gestionClients.module.css';
+import CustomMessage from '../components/customMessage';
+import { IconDelete } from '../components/icons';
+
+
 
 function EditFacture() {
 
     const { id } = useParams();
-    console.log(id);
     
     const [errorMessages, setErrorMessages] = useState({});
     const [showError, setShowError] = useState(false);
     const [showSuccess, setShowSuccess] = useState(false);
+    const [showDialog, setShowDialog] = useState(false);
+
     const [isLoaded, setIsLoaded] = useState(false);
+    const [isLoadedDossier, setIsLoadedDossier] = useState(false);
+    const [listeDossiers, setListeDossiers] = useState([]);
+
+    const [DebPresToDelete, setDebPresToDelete] = useState({});
+    const [typeDebPresToDelete, setTypeDebPresToDelete] = useState('');
 
     const [facture, setFacture] = useState({});
     const [prestations, setPrestations] = useState({});
@@ -33,9 +45,8 @@ function EditFacture() {
 
     const[debpres,setDebPres] = useState([])
 
-
-
     const [numDossier, setNumDossier] = useState('');
+    const [dossierPk, setDossierPk] = useState(''); 
     const [numFact, setNumFacture] = useState('');
     const [typeFacture, setTypeFacture] = useState("Définitive");  
     const [date, setDate] = useState('');
@@ -46,8 +57,6 @@ function EditFacture() {
     const [montantFactFournisseur, setMontantFactFournisseur] = useState('');
     const [monnaieFactFournisseur, setMonnaieFactFournisseur] = useState('');
     const [numTitreTransport, setNumTitreTransport] = useState('');
-    const [nbrTc, setNbrTc] = useState('');
-    const [poids, setPoids] = useState('');
     const [nbrColis, setNbrColis] = useState('');
     const [natureMarch, setNatureMarch] = useState('');
     const [tauxTVA, setTauxTVA] = useState('');
@@ -65,6 +74,72 @@ function EditFacture() {
     const [types, setTypes] = useState([]);
     const [typesPres, setTypesPres] = useState([]);
 
+    const listeNumDossiers = listeDossiers.map(({dossierPk, numDossier}) => ({ ['value'] : dossierPk, ['label']:numDossier}))
+    const [selectedDossier, setSelectedDossier] = useState({value: dossierPk, label:numDossier});
+
+
+    const handleDossierSelection = (searchTerm) => {
+        setSelectedDossier(searchTerm);
+        setNumDossier(searchTerm.label);
+        setDossierPk(searchTerm.value); 
+    };    
+
+    const handleDialogClose = () => {
+        setDebPresToDelete(null);
+        setShowDialog(false);
+      };
+
+      const handleDeleteClick = (event) => {
+        const rowId = event.target.closest('tr').id;
+        const rowType = event.target.closest('tr').firstChild.innerText;
+        setDebPresToDelete(rowId);
+        setTypeDebPresToDelete(rowType);
+        setShowDialog(true);
+      };
+
+      const handleDeletePres = () => {
+        setShowDialog(false);
+        setIsLoaded(false);
+        axios
+         .delete(`/api/factures-definitives/${id}/prestations/${DebPresToDelete}`)
+         .then(() => {
+            setShowDialog(false);
+            setIsLoaded(true);
+            handleSuccess();
+            setDebPresToDelete(null);
+         })
+         .catch((error) => {
+            setShowDialog(false);
+            setIsLoaded(true);
+            console.log('Delete request error:', error);
+            handleError(error.request.response);
+            setDebPresToDelete(null);
+         });
+      };
+
+      const handleDeleteDebours = () => {
+        setShowDialog(false);
+        setIsLoaded(false);
+        axios
+         .delete(`/api/factures-definitives/${id}/debours/${DebPresToDelete}`)
+         .then(() => {
+            setShowDialog(false);
+            setIsLoaded(true);
+            handleSuccess();
+            setDebPresToDelete(null);
+         })
+         .catch((error) => {
+            setShowDialog(false);
+            setIsLoaded(true);
+            console.log('Delete request error:', error);
+            handleError(error.request.response);
+            setDebPresToDelete(null);
+         });
+      };
+
+      const tableActions = [
+        <IconDelete key="delete" onClick={handleDeleteClick} />,
+      ];
 
     useEffect(() => {
         // Create axios requests for both data fetching
@@ -76,12 +151,12 @@ function EditFacture() {
         const tyoesDebours = axios.get(`/api/types-debours/`);
         const modes = axios.get(`/api/modes-paiement-debours/`);
         const typesPres = axios.get(`/api/types-prestation/`);
-
+        const dossiers = axios.get('/api/dossiers/');
 
 
 
         // Use Promise.all to wait for both requests to complete
-        Promise.all([facture, debours, prestations, calculs, tyoesDebours, modes,typesPres])
+        Promise.all([facture, debours, prestations, calculs, tyoesDebours, modes,typesPres, dossiers])
           .then((responses) => {
             const FactureResponse = responses[0].data;
             const deboursResponse = responses[1].data;
@@ -90,15 +165,7 @@ function EditFacture() {
             const TypesDebours = responses[4].data;
             const modesData = responses[5].data;
             const typesPres = responses[6].data;
-
-
-            console.log(FactureResponse);
-            console.log(deboursResponse);
-            console.log(PrestationResponse);
-            console.log(calculsResponse);
-            console.log(modesData);
-            console.log(TypesDebours);
-            console.log(typesPres);
+            const dosssierResponse = responses[7].data;
 
 
             if (typeof deboursResponse === 'object' && deboursResponse !== null && typeof PrestationResponse === 'object' && PrestationResponse !== null) {
@@ -131,20 +198,34 @@ function EditFacture() {
                 value: type.typeDebours_pk,
                 label: type.designation
             }));
-            console.log(extractedTypes);
             setTypes(extractedTypes);
             const extractedTypesPres = typesPres.map(type => ({
                 id: type.typePrestation_pk,
                 value: type.typePrestation_pk,
                 label: type.designation
             }));
-            console.log(extractedTypesPres);
+            const dossiersData = responses[7].data;
+            if (typeof dossiersData === 'object' && dossiersData !== null) {
+              const extractedDossier = Object.values(dossiersData).map(item => ({
+                dossierPk: item.dossier_pk,
+                numDossier: item.numDossier,
+              }));
+            setListeDossiers(extractedDossier);
+            setIsLoadedDossier(true)
+            }
+            else {
+            console.error('Response data is not a JSON object:', dossiersData);
+            handleError(dossiersData);
+            setIsLoadedDossier(true);
+          }
             setTypesPres(extractedTypesPres);
             setFacture(FactureResponse);
             setCalculs(calculsResponse);
-            setNumDossier(FactureResponse.dossier.numDossier);
+            setNumDossier(FactureResponse.dossier?FactureResponse.dossier.numDossier:"");
+            setDossierPk(FactureResponse.dossier?FactureResponse.dossier.dossier_pk:null);
+            setSelectedDossier({value:FactureResponse.dossier?FactureResponse.dossier.dossier_pk:null, label:FactureResponse.dossier?FactureResponse.dossier.numDossier:""})
             setNumFacture(FactureResponse.numFacture);
-            setDate(new Date(FactureResponse.date));
+            setDate(FactureResponse.date?formatDateFromAPI(FactureResponse.date):null);
             setClient(FactureResponse.dossier.client.raisonSociale);
             setNumDeclaration(FactureResponse.numDeclaration);
             setNomFournisseur(FactureResponse.dossier.fournisseur);
@@ -176,7 +257,7 @@ function EditFacture() {
       }, [id]); // Add 'id' as a dependency
 
     //entete du tableau des debours
-    const headers = ['Type', 'Debours/Prestation', 'Montant'];
+    const headers = ['Type', 'Debours/Prestation', 'Montant', 'Actions à faire'];
 
     //Mettre à jour l'historique des debours du client
     
@@ -201,7 +282,6 @@ function EditFacture() {
     const handleTypeFactChange = (event) => {
         const selectedType = event.target.value;
         setTypeFacture(selectedType)
-        console.log(selectedType)
         {selectedType.toString() === "Proforma" ? setDisableInput(true) : setDisableInput(false)}
         
     };
@@ -253,8 +333,6 @@ function EditFacture() {
       };
     
     const handleAjouterDeb = (data) => {
-        console.log("this is the sent data");
-        console.log(data);
         setIsLoaded(false);
         axios
             .post(`/api/factures-definitives/${id}/debours/`, JSON.stringify(data), {
@@ -265,7 +343,6 @@ function EditFacture() {
             .then((response) => {
                 setIsLoaded(true);
                 const clientResponse = response.data;
-                console.log(clientResponse);
                 handleSuccess();
             })
             .catch((error) => {
@@ -276,8 +353,6 @@ function EditFacture() {
     };
     
     const handleAjouterPres = (data) => {
-        console.log("this is the sent data");
-        console.log(data);
         setIsLoaded(false);
         axios
             .post(`/api/factures-definitives/${id}/prestations/`, JSON.stringify(data), {
@@ -288,7 +363,6 @@ function EditFacture() {
             .then((response) => {
                 setIsLoaded(true);
                 const clientResponse = response.data;
-                console.log(clientResponse);
                 handleSuccess();
             })
             .catch((error) => {
@@ -306,10 +380,10 @@ function EditFacture() {
             taux_tva : tauxTVA,
             avance_client : avance,
             taux_droitTimbre : droitTimbre1,
-            dossier : facture.dossier.dossier_pk
+            dossier : dossierPk,
+            net_payer: netPayement,
         };
         
-        console.log(fact);
         axios
         .put(`/api/factures-definitives/${id}/`, fact, {
         headers: {
@@ -325,14 +399,51 @@ function EditFacture() {
         });
     };
 
+    const handlePrint = () =>{
+        axios.get(`/api/factures-definitives/${id}/pdf/`, { responseType: 'blob'})
+
+        .then((response) => {
+            const facturePDF = response.data;
+            const file = new Blob(
+              [response.data], 
+              {type: 'application/pdf'});
+  
+            const pdfURL = URL.createObjectURL(file);
+            window.open(pdfURL)
+            
+        })
+        .catch((error) => {
+            console.log('Error:', error);
+    
+            if (error.response) {
+              console.log('Status Code:', error.response.status);
+              console.log('Response Data:', error.response.data);
+            }       
+          })
+    }
+
+      // Styling des searchable dropdown de react-select
+      const colorStyles = {
+          
+        control : styles => ({...styles, backgroundColor:'white',border:'none','box-shadow':'none', fontFamily:'Montserrat'}),
+        option: (styles, {isFocused, isSelected}) => ({
+          ...styles,
+          backgroundColor: isFocused? '#e4e1e1' : isSelected? '#a3a7d8' : 'white',
+          fontFamily: 'Montserrat',
+        }),
+        singleValue : styles => ({...styles, color:'black', fontFamily:'Montserrat', fontSize:'16px'})
+    };
+
     return (
         <>
-            <AdvancedBreadcrumb numDossier={numDossier} />
+            <AdvancedBreadcrumb numDossier={numDossier} hideButtons={true} hideDocs={true} hidePrintable={false} onPrint={handlePrint}/>
+            {!(isLoaded && isLoadedDossier) ? ( // Conditional rendering based on the loading state
+            <div className={styles2.loader_container}><span className={styles2.loader}></span></div> // Replace with your loader component or CSS
+            ) : (
             <div className={styles.main_grid}>
                 <span className={styles.info_grid}>
                     <div className={styles.label_wrapper}>
                                         <label className={styles.info_field}>
-                                            <label className={labelStyles.labelonleft}>Type Facture</label>
                                                 <InputField 
                                                         display="labelonleft" 
                                                         label="Type Facture" 
@@ -343,14 +454,9 @@ function EditFacture() {
                                                 />
                                             </label>
                                             <label className={styles.info_field}>
-                                                <InputField 
-                                                        display="labelonleft" 
-                                                        label="N° Dossier" 
-                                                        size="small" 
-                                                        type="text" 
-                                                        value={numDossier} 
-                                                        readOnly={true}
-                                                />
+                                                <label className={labelStyles.labelonleft}>N° Dossier
+                                                    <Select className={labelStyles.average} styles={colorStyles} options={listeNumDossiers} value={selectedDossier} placeholder="Sélectionner un dossier" onChange={(e) => handleDossierSelection(e)} isSearchable={true}/>
+                                                </label>
                                             </label>
                                             <label className={styles.info_field}>
                                                 <InputField 
@@ -451,20 +557,22 @@ function EditFacture() {
                     <div className={styles.horizontalLine}></div>
                 </span>
                 <span className={styles.table_grid}>
-                    <ReusableTable data={debpres} headers={headers} itemsPerPage={5} addlink={false}/> 
+                    <ReusableTable data={debpres} headers={headers} itemsPerPage={5} addlink={false} addactions={true} actionIcons={tableActions}/> 
+                    {showDialog && <CustomMessage onClose={handleDialogClose} onConfirm={typeDebPresToDelete==='Debours'?handleDeleteDebours:handleDeletePres} message={"Souhaitez-vous vraiment supprimer ce debours/prestation ?"} />}
+                    {showSuccess && <SuccessMessage onClose={handleSuccessClose} />}
                     <span className={styles.container}>
                         <label className={styles.label_style}>Total</label>
-                        <input className={styles.input}
+                        <input className={styles.total}
                             value={totalPresDebours}
                             onChange={(e) => setTotalPresDebours(e.target.value)} 
                             />
                         <label className={styles.label_style}>Total Debours</label>
-                        <input className={styles.input}
+                        <input className={styles.total}
                             value={totalDebours}
                             onChange={(e) => setTotalDebours(e.target.value)} 
                         />
                         <label className={styles.label_style}>Total Prestations</label>
-                        <input className={styles.input}
+                        <input className={styles.total}
                             value={totalPres}
                             onChange={(e) => setTotalPres(e.target.value)} 
                             />
@@ -572,9 +680,11 @@ function EditFacture() {
                                 readOnly={true}
                         />
                     </label>
-                    <div className={styles.footerSpace}></div>
             </span>
             </div>
+            )}
+            <div className={styles.footerSpace}></div>
+
             {showError && <ErrorMessage onClose={handleErrorClose} errors={errorMessages} />}
             {showSuccess && <SuccessMessage onClose={handleSuccessClose} />}
         </>

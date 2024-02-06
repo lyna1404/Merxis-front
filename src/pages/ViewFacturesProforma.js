@@ -1,13 +1,10 @@
 
 import { useState, useRef, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import React from 'react';
 import styles from './listeFacture.module.css';
-import buttonStyles from '../components/button.module.css';
 import AdvancedBreadcrumb from '../components/advancedBreadcrumb'
 import ReusableTable from '../components/reusableTable';
-import TableFilter from '../components/tableFilter';
-import AjoutDebours from './AjoutDebours';
 import InputField from '../components/InputField';
 import axios from 'axios';
 import styles2 from './gestionClients.module.css';
@@ -16,12 +13,12 @@ import styles2 from './gestionClients.module.css';
 function ViewFacturesProforma() {
    
     const { id } = useParams();
-    console.log(id);
     
     const [errorMessages, setErrorMessages] = useState({});
     const [showError, setShowError] = useState(false);
     const [showSuccess, setShowSuccess] = useState(false);
     const [isLoaded, setIsLoaded] = useState(false);
+    const [numDossier, setNumDossier] = useState("");
 
     const [facture, setFacture] = useState({});
     const [prestations, setPrestations] = useState({});
@@ -49,10 +46,6 @@ function ViewFacturesProforma() {
             const PrestationResponse = responses[2].data;
             const calculsResponse = responses[3].data;
 
-            console.log(FactureResponse);
-            console.log(deboursResponse);
-            console.log(PrestationResponse);
-            console.log(calculsResponse);
             if (typeof deboursResponse === 'object' && deboursResponse !== null && typeof PrestationResponse === 'object' && PrestationResponse !== null) {
                 const extractedDebours = Object.values(deboursResponse).map(item => ({
                   id: item.debours_pk,
@@ -145,9 +138,32 @@ function ViewFacturesProforma() {
       };
 
 
+      const handlePrint = () =>{
+        axios.get(`/api/factures-proforma/${id}/pdf/`, { responseType: 'blob'})
+  
+        .then((response) => {
+            const facturePDF = response.data;
+            const file = new Blob(
+              [response.data], 
+              {type: 'application/pdf'});
+  
+            const pdfURL = URL.createObjectURL(file);
+            window.open(pdfURL)
+            
+        })
+        .catch((error) => {
+            console.log('Error:', error);
+    
+            if (error.response) {
+              console.log('Status Code:', error.response.status);
+              console.log('Response Data:', error.response.data);
+            }       
+          })
+    }
+
     return (
         <>
-            <AdvancedBreadcrumb numDossier={facture.numDossier} hideParams={false}/>
+            <AdvancedBreadcrumb numDossier={numDossier} hideButtons={true} hideDocs={true} hidePrintable={false} onPrint={handlePrint}/>
             {!isLoaded ? ( // Conditional rendering based on the loading state
             <div className={styles2.loader_container}><span className={styles2.loader}></span></div> // Replace with your loader component or CSS
             ) : (
@@ -182,7 +198,7 @@ function ViewFacturesProforma() {
                                     label="Nom Client" 
                                     size="average" 
                                     type="text" 
-                                    value={facture.client.raisonSociale} 
+                                    value={facture.client?facture.client.raisonSociale:""} 
                                     onChange=""
                                     readOnly={true}
                             />
@@ -191,7 +207,7 @@ function ViewFacturesProforma() {
                                     label="Nature Marchandise" 
                                     size="overaverage" 
                                     type="text" 
-                                    value={facture.natureMarchandise} 
+                                    value={facture.natureMarchandise?facture.natureMarchandise.designation:""} 
                                     onChange=""
                                     readOnly={true}                            />
                       </label>
@@ -223,26 +239,28 @@ function ViewFacturesProforma() {
 
                <span className={styles.table_grid}>
                     <ReusableTable data={debpres} headers={headers} itemsPerPage={5} addlink={false}/> 
+
                     <span className={styles.container}>
                         <label className={styles.label_style}>Total</label>
-                        <input className={styles.input}
+                        <input className={styles.total}
                             value={calcul.total_prestation_debours}
                             readOnly={true}
                         />
                         <label className={styles.label_style}>Total Debours</label>
-                        <input className={styles.input}
+                        <input className={styles.total}
                             value={calcul.total_debours}
                             readOnly={true}
                         />
                         <label className={styles.label_style}>Total Prestations</label>
-                        <input className={styles.input}
+                        <input className={styles.total}
                             value={calcul.total_prestation}
                             readOnly={true}
                         />
+
                     </span>  
                     <div className={styles.verticalLine}></div>
+
                 </span>
-                
                 <span className={styles.label_grid}>
                     <label className={styles.info_field}>
                         <InputField 
@@ -299,10 +317,12 @@ function ViewFacturesProforma() {
                         />
                     </label>
                     
-                    <div className={styles.footerSpace}></div>
             </span>
+
             </div>
+
         )}
+            <div className={styles.footerSpace}></div>
 
         </>
     );

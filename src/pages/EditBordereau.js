@@ -13,7 +13,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import TabDocBordereau from './TabDocBordereau';
 import {IconEdit,IconDelete} from '../components/icons';
 import Select from 'react-select';
-import { openPageBasedOnId , reloadPage , openPage , handleFilterChange} from '../Utils/actionUtils';
+import { openPageBasedOnId , reloadPage , handleFilterChange} from '../Utils/actionUtils';
 import ErrorMessage from '../components/errorMessage';
 import SuccessMessage from '../components/succesMessage';
 import CustomMessage from '../components/customMessage';
@@ -145,7 +145,6 @@ function EditBordereau() {
     
           .then((response) => {
             const documentsData = response.data;
-            console.log("data",response.data)
             if (typeof documentsData === 'object' && documentsData !== null) {
                 const extractedDocs= Object.values(documentsData).map(item => ({
                   id: item.documentBordereau_pk,
@@ -247,7 +246,6 @@ function EditBordereau() {
 
       // Suppression d'un document
   const handleDeleteClick = (event) => {
-    console.log("delete");
     const rowId = event.target.closest('tr').id;
     setDocToDelete(rowId);
     setShowDialog(true);
@@ -256,13 +254,11 @@ function EditBordereau() {
   const handleDelete = () => {
     setShowDialog(false);
     setIsLoaded(false);
-    console.log("delete");
     axios
      .delete(`/api/bordereaux-envoi/${id}/documents/${docToDelete}/`)
      .then(() => {
         setShowDialog(false);
         setIsLoaded(true);
-        console.log("successfully deleted");
         handleSuccess();
         setDocToDelete(null);
      })
