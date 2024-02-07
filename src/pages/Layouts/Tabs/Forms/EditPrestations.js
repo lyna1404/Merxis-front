@@ -16,12 +16,13 @@ const EditPrestations = ({ onClose,onAjouter, toModify}) => {
 
     const [errorMessages, setErrorMessages] = useState();
     const [showError, setShowError] = useState(false);
+    const apiUrl = process.env.REACT_APP_API_URL;
 
 
     // Récupération du Prestations
     useEffect(() => {
 
-        axios.get(`/api/types-prestation/${toModify}/`)
+        axios.get(`${apiUrl}/api/types-prestation/${toModify}/`)
         .then((response) => {
           const PrestationsResponse = response.data;
           const {designation} = PrestationsResponse;

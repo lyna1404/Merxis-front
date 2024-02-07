@@ -18,6 +18,7 @@ import TabDebours from './Tabs/TabDebours'
 import TabPrestations from './Tabs/TabPrestations';
 
 function OptionsFactures() {
+  const apiUrl = process.env.REACT_APP_API_URL;
 
     const [isLoadedDebours, setIsLoadedDebours] = useState(false);
     const [filteredDeboursData, setFilteredDeboursData] = useState([]);
@@ -54,7 +55,7 @@ function OptionsFactures() {
 
     // Récupérer la liste des Debours 
     useEffect(() => {
-        axios.get('/api/types-debours/')
+        axios.get(`${apiUrl}/api/types-debours/`)
         .then((response) => {
             const deboursData = response.data;
             if (typeof deboursData === 'object' && deboursData !== null) {
@@ -84,7 +85,7 @@ function OptionsFactures() {
   
     // Récupérer la liste des prestations 
     useEffect(() => {
-        axios.get('/api/types-prestation/')
+        axios.get(`${apiUrl}/api/types-prestation/`)
         .then((response) => {
             const prestationsData = response.data;
             if (typeof prestationsData === 'object' && prestationsData !== null) {
@@ -234,7 +235,7 @@ function OptionsFactures() {
           designation: data.designation,
         };
        
-        const deboursCreated =  axios.post(`/api/types-debours/`, JSON.stringify(debours), {
+        const deboursCreated =  axios.post(`${apiUrl}/api/types-debours/`, JSON.stringify(debours), {
           headers: {
             'Content-Type': 'application/json',
           }
@@ -260,7 +261,7 @@ function OptionsFactures() {
           designation: data.designation,
         };
        
-        const prestationsCreated =  axios.post(`/api/types-prestation/`, JSON.stringify(prestations), {
+        const prestationsCreated =  axios.post(`${apiUrl}/api/types-prestation/`, JSON.stringify(prestations), {
           headers: {
             'Content-Type': 'application/json',
           }
@@ -287,7 +288,7 @@ function OptionsFactures() {
             designation: data.designation,
           };
          
-        const deboursModified =  axios.put(`/api/types-debours/${deboursToModify}/`, JSON.stringify(debours), {
+        const deboursModified =  axios.put(`${apiUrl}/api/types-debours/${deboursToModify}/`, JSON.stringify(debours), {
           headers: {
             'Content-Type': 'application/json',
           }
@@ -315,7 +316,7 @@ function OptionsFactures() {
                 designation: data.designation,
               };
                  
-            const prestationsModified =  axios.put(`/api/types-prestation/${prestationsToModify}/`, JSON.stringify(prestations), {
+            const prestationsModified =  axios.put(`${apiUrl}/api/types-prestation/${prestationsToModify}/`, JSON.stringify(prestations), {
               headers: {
                 'Content-Type': 'application/json',
               }
@@ -345,7 +346,7 @@ function OptionsFactures() {
         setShowDeboursDialog(false);
         setIsLoadedDebours(false);
         axios
-         .delete(`/api/types-debours/${deboursToDelete}/`)
+         .delete(`${apiUrl}/api/types-debours/${deboursToDelete}/`)
          .then(() => {
             setShowDeboursDialog(false);
             setIsLoadedDebours(true);
@@ -372,7 +373,7 @@ function OptionsFactures() {
         setShowPrestationsDialog(false);
         setIsLoadedPrestations(false);
         axios
-         .delete(`/api/types-prestation/${prestationsToDelete}/`)
+         .delete(`${apiUrl}/api/types-prestation/${prestationsToDelete}/`)
          .then(() => {
             setShowPrestationsDialog(false);
             setIsLoadedPrestations(true);

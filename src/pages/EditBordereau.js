@@ -23,6 +23,7 @@ import { formatDateFromAPI } from '../Utils/dateUtils';
 function EditBordereau() {
 
     const { id } = useParams();
+    const apiUrl = process.env.REACT_APP_API_URL;
 
     const [bordereauData, setBordereauData] = useState({});
     const [documentData, setDocumentData] = useState();
@@ -114,7 +115,7 @@ function EditBordereau() {
 
     // Récupérer le bordereau d'envoi
     useEffect(() => {
-    const bordereau = axios.get(`/api/bordereaux-envoi/${id}`)
+    const bordereau = axios.get(`${apiUrl}/api/bordereaux-envoi/${id}`)
 
       .then((response) => {
         const bordereauxData = response.data;
@@ -141,7 +142,7 @@ function EditBordereau() {
 
     // Récupérer les documents du bordereau d'envoi
     useEffect(() => {
-        const bordereau = axios.get(`/api/bordereaux-envoi/${id}/documents/`)
+        const bordereau = axios.get(`${apiUrl}/api/bordereaux-envoi/${id}/documents/`)
     
           .then((response) => {
             const documentsData = response.data;
@@ -178,7 +179,7 @@ function EditBordereau() {
   // Récupération de la liste de dossiers 
   useEffect(() => {
         
-    const dossiers = axios.get('/api/dossiers/')
+    const dossiers = axios.get(`${apiUrl}/api/dossiers/`)
 
     .then((response) => {
       const dossiersData = response.data;
@@ -230,7 +231,7 @@ function EditBordereau() {
           observation: data.observation,
         }  
 
-        const docAdded = axios.post(`/api/bordereaux-envoi/${id}/documents/`, JSON.stringify(doc), {
+        const docAdded = axios.post(`${apiUrl}/api/bordereaux-envoi/${id}/documents/`, JSON.stringify(doc), {
           headers: {
             'Content-Type': 'application/json',
           }
@@ -255,7 +256,7 @@ function EditBordereau() {
     setShowDialog(false);
     setIsLoaded(false);
     axios
-     .delete(`/api/bordereaux-envoi/${id}/documents/${docToDelete}/`)
+     .delete(`${apiUrl}/api/bordereaux-envoi/${id}/documents/${docToDelete}/`)
      .then(() => {
         setShowDialog(false);
         setIsLoaded(true);
@@ -280,7 +281,7 @@ function EditBordereau() {
         etatRecuperation: etatRecup==="Non Reçu"? 0 : 1,
     }
 
-    const bordereauEdited =  axios.put(`/api/bordereaux-envoi/${id}/`, bordereau, {
+    const bordereauEdited =  axios.put(`${apiUrl}/api/bordereaux-envoi/${id}/`, bordereau, {
         headers: {
         'Content-Type': 'application/json',
         }

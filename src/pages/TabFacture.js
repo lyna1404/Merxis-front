@@ -21,6 +21,7 @@ const TabFacture = ({onClose, onAjouterDéfinitive, onAjouterProforma, onFileUpl
   const [isLoadedDossier, setIsLoadedDossier] = useState(false);
   const [isLoadedClient, setIsLoadedClient] = useState(false);
   const [isLoadedMarchandise, setIsLoadedMarchandise] = useState(false);
+  const apiUrl = process.env.REACT_APP_API_URL;
 
 
 
@@ -32,9 +33,9 @@ const TabFacture = ({onClose, onAjouterDéfinitive, onAjouterProforma, onFileUpl
     // Récupération de la liste de dossiers
     useEffect(() => {
         
-      const dossiers = axios.get('/api/dossiers/');
-      const clients = axios.get('/api/clients/');
-      const marchandises = axios.get('/api/natures-marchandise/')
+      const dossiers = axios.get(`${apiUrl}/api/dossiers/`);
+      const clients = axios.get(`${apiUrl}/api/clients/`);
+      const marchandises = axios.get(`${apiUrl}/api/natures-marchandise/`)
   
       Promise.all([dossiers, clients, marchandises])
       .then((responses) => {

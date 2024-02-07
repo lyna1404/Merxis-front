@@ -16,39 +16,39 @@ function Options() {
 
 
 function openFactures() {
-  window.open("/options/factures",'_blank');
+  window.open("options/factures",'_blank');
 }
 
 function openDevises() {
-  window.open("/options/devises",'_blank');
+  window.open("options/devises",'_blank');
 }
 
 function openPays() {
-  window.open("/options/pays",'_blank');
+  window.open("options/pays",'_blank');
 }
 
 function openMarchandises() {
-  window.open("/options/marchandises", '_blank');
+  window.open("options/marchandises", '_blank');
 }
 
 function openFournisseurs() {
-  window.open("/options/fournisseurs", '_blank');
+  window.open("options/fournisseurs", '_blank');
 }
 
 function openFraudes() {
-  window.open("/options/fraudes", '_blank');
+  window.open("options/fraudes", '_blank');
 }
 
 function openDouanes() {
-  window.open("/options/douanes", '_blank');
+  window.open("options/douanes", '_blank');
 }
 
 function openTransports(){
-  window.open("/options/transports", '_blank');
+  window.open("options/transports", '_blank');
 }
 
 function openEntrepots(){
-  window.open("/options/entrepots", '_blank');
+  window.open("options/entrepots", '_blank');
 }
 
 function openDocuments(){

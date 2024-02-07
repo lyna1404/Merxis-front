@@ -1,0 +1,12 @@
+version: "3.8"
+
+services:
+  app:
+    container_name: merxis-front-c
+    image: merxis-front-i
+    build: 
+      context: .
+    ports:
+      - 8080:80
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf

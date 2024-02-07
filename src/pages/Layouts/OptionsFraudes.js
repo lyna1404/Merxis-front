@@ -18,6 +18,7 @@ import TabInspections from './Tabs/TabInspections'
 import TabArrivees from './Tabs/TabArrivees';
 
 function OptionsFraudes() {
+  const apiUrl = process.env.REACT_APP_API_URL;
 
     const [isLoadedInspections, setIsLoadedInspections] = useState(false);
     const [filteredInspectionsData, setFilteredInspectionsData] = useState([]);
@@ -54,7 +55,7 @@ function OptionsFraudes() {
 
     // Récupérer la liste des Inspections 
     useEffect(() => {
-        axios.get('/api/مفتشيات-الحدود/')
+        axios.get(`${apiUrl}/api/مفتشيات-الحدود/`)
         .then((response) => {
             const InspectionsData = response.data;
             if (typeof InspectionsData === 'object' && InspectionsData !== null) {
@@ -84,7 +85,7 @@ function OptionsFraudes() {
   
     // Récupérer la liste des Arrivees 
     useEffect(() => {
-        axios.get('/api/أماكن-الوصول/')
+        axios.get(`${apiUrl}/api/أماكن-الوصول/`)
         .then((response) => {
             const ArriveesData = response.data;
             if (typeof ArriveesData === 'object' && ArriveesData !== null) {
@@ -234,7 +235,7 @@ function OptionsFraudes() {
           nom: data.nom,
         };
        
-        const InspectionsCreated =  axios.post(`/api/مفتشيات-الحدود/`, JSON.stringify(Inspections), {
+        const InspectionsCreated =  axios.post(`${apiUrl}/api/مفتشيات-الحدود/`, JSON.stringify(Inspections), {
           headers: {
             'Content-Type': 'application/json',
           }
@@ -260,7 +261,7 @@ function OptionsFraudes() {
           nom: data.nom,
         };
        
-        const ArriveesCreated =  axios.post(`/api/أماكن-الوصول/`, JSON.stringify(Arrivees), {
+        const ArriveesCreated =  axios.post(`${apiUrl}/api/أماكن-الوصول/`, JSON.stringify(Arrivees), {
           headers: {
             'Content-Type': 'application/json',
           }
@@ -287,7 +288,7 @@ function OptionsFraudes() {
             nom: data.nom,
           };
          
-        const InspectionsModified =  axios.put(`/api/مفتشيات-الحدود/${InspectionsToModify}/`, JSON.stringify(Inspections), {
+        const InspectionsModified =  axios.put(`${apiUrl}/api/مفتشيات-الحدود/${InspectionsToModify}/`, JSON.stringify(Inspections), {
           headers: {
             'Content-Type': 'application/json',
           }
@@ -315,7 +316,7 @@ function OptionsFraudes() {
                 nom: data.nom,
               };
                  
-            const ArriveesModified =  axios.put(`/api/أماكن-الوصول/${ArriveesToModify}/`, JSON.stringify(Arrivees), {
+            const ArriveesModified =  axios.put(`${apiUrl}/api/أماكن-الوصول/${ArriveesToModify}/`, JSON.stringify(Arrivees), {
               headers: {
                 'Content-Type': 'application/json',
               }
@@ -345,7 +346,7 @@ function OptionsFraudes() {
         setShowInspectionsDialog(false);
         setIsLoadedInspections(false);
         axios
-         .delete(`/api/مفتشيات-الحدود/${InspectionsToDelete}/`)
+         .delete(`${apiUrl}/api/مفتشيات-الحدود/${InspectionsToDelete}/`)
          .then(() => {
             setShowInspectionsDialog(false);
             setIsLoadedInspections(true);
@@ -372,7 +373,7 @@ function OptionsFraudes() {
         setShowArriveesDialog(false);
         setIsLoadedArrivees(false);
         axios
-         .delete(`/api/أماكن-الوصول/${ArriveesToDelete}/`)
+         .delete(`${apiUrl}/api/أماكن-الوصول/${ArriveesToDelete}/`)
          .then(() => {
             setShowArriveesDialog(false);
             setIsLoadedArrivees(true);

@@ -11,7 +11,8 @@ import {reloadPage} from '../Utils/actionUtils';
 import EditDocImpressions from './EditDocImpressions';
 
 function DocumentsImpression({onClose,onAjouter,dossierPk,dossier,declaration}) {
-  
+  const apiUrl = process.env.REACT_APP_API_URL;
+
     const [showForm, setShowForm] = useState(false);
     const [showError, setShowError] = useState(false);
     const [showDialog, setShowDialog] = useState(false);
@@ -93,7 +94,7 @@ function DocumentsImpression({onClose,onAjouter,dossierPk,dossier,declaration}) 
     const handlePrintclick = (event) => {
       const rowId = event.target.closest('tr').id;
       { rowId==1?
-          axios.get(`/api/dossiers/${dossierPk}/bulletin-scanner/pdf/`, { responseType: 'blob'})
+          axios.get(`${apiUrl}/api/dossiers/${dossierPk}/bulletin-scanner/pdf/`, { responseType: 'blob'})
   
           .then((response) => {
               const bsPDF = response.data;
@@ -118,7 +119,7 @@ function DocumentsImpression({onClose,onAjouter,dossierPk,dossier,declaration}) 
             })
       : rowId==2?
 
-          axios.get(`/api/dossiers/${dossierPk}/d41/pdf/`, { responseType: 'blob'})
+          axios.get(`${apiUrl}/api/dossiers/${dossierPk}/d41/pdf/`, { responseType: 'blob'})
   
           .then((response) => {
               const d41PDF = response.data;
@@ -140,7 +141,7 @@ function DocumentsImpression({onClose,onAjouter,dossierPk,dossier,declaration}) 
             })
 
       : rowId==3?
-          axios.get(`/api/dossiers/${dossierPk}/demande-main-levee-ahb/pdf/`, { responseType: 'blob'})
+          axios.get(`${apiUrl}/api/dossiers/${dossierPk}/demande-main-levee-ahb/pdf/`, { responseType: 'blob'})
   
           .then((response) => {
               const d41PDF = response.data;
@@ -163,7 +164,7 @@ function DocumentsImpression({onClose,onAjouter,dossierPk,dossier,declaration}) 
 
       :rowId==4?
 
-      axios.get(`/api/dossiers/${dossierPk}/demande-main-levee-bureau/pdf/`, { responseType: 'blob'})
+      axios.get(`${apiUrl}/api/dossiers/${dossierPk}/demande-main-levee-bureau/pdf/`, { responseType: 'blob'})
 
       .then((response) => {
           const d41PDF = response.data;
@@ -185,7 +186,7 @@ function DocumentsImpression({onClose,onAjouter,dossierPk,dossier,declaration}) 
         })
       : rowId==5?
 
-      axios.get(`/api/dossiers/${dossierPk}/engagement-1030/pdf/`, { responseType: 'blob'})
+      axios.get(`${apiUrl}/api/dossiers/${dossierPk}/engagement-1030/pdf/`, { responseType: 'blob'})
 
       .then((response) => {
           const e1030PDF = response.data;
@@ -207,7 +208,7 @@ function DocumentsImpression({onClose,onAjouter,dossierPk,dossier,declaration}) 
         })
       : rowId==6?
 
-      axios.get(`/api/dossiers/${dossierPk}/fraude/pdf/`, { responseType: 'blob'})
+      axios.get(`${apiUrl}/api/dossiers/${dossierPk}/fraude/pdf/`, { responseType: 'blob'})
 
       .then((response) => {
           const fraudePDF = response.data;
@@ -230,7 +231,7 @@ function DocumentsImpression({onClose,onAjouter,dossierPk,dossier,declaration}) 
       
       : rowId==8?
 
-      axios.get(`/api/dossiers/${dossierPk}/onml/pdf/`, { responseType: 'blob'})
+      axios.get(`${apiUrl}/api/dossiers/${dossierPk}/onml/pdf/`, { responseType: 'blob'})
 
       .then((response) => {
           const onmlPDF = response.data;
@@ -289,7 +290,7 @@ function DocumentsImpression({onClose,onAjouter,dossierPk,dossier,declaration}) 
 
     // Récupérer les documents du dossier 
     useEffect(() => {
-        const bordereau = axios.get(`/api/dossiers/${dossierPk}/documents/`)
+        const bordereau = axios.get(`${apiUrl}/api/dossiers/${dossierPk}/documents/`)
     
           .then((response) => {
             const documentsData = response.data;

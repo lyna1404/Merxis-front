@@ -8,6 +8,7 @@ import stylesLoader from '../../../gestionClients.module.css'
 
 
 function EditMainLeveeBureau({id, dossier, declaration, onAjouter, onClose}) {
+    const apiUrl = process.env.REACT_APP_API_URL;
 
     const [isLoaded, setIsLoaded] = useState(false);
     const [date, setDate] = useState('');
@@ -33,7 +34,7 @@ function EditMainLeveeBureau({id, dossier, declaration, onAjouter, onClose}) {
 
 
     useEffect(() => {
-        axios.get(`/api/dossiers/${dossier.dossier_pk}/demande-main-levee-bureau/`)
+        axios.get(`${apiUrl}/api/dossiers/${dossier.dossier_pk}/demande-main-levee-bureau/`)
 
         .then((response) => {
             const docData = response.data;

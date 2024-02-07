@@ -21,6 +21,7 @@ function AjouterDossier() {
     const [isLoadedDossier, setIsLoadedDossier] = useState(false);
     const [isLoadedDeclaration, setIsLoadedDeclaration] = useState(false);
     const [activeTab, setActiveTab] = useState("tab1");
+    const apiUrl = process.env.REACT_APP_API_URL;
 
   // Listes déroulantes de la partie Informations Générales
     const [listeClients, setListeClients] = useState([]);
@@ -47,14 +48,16 @@ function AjouterDossier() {
   // Récupération des listes pour les searchable drop down dans Informations Générales
   useEffect(() => {
         
-    const clients = axios.get('/api/clients/');
-    const fournisseurs = axios.get('/api/fournisseurs/');
-    const devises = axios.get('/api/devises/');
-    const transports = axios.get('/api/moyens-transport/');
-    const compagnies = axios.get('/api/compagnies-transport/');
-    const marchandises = axios.get('/api/natures-marchandise/');
-    const entreposages = axios.get('/api/entrepots/');
-    const livraisons = axios.get('/api/lieux-livraison/');
+    const apiUrl = process.env.REACT_APP_API_URL;
+
+    const clients = axios.get(`${apiUrl}/api/clients/`);
+    const fournisseurs = axios.get(`${apiUrl}/api/fournisseurs/`);
+    const devises = axios.get(`${apiUrl}/api/devises/`);
+    const transports = axios.get(`${apiUrl}/api/moyens-transport/`);
+    const compagnies = axios.get(`${apiUrl}/api/compagnies-transport/`);
+    const marchandises = axios.get(`${apiUrl}/api/natures-marchandise/`);
+    const entreposages = axios.get(`${apiUrl}/api/entrepots/`);
+    const livraisons = axios.get(`${apiUrl}/api/lieux-livraison/`);
 
     
     Promise.all([clients, fournisseurs, devises, transports, compagnies, marchandises, entreposages, livraisons])
@@ -88,9 +91,9 @@ function AjouterDossier() {
 // Récupération des listes statiques dans Informations Générales
 useEffect(() => {
   
-  const etats = axios.get('/api/etats-dossier/');
-  const natures = axios.get('/api/natures-dossier/');
-  const typesTransport = axios.get('/api/types-transport/');
+  const etats = axios.get(`${apiUrl}/api/etats-dossier/`);
+  const natures = axios.get(`${apiUrl}/api/natures-dossier/`);
+  const typesTransport = axios.get(`${apiUrl}/api/types-transport/`);
   
   Promise.all([etats, natures, typesTransport])
   .then((responses) => {
@@ -124,10 +127,10 @@ useEffect(() => {
 
    // Récupérations des listes pour les searchable drop down dans Informations de déclaration
    useEffect(() => {
-    const livraisons = axios.get('/api/modes-livraison/');
-    const regimes = axios.get('/api/regimes-douaniers/');
-    const pays = axios.get('/api/pays/');
-    const bureaux = axios.get('/api/bureaux-douane/');
+    const livraisons = axios.get(`${apiUrl}/api/modes-livraison/`);
+    const regimes = axios.get(`${apiUrl}/api/regimes-douaniers/`);
+    const pays = axios.get(`${apiUrl}/api/pays/`);
+    const bureaux = axios.get(`${apiUrl}/api/bureaux-douane/`);
 
     Promise.all([livraisons, regimes, pays, bureaux])
     .then((responses) => {
@@ -147,9 +150,9 @@ useEffect(() => {
 
   // Récupération des listes statiques dans Informations de déclaration
   useEffect(() => {
-    const paiements = axios.get('/api/modes-paiement/');
-    const financements = axios.get('/api/modes-financement/');
-    const operations = axios.get('/api/types-operation/');
+    const paiements = axios.get(`${apiUrl}/api/modes-paiement/`);
+    const financements = axios.get(`${apiUrl}/api/modes-financement/`);
+    const operations = axios.get(`${apiUrl}/api/types-operation/`);
 
     Promise.all([paiements, financements, operations])
     .then((responses) => {
@@ -444,7 +447,7 @@ useEffect(() => {
               observation: observation,
             };
             
-            const dossierCreated =  await axios.post(`/api/dossiers/`, JSON.stringify(dossier), {
+            const dossierCreated =  await axios.post(`${apiUrl}/api/dossiers/`, JSON.stringify(dossier), {
             headers: {
               'Content-Type': 'application/json',
             }
@@ -454,7 +457,7 @@ useEffect(() => {
                 const rep = response.data;
                 setDossierResponse(rep);
                 {
-                    const declarationCreated =  axios.post(`/api/dossiers/${rep.dossier_pk}/declaration/`, declaration, {
+                    const declarationCreated =  axios.post(`${apiUrl}/api/dossiers/${rep.dossier_pk}/declaration/`, declaration, {
                         headers: {
                           'Content-Type': 'application/json',
                         }

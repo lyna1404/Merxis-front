@@ -18,11 +18,12 @@ const EditTypeEntrepot = ({ onClose,onAjouter, toModify}) => {
     const [errorMessages, setErrorMessages] = useState();
     const [showError, setShowError] = useState(false);
 
+    const apiUrl = process.env.REACT_APP_API_URL;
 
     // Récupération de le type
     useEffect(() => {
 
-      axios.get(`/api/types-entrepot/${toModify}/`)
+      axios.get(`${apiUrl}/api/types-entrepot/${toModify}/`)
       .then((response) => {
         const typeResponse = response.data;
         setTypeData(typeResponse);

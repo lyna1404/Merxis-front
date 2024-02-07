@@ -8,7 +8,8 @@ import axios from 'axios';
 
 
 const EditMoyen = ({ onClose,onAjouter, toModify}) => {
-    
+  const apiUrl = process.env.REACT_APP_API_URL;
+
 
     const [moyenData, setMoyenData] = useState('');
     const [nom, setNom] = useState(moyenData.type);
@@ -22,7 +23,7 @@ const EditMoyen = ({ onClose,onAjouter, toModify}) => {
     // Récupération du moyen
     useEffect(() => {
 
-      axios.get(`/api/moyens-transport/${toModify}/`)
+      axios.get(`${apiUrl}/api/moyens-transport/${toModify}/`)
       .then((response) => {
         const moyenResponse = response.data;
         setMoyenData(moyenResponse);

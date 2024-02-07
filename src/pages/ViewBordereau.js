@@ -14,6 +14,7 @@ import { formatDateFromAPI } from '../Utils/dateUtils';
 
 function ViewBordereau() {
     const { id } = useParams();
+    const apiUrl = process.env.REACT_APP_API_URL;
 
     const [bordereauData, setBordereauData] = useState({});
     const [documentData, setDocumentData] = useState();
@@ -44,7 +45,7 @@ function ViewBordereau() {
 
     // Récupérer le bordereau d'envoi
     useEffect(() => {
-    const bordereau = axios.get(`/api/bordereaux-envoi/${id}`)
+    const bordereau = axios.get(`${apiUrl}/api/bordereaux-envoi/${id}`)
 
       .then((response) => {
         const bordereauxData = response.data;
@@ -69,7 +70,7 @@ function ViewBordereau() {
 
     // Récupérer les documents du bordereau d'envoi
     useEffect(() => {
-        const bordereau = axios.get(`/api/bordereaux-envoi/${id}/documents/`)
+        const bordereau = axios.get(`${apiUrl}/api/bordereaux-envoi/${id}/documents/`)
     
           .then((response) => {
             const documentsData = response.data;

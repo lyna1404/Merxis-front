@@ -3,7 +3,6 @@ import styles from '../../../popupForm.module.css'
 import buttonStyles from '../../../../components/button.module.css'
 import InputField from '../../../../components/InputField'
 import filterStyles from '../../../../components/tableFilter.module.css'
-import axios from 'axios';
 import stylesLoader from '../../../gestionClients.module.css'
 
 

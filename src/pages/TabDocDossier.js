@@ -10,6 +10,7 @@ import { reloadPage } from "../Utils/actionUtils";
 
 const TabDocDossier = ({onClose, isView=false, onAjouter, onFileUpload, onFileUploadClick,inputFile,dossierPk, dossier, declaration}) => {
 
+  const apiUrl = process.env.REACT_APP_API_URL;
 
   const [activeTab, setActiveTab] = useState("tab1");
   const [isLoadedDocument, setIsLoadedDocument] = useState(false);
@@ -45,7 +46,7 @@ const TabDocDossier = ({onClose, isView=false, onAjouter, onFileUpload, onFileUp
         lieuEtablissement: data.lieu,
       }
      
-      const docCreated =  axios.post(`/api/dossiers/${dossierPk}/documents/`, JSON.stringify(doc), {
+      const docCreated =  axios.post(`${apiUrl}/api/dossiers/${dossierPk}/documents/`, JSON.stringify(doc), {
         headers: {
           'Content-Type': 'application/json',
         }

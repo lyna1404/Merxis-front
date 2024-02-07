@@ -14,6 +14,7 @@ import { reloadPage } from '../Utils/actionUtils';
 
 const DetailsClient = () => {
     const { id } = useParams();
+    const apiUrl = process.env.REACT_APP_API_URL;
 
     const [errorMessages, setErrorMessages] = useState({});
     const [showError, setShowError] = useState(false);
@@ -24,8 +25,8 @@ const DetailsClient = () => {
     const headers = ['Num Versement', 'Date','Montant (DA)'];   
     useEffect(() => {
         // Create axios requests for both data fetching
-        const client = axios.get(`/api/clients/${id}/`); // Replace with your other endpoint
-        const versements = axios.get(`/api/clients/${id}/versements/`);
+        const client = axios.get(`${apiUrl}/api/clients/${id}/`); // Replace with your other endpoint
+        const versements = axios.get(`${apiUrl}/api/clients/${id}/versements/`);
 
         // Use Promise.all to wait for both requests to complete
         Promise.all([client, versements])
@@ -48,10 +49,10 @@ const DetailsClient = () => {
 
     //Mette à jour le client selectionné à partir de la liste déroulante
     const [selectedClient, setSelectedClient] = useState([]);
-
+    console.log(selectedClient)
 
     //Mette à jour la somme due du client selectionné
-    const [paymentAmount, setPaymentAmount] = useState();
+    const [paymentAmount, setPaymentAmount] = useState('');
     const [versements, setVersements] = useState([]);
 
     //Controler le fomrulaire d'ajout de versement
@@ -87,7 +88,7 @@ const DetailsClient = () => {
     const handleAjouter = (data) => {
         setIsLoaded(false);
         axios
-            .post(`/api/clients/${id}/versements/`, JSON.stringify(data), {
+            .post(`${apiUrl}/api/clients/${id}/versements/`, JSON.stringify(data), {
                 headers: {
                     'Content-Type': 'application/json'
                 }

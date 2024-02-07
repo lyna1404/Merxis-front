@@ -16,6 +16,7 @@ const AjouterCompagnie = ({ onClose,onAjouter}) => {
     const [typePk, setTypePk] = useState('');
     const [type, setType] = useState('');
     const [listeTypesCompagnie, setListeTypesCompagnie] = useState([]);
+    const apiUrl = process.env.REACT_APP_API_URL;
 
     const [errorMessages, setErrorMessages] = useState();
     const [showError, setShowError] = useState(false);
@@ -23,7 +24,7 @@ const AjouterCompagnie = ({ onClose,onAjouter}) => {
     // Récupération de la liste de types de comapgnie
     useEffect(() => {
     
-        const typesCompagnie = axios.get('/api/types-compagnie/')
+        const typesCompagnie = axios.get(`${apiUrl}/api/types-compagnie/`)
         
         .then((response) => {
 

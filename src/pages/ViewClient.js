@@ -12,6 +12,8 @@ const ViewClient = () => {
   const [errorMessages, setErrorMessages] = useState({});
   const [showError, setShowError] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
+  const apiUrl = process.env.REACT_APP_API_URL;
+
   const handleError = (errors) => {
     setShowError(true);
     setErrorMessages(errors);
@@ -22,7 +24,7 @@ const ViewClient = () => {
   };
 
   useEffect(() => {
-    axios.get(`/api/clients/${id}`)
+    axios.get(`${apiUrl}/api/clients/${id}`)
       .then((response) => {
         setClientData(response.data);
         setIsLoaded(true);

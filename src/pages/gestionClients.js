@@ -14,6 +14,7 @@ import { openPageBasedOnId , reloadPage , openPage , handleFilterChange} from '.
 //Entete du tableau de gestion des clients
 const headers = ['Raison Sociale', 'Somme Due','Actions'];
 
+const apiUrl = process.env.REACT_APP_API_URL;
 
 const GestionClients = () => {
   const [errorMessages, setErrorMessages] = useState({});
@@ -55,7 +56,7 @@ const GestionClients = () => {
 
   useEffect(() => {
     axios
-      .get('/api/clients/')
+      .get(`${apiUrl}/api/clients/`)
       .then((response) => {
         const clientsData = response.data;
   
@@ -94,7 +95,7 @@ const GestionClients = () => {
       setShowDialog(false);
       setIsLoaded(false);
       axios
-       .delete(`/api/clients/${clientTodelete}/`)
+       .delete(`${apiUrl}/api/clients/${clientTodelete}/`)
        .then(() => {
           setShowDialog(false);
           setIsLoaded(true);
@@ -111,9 +112,9 @@ const GestionClients = () => {
     };
     
     const tableActions = [
-      <IconCash key="cash" onClick={(event) => openPageBasedOnId(event.target.closest('tr').id, '/gestionClients/detailsClient/')} />,
-      <IconView key="view" onClick={(event) => openPageBasedOnId(event.target.closest('tr').id, '/gestionClients/ViewClient/')} />,
-      <IconEdit key="edit" onClick={(event) => openPageBasedOnId(event.target.closest('tr').id, '/gestionClients/EditClient/')} />,
+      <IconCash key="cash" onClick={(event) => openPageBasedOnId(event.target.closest('tr').id, 'gestionClients/detailsClient/')} />,
+      <IconView key="view" onClick={(event) => openPageBasedOnId(event.target.closest('tr').id, 'gestionClients/ViewClient/')} />,
+      <IconEdit key="edit" onClick={(event) => openPageBasedOnId(event.target.closest('tr').id, 'gestionClients/EditClient/')} />,
       <IconDelete key="delete" onClick={handleDeleteClick} />
       // Add more icon components for other actions
     ];
@@ -129,7 +130,7 @@ const GestionClients = () => {
             ]} onFilterChange={handleFilterChangeWrapper} />
             <span className={styles.buttons_span}>
                 <button className={`${buttonStyles.secondary}`} onClick={() => reloadPage()} children='Actualiser' />    
-                <button className={`${buttonStyles.primaryButtonY}`} children='Nouveau'  onClick={() => openPage("/gestionClients/NouveauClient")}/>
+                <button className={`${buttonStyles.primaryButtonY}`} children='Nouveau'  onClick={() => openPage("gestionClients/NouveauClient")}/>
             </span>
             
         </span>

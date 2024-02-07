@@ -14,7 +14,8 @@ function ViewFactures() {
    
     //Recuperer le numero dossier choisie
     const { id } = useParams();
-    
+    const apiUrl = process.env.REACT_APP_API_URL;
+
     const [errorMessages, setErrorMessages] = useState({});
     const [showError, setShowError] = useState(false);
     const [showSuccess, setShowSuccess] = useState(false);
@@ -31,10 +32,10 @@ function ViewFactures() {
     useEffect(() => {
         // Create axios requests for both data fetching
         while(id==null){}
-        const facture = axios.get(`/api/factures-definitives/${id}/`); // Replace with your other endpoint
-        const debours = axios.get(`/api/factures-definitives/${id}/debours/`);
-        const prestations = axios.get(`/api/factures-definitives/${id}/prestations/`);
-        const calculs = axios.get(`/api/factures-definitives/${id}/calcul/`);
+        const facture = axios.get(`${apiUrl}/api/factures-definitives/${id}/`); // Replace with your other endpoint
+        const debours = axios.get(`${apiUrl}/api/factures-definitives/${id}/debours/`);
+        const prestations = axios.get(`${apiUrl}/api/factures-definitives/${id}/prestations/`);
+        const calculs = axios.get(`${apiUrl}/api/factures-definitives/${id}/calcul/`);
 
 
 
@@ -138,7 +139,7 @@ function ViewFactures() {
       };
 
     const handlePrint = () =>{
-        axios.get(`/api/factures-definitives/${id}/pdf/`, { responseType: 'blob'})
+        axios.get(`${apiUrl}/api/factures-definitives/${id}/pdf/`, { responseType: 'blob'})
 
         .then((response) => {
             const facturePDF = response.data;

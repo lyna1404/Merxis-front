@@ -18,6 +18,7 @@ import TabPays from './Tabs/TabPays';
 
 
 function OptionsDevises() {
+  const apiUrl = process.env.REACT_APP_API_URL;
 
     const [filteredData, setFilteredData] = useState([]);
     const [errorMessages, setErrorMessages] = useState({});
@@ -35,7 +36,7 @@ function OptionsDevises() {
 
     // Récupérer la liste des pays 
     useEffect(() => {
-      axios.get(`/api/pays/`)
+      axios.get(`${apiUrl}/api/pays/`)
       .then((response) => {
           const paysData = response.data;
 
@@ -120,7 +121,7 @@ function OptionsDevises() {
           nom: data.nom,
         };
        
-        const paysCreated =  axios.post(`/api/pays/`, JSON.stringify(pays), {
+        const paysCreated =  axios.post(`${apiUrl}/api/pays/`, JSON.stringify(pays), {
           headers: {
             'Content-Type': 'application/json',
           }
@@ -147,7 +148,7 @@ function OptionsDevises() {
         setShowDialog(false);
         setIsLoaded(false);
         axios
-         .delete(`/api/pays/${paysToDelete}/`)
+         .delete(`${apiUrl}/api/pays/${paysToDelete}/`)
          .then(() => {
             setShowDialog(false);
             setIsLoaded(true);

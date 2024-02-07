@@ -8,6 +8,7 @@ import stylesLoader from '../../../gestionClients.module.css'
 
 
 function EditBulletinScanner({id, dossier, declaration, onAjouter, onClose}) {
+  const apiUrl = process.env.REACT_APP_API_URL;
 
     const [isLoaded, setIsLoaded] = useState(false);
     const [isLoadedEmb, setIsLoadedEmb] = useState(false);
@@ -39,8 +40,8 @@ function EditBulletinScanner({id, dossier, declaration, onAjouter, onClose}) {
 
 
     useEffect(() => {
-        const emb =  axios.get(`/api/dossiers/${dossier.dossier_pk}/emballages/`);
-        const bs =  axios.get(`/api/dossiers/${dossier.dossier_pk}/bulletin-scanner/`);
+        const emb =  axios.get(`${apiUrl}/api/dossiers/${dossier.dossier_pk}/emballages/`);
+        const bs =  axios.get(`${apiUrl}/api/dossiers/${dossier.dossier_pk}/bulletin-scanner/`);
 
         Promise.all([emb,bs])
         .then((responses) => {

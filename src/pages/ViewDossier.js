@@ -25,6 +25,7 @@ function ViewDossier() {
     const [showError, setShowError] = useState(false);
     const [showDocumentForm, setShowDocumentForm] = useState(false);
     const [showSuccess, setShowSuccess] = useState(false);
+    const apiUrl = process.env.REACT_APP_API_URL;
 
     const [isLoadedDossier, setIsLoadedDossier] = useState(false);
     const [isLoadedDeclaration, setIsLoadedDeclaration] = useState(false);
@@ -36,7 +37,7 @@ function ViewDossier() {
 
     // Récupérer le dossier
       useEffect(() => {
-        axios.get(`/api/dossiers/${id}/`)
+        axios.get(`${apiUrl}/api/dossiers/${id}/`)
         .then((response) => {
           const dossierResponse = response.data;
           setDossierData(dossierResponse);
@@ -93,7 +94,7 @@ function ViewDossier() {
 
     // Récupérer la déclaration du dossier
     useEffect(() => {
-        axios.get(`/api/dossiers/${id}/declaration/`)
+        axios.get(`${apiUrl}/api/dossiers/${id}/declaration/`)
         .then((response) => {
             const declarationResponse = response.data;
             setDeclarationData(declarationResponse);
@@ -137,7 +138,7 @@ function ViewDossier() {
 
     // Récupérer la liste d'emballage du dossier
     useEffect(() => {
-      axios.get(`/api/dossiers/${id}/emballages/`)
+      axios.get(`${apiUrl}/api/dossiers/${id}/emballages/`)
       .then((response) => {
           const emballagesData = response.data;
 

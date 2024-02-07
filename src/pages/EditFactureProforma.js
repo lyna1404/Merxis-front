@@ -24,6 +24,7 @@ import Select from 'react-select';
 function EditFactureProforma() {
 
     const { id } = useParams();
+    const apiUrl = process.env.REACT_APP_API_URL;
 
     const [errorMessages, setErrorMessages] = useState({});
     const [showError, setShowError] = useState(false);
@@ -100,7 +101,7 @@ function EditFactureProforma() {
         setShowDialog(false);
         setIsLoaded(false);
         axios
-         .delete(`/api/factures-proforma/${id}/prestations/${DebPresToDelete}`)
+         .delete(`${apiUrl}/api/factures-proforma/${id}/prestations/${DebPresToDelete}`)
          .then(() => {
             setShowDialog(false);
             setIsLoaded(true);
@@ -120,7 +121,7 @@ function EditFactureProforma() {
         setShowDialog(false);
         setIsLoaded(false);
         axios
-         .delete(`/api/factures-proforma/${id}/debours/${DebPresToDelete}`)
+         .delete(`${apiUrl}/api/factures-proforma/${id}/debours/${DebPresToDelete}`)
          .then(() => {
             setShowDialog(false);
             setIsLoaded(true);
@@ -143,8 +144,8 @@ function EditFactureProforma() {
           // Récupération de la liste de dossiers
     useEffect(() => {
         
-      const clients = axios.get('/api/clients/');
-      const marchandises = axios.get('/api/natures-marchandise/')
+      const clients = axios.get(`${apiUrl}/api/clients/`);
+      const marchandises = axios.get(`${apiUrl}/api/natures-marchandise/`)
   
       Promise.all([clients, marchandises])
       .then((responses) => {
@@ -190,13 +191,13 @@ function EditFactureProforma() {
     useEffect(() => {
         // Create axios requests for both data fetching
         while(id==null){}
-        const facture = axios.get(`/api/factures-proforma/${id}/`); // Replace with your other endpoint
-        const debours = axios.get(`/api/factures-proforma/${id}/debours/`);
-        const prestations = axios.get(`/api/factures-proforma/${id}/prestations/`);
-        const calculs = axios.get(`/api/factures-proforma/${id}/calcul/`);
-        const tyoesDebours = axios.get(`/api/types-debours/`);
-        const modes = axios.get(`/api/modes-paiement-debours/`);
-        const typesPres = axios.get(`/api/types-prestation/`);
+        const facture = axios.get(`${apiUrl}/api/factures-proforma/${id}/`); // Replace with your other endpoint
+        const debours = axios.get(`${apiUrl}/api/factures-proforma/${id}/debours/`);
+        const prestations = axios.get(`${apiUrl}/api/factures-proforma/${id}/prestations/`);
+        const calculs = axios.get(`${apiUrl}/api/factures-proforma/${id}/calcul/`);
+        const tyoesDebours = axios.get(`${apiUrl}/api/types-debours/`);
+        const modes = axios.get(`${apiUrl}/api/modes-paiement-debours/`);
+        const typesPres = axios.get(`${apiUrl}/api/types-prestation/`);
 
 
 
@@ -335,7 +336,7 @@ function EditFactureProforma() {
     const handleAjouterDeb = (data) => {
         setIsLoaded(false);
         axios
-            .post(`/api/factures-proforma/${id}/debours/`, JSON.stringify(data), {
+            .post(`${apiUrl}/api/factures-proforma/${id}/debours/`, JSON.stringify(data), {
                 headers: {
                     'Content-Type': 'application/json'
                 }
@@ -355,7 +356,7 @@ function EditFactureProforma() {
     const handleAjouterPres = (data) => {
         setIsLoaded(false);
         axios
-            .post(`/api/factures-proforma/${id}/prestations/`, JSON.stringify(data), {
+            .post(`${apiUrl}/api/factures-proforma/${id}/prestations/`, JSON.stringify(data), {
                 headers: {
                     'Content-Type': 'application/json'
                 }
@@ -387,7 +388,7 @@ function EditFactureProforma() {
         };
         
         axios
-        .put(`/api/factures-proforma/${id}/`, fact, {
+        .put(`${apiUrl}/api/factures-proforma/${id}/`, fact, {
         headers: {
           'Content-Type': 'application/json',
         }
@@ -426,7 +427,7 @@ function EditFactureProforma() {
     };
 
     const handlePrint = () =>{
-      axios.get(`/api/factures-proforma/${id}/pdf/`, { responseType: 'blob'})
+      axios.get(`${apiUrl}/api/factures-proforma/${id}/pdf/`, { responseType: 'blob'})
 
       .then((response) => {
           const facturePDF = response.data;

@@ -16,6 +16,7 @@ const AjouterEntrepot = ({ onClose,onAjouter}) => {
     const [typePk, setTypePk] = useState('');
     const [type, setType] = useState('');
     const [listeTypesEntrepots, setListeTypesEntrepots] = useState([]);
+    const apiUrl = process.env.REACT_APP_API_URL;
 
 
     const [errorMessages, setErrorMessages] = useState();
@@ -24,7 +25,7 @@ const AjouterEntrepot = ({ onClose,onAjouter}) => {
     // Récupération de la liste de types d'entrepots
     useEffect(() => {
     
-        const typesEntrepots = axios.get('/api/types-entrepot/')
+        const typesEntrepots = axios.get(`${apiUrl}/api/types-entrepot/`)
         
         .then((response) => {
 

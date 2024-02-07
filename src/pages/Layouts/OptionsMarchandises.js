@@ -18,6 +18,7 @@ import { IconDelete } from '../../components/icons';
 
 
 function OptionsDevises() {
+  const apiUrl = process.env.REACT_APP_API_URL;
 
     const [filteredData, setFilteredData] = useState([]);
     const [errorMessages, setErrorMessages] = useState({});
@@ -36,7 +37,7 @@ function OptionsDevises() {
 
     // Récupérer la liste des marchandises 
     useEffect(() => {
-      axios.get('/api/natures-marchandise/')
+      axios.get(`${apiUrl}/api/natures-marchandise/`)
       .then((response) => {
           const marchandisesData = response.data;
           if (typeof marchandisesData === 'object' && marchandisesData !== null) {
@@ -120,7 +121,7 @@ function OptionsDevises() {
           designationArabe: data.designationArabe,
         };
        
-        const marchCreated =  axios.post(`/api/natures-marchandise/`, JSON.stringify(march), {
+        const marchCreated =  axios.post(`${apiUrl}/api/natures-marchandise/`, JSON.stringify(march), {
           headers: {
             'Content-Type': 'application/json',
           }
@@ -147,7 +148,7 @@ function OptionsDevises() {
         setShowDialog(false);
         setIsLoaded(false);
         axios
-         .delete(`/api/natures-marchandise/${marchandiseToDelete}/`)
+         .delete(`${apiUrl}/api/natures-marchandise/${marchandiseToDelete}/`)
          .then(() => {
             setShowDialog(false);
             setIsLoaded(true);

@@ -13,6 +13,7 @@ const AjouterLieu = ({ onClose,onAjouter}) => {
     const [wilayaPk, setWilayaPk] = useState('');
     const [wilaya, setWilaya] = useState('');
     const [listeWilayas, setListeWilayas] = useState([]);
+    const apiUrl = process.env.REACT_APP_API_URL;
 
     const [errorMessages, setErrorMessages] = useState();
     const [showError, setShowError] = useState(false);
@@ -20,7 +21,7 @@ const AjouterLieu = ({ onClose,onAjouter}) => {
     // Récupération de la liste de wilayas 
     useEffect(() => {
     
-        const wilayas = axios.get('/api/wilayas/')
+        const wilayas = axios.get(`${apiUrl}/api/wilayas/`)
         
         .then((response) => {
 

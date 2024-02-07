@@ -20,6 +20,7 @@ import TabMoyensTransport from './Tabs/TabMoyensTransport'
 import TabEmballages from './Tabs/TabEmballages';
 
 function OptionsTransports() {
+  const apiUrl = process.env.REACT_APP_API_URL;
 
     const [filteredMoyenData, setFilteredMoyenData] = useState([]);
     const [errorMoyenMessages, setMoyenErrorMessages] = useState({});
@@ -81,7 +82,7 @@ function OptionsTransports() {
 
     // Récupérer la liste des moyens 
     useEffect(() => {
-      axios.get('/api/moyens-transport/')
+      axios.get(`${apiUrl}/api/moyens-transport/`)
       .then((response) => {
           const moyenData = response.data;
           if (typeof moyenData === 'object' && moyenData !== null) {
@@ -111,7 +112,7 @@ function OptionsTransports() {
 
     // Récupérer la liste des compagnies 
     useEffect(() => {
-        axios.get('/api/compagnies-transport/')
+        axios.get(`${apiUrl}/api/compagnies-transport/`)
         .then((response) => {
             const compagnieData = response.data;
             if (typeof compagnieData === 'object' && compagnieData !== null) {
@@ -145,7 +146,7 @@ function OptionsTransports() {
   
     // Récupérer la liste des types 
     useEffect(() => {
-        axios.get('/api/types-compagnie/')
+        axios.get(`${apiUrl}/api/types-compagnie/`)
         .then((response) => {
             const typeData = response.data;
             if (typeof typeData === 'object' && typeData !== null) {
@@ -175,7 +176,7 @@ function OptionsTransports() {
 
     // Récupérer la liste des emballages 
     useEffect(() => {
-        axios.get('/api/emballages/')
+        axios.get(`${apiUrl}/api/emballages/`)
         .then((response) => {
             const emballageData = response.data;
             if (typeof emballageData === 'object' && emballageData !== null) {
@@ -213,9 +214,9 @@ function OptionsTransports() {
     const [piedsEmb, setPiedsEmb] = useState([]);
 
     useEffect(() => {
-      const genresEmballage = axios.get('/api/genres-emballage/');
-      const typesEmballage = axios.get('/api/types-emballage/');
-      const piedsEmballage = axios.get('/api/nbr-pieds/');
+      const genresEmballage = axios.get(`${apiUrl}/api/genres-emballage/`);
+      const typesEmballage = axios.get(`${apiUrl}/api/types-emballage/`);
+      const piedsEmballage = axios.get(`${apiUrl}/api/nbr-pieds/`);
 
       Promise.all([genresEmballage, typesEmballage, piedsEmballage])
       .then((responses) => {
@@ -464,7 +465,7 @@ function OptionsTransports() {
           nom: data.nom,
         };
        
-        const moyenCreated =  axios.post(`/api/moyens-transport/`, JSON.stringify(moyen), {
+        const moyenCreated =  axios.post(`${apiUrl}/api/moyens-transport/`, JSON.stringify(moyen), {
           headers: {
             'Content-Type': 'application/json',
           }
@@ -494,7 +495,7 @@ function OptionsTransports() {
           email: data.email,
         };
        
-        const compagnieCreated =  axios.post(`/api/compagnies-transport/`, JSON.stringify(comp), {
+        const compagnieCreated =  axios.post(`${apiUrl}/api/compagnies-transport/`, JSON.stringify(comp), {
           headers: {
             'Content-Type': 'application/json',
           }
@@ -520,7 +521,7 @@ function OptionsTransports() {
           type: data.type,
         };
        
-        const regimeCreated =  axios.post(`/api/types-compagnie/`, JSON.stringify(type), {
+        const regimeCreated =  axios.post(`${apiUrl}/api/types-compagnie/`, JSON.stringify(type), {
           headers: {
             'Content-Type': 'application/json',
           }
@@ -549,7 +550,7 @@ function OptionsTransports() {
           nbrPieds: data.nbrPieds,
         };
        
-        const emballageCreated =  axios.post(`/api/emballages/`, JSON.stringify(emballage), {
+        const emballageCreated =  axios.post(`${apiUrl}/api/emballages/`, JSON.stringify(emballage), {
           headers: {
             'Content-Type': 'application/json',
           }
@@ -575,7 +576,7 @@ function OptionsTransports() {
           nom: data.nom,
         };
        
-        const moyenCreated =  axios.put(`/api/moyens-transport/${moyenToModify}/`, JSON.stringify(moyen), {
+        const moyenCreated =  axios.put(`${apiUrl}/api/moyens-transport/${moyenToModify}/`, JSON.stringify(moyen), {
           headers: {
             'Content-Type': 'application/json',
           }
@@ -607,7 +608,7 @@ function OptionsTransports() {
             email: data.email,
           };
          
-        const compagnieModified =  axios.put(`/api/compagnies-transport/${compagnieToModify}/`, JSON.stringify(comp), {
+        const compagnieModified =  axios.put(`${apiUrl}/api/compagnies-transport/${compagnieToModify}/`, JSON.stringify(comp), {
           headers: {
             'Content-Type': 'application/json',
           }
@@ -635,7 +636,7 @@ function OptionsTransports() {
                 type: data.type,
               };
                  
-            const typeModified =  axios.put(`/api/types-compagnie/${typeToModify}/`, JSON.stringify(type), {
+            const typeModified =  axios.put(`${apiUrl}/api/types-compagnie/${typeToModify}/`, JSON.stringify(type), {
               headers: {
                 'Content-Type': 'application/json',
               }
@@ -666,7 +667,7 @@ function OptionsTransports() {
             nbrPieds: data.nbrPieds,
           };
                
-          const emballageModified =  axios.put(`/api/emballages/${emballageToModify}/`, JSON.stringify(emballage), {
+          const emballageModified =  axios.put(`${apiUrl}/api/emballages/${emballageToModify}/`, JSON.stringify(emballage), {
             headers: {
               'Content-Type': 'application/json',
             }
@@ -696,7 +697,7 @@ function OptionsTransports() {
         setShowMoyenDialog(false);
         setIsLoadedMoyen(false);
         axios
-         .delete(`/api/moyens-transport/${moyenToDelete}/`)
+         .delete(`${apiUrl}/api/moyens-transport/${moyenToDelete}/`)
          .then(() => {
             setShowMoyenDialog(false);
             setIsLoadedMoyen(true);
@@ -723,7 +724,7 @@ function OptionsTransports() {
         setShowCompagniesDialog(false);
         setIsLoadedCompagnies(false);
         axios
-         .delete(`/api/compagnies-transport/${compagnieToDelete}/`)
+         .delete(`${apiUrl}/api/compagnies-transport/${compagnieToDelete}/`)
          .then(() => {
             setShowCompagniesDialog(false);
             setIsLoadedCompagnies(true);
@@ -750,7 +751,7 @@ function OptionsTransports() {
         setShowTypesDialog(false);
         setIsLoadedTypes(false);
         axios
-         .delete(`/api/types-compagnie/${typeToDelete}/`)
+         .delete(`${apiUrl}/api/types-compagnie/${typeToDelete}/`)
          .then(() => {
             setShowTypesDialog(false);
             setIsLoadedTypes(true);
@@ -777,7 +778,7 @@ function OptionsTransports() {
         setShowEmballagesDialog(false);
         setIsLoadedEmballages(false);
         axios
-         .delete(`/api/emballages/${emballageToDelete}/`)
+         .delete(`${apiUrl}/api/emballages/${emballageToDelete}/`)
          .then(() => {
             setShowEmballagesDialog(false);
             setIsLoadedEmballages(true);

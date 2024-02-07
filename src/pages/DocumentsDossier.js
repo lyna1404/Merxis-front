@@ -12,7 +12,8 @@ import {reloadPage} from '../Utils/actionUtils';
 import AjouterDocDossier from './AjouterDocDossier';
 
 function DocumentsDossier({onClose,onAjouter,onFileUpload,onFileUploadClick,inputFile, dossierPk}) {
-  
+  const apiUrl = process.env.REACT_APP_API_URL;
+
     const [showForm, setShowForm] = useState(false);
     const [showError, setShowError] = useState(false);
     const [showDialog, setShowDialog] = useState(false);
@@ -51,7 +52,7 @@ function DocumentsDossier({onClose,onAjouter,onFileUpload,onFileUploadClick,inpu
         setShowDialog(false);
         setIsLoadedDocument(false);
         axios
-         .delete(`/api/dossiers/${dossierPk}/documents/${docToDelete}/`)
+         .delete(`${apiUrl}/api/dossiers/${dossierPk}/documents/${docToDelete}/`)
          .then(() => {
             setShowDialog(false);
             setIsLoadedDocument(true);
@@ -106,7 +107,7 @@ function DocumentsDossier({onClose,onAjouter,onFileUpload,onFileUploadClick,inpu
         lieuEtablissement: data.lieu,
       }
      
-      const docCreated =  axios.post(`/api/dossiers/${dossierPk}/documents/`, JSON.stringify(doc), {
+      const docCreated =  axios.post(`${apiUrl}/api/dossiers/${dossierPk}/documents/`, JSON.stringify(doc), {
         headers: {
           'Content-Type': 'application/json',
         }
@@ -125,7 +126,7 @@ function DocumentsDossier({onClose,onAjouter,onFileUpload,onFileUploadClick,inpu
 
     // Récupérer les documents du dossier 
     useEffect(() => {
-        const bordereau = axios.get(`/api/dossiers/${dossierPk}/documents/`)
+        const bordereau = axios.get(`${apiUrl}/api/dossiers/${dossierPk}/documents/`)
     
           .then((response) => {
             const documentsData = response.data;

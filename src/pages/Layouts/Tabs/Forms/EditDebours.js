@@ -15,12 +15,13 @@ const EditDebours = ({ onClose,onAjouter, toModify}) => {
 
     const [errorMessages, setErrorMessages] = useState();
     const [showError, setShowError] = useState(false);
+    const apiUrl = process.env.REACT_APP_API_URL;
 
 
     // Récupération du Debours
     useEffect(() => {
 
-        axios.get(`/api/types-debours/${toModify}/`)
+        axios.get(`${apiUrl}/api/types-debours/${toModify}/`)
         .then((response) => {
           const DeboursResponse = response.data;
           const {designation} = DeboursResponse;

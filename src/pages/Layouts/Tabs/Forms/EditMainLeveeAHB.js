@@ -8,6 +8,7 @@ import stylesLoader from '../../../gestionClients.module.css'
 
 
 function EditMainLeveeAHB({id, dossier, declaration, onAjouter, onClose}) {
+    const apiUrl = process.env.REACT_APP_API_URL;
 
     const [isLoaded, setIsLoaded] = useState(false);
     const [numLTA, setNumLTA]= useState('');
@@ -28,7 +29,7 @@ function EditMainLeveeAHB({id, dossier, declaration, onAjouter, onClose}) {
 
 
     useEffect(() => {
-        axios.get(`/api/dossiers/${dossier.dossier_pk}/demande-main-levee-ahb/`)
+        axios.get(`${apiUrl}/api/dossiers/${dossier.dossier_pk}/demande-main-levee-ahb/`)
 
         .then((response) => {
             const docData = response.data;

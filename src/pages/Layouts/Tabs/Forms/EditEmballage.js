@@ -17,11 +17,12 @@ const EditEmballage = ({ onClose,onAjouter,genresEmb,piedsEmb,typesEmb, toModify
     const [embData, setEmbData] = useState([]);
 
     const [isLoaded, setIsLoaded] = useState(false);
+    const apiUrl = process.env.REACT_APP_API_URL;
 
     // Récupération de l'emballage
     useEffect(() => {
 
-      axios.get(`/api/emballages/${toModify}/`)
+      axios.get(`${apiUrl}/api/emballages/${toModify}/`)
       .then((response) => {
         const EmbResponse = response.data;
         setEmbData(EmbResponse);

@@ -27,6 +27,7 @@ import { reloadPage , handleFilterChange} from '../Utils/actionUtils';
 // Date et heure reception a utilisé avec datepicker
 
 function EditDossier() {
+  const apiUrl = process.env.REACT_APP_API_URL;
 
     const { id } = useParams();
     const [dossierData, setDossierData] = useState({});
@@ -48,7 +49,7 @@ function EditDossier() {
     // Récupérer le dossier
     useEffect(() => {
 
-        axios.get(`/api/dossiers/${id}/`)
+        axios.get(`${apiUrl}/api/dossiers/${id}/`)
         .then((response) => {
           const dossierResponse = response.data;
           setDossierData(dossierResponse);
@@ -123,7 +124,7 @@ function EditDossier() {
 
     // Récupérer la déclaration du dossier
     useEffect(() => {
-        axios.get(`/api/dossiers/${id}/declaration/`)
+        axios.get(`${apiUrl}/api/dossiers/${id}/declaration/`)
         .then((response) => {
             const declarationResponse = response.data;
             setDeclarationData(declarationResponse);
@@ -176,7 +177,7 @@ function EditDossier() {
 
     // Récupérer la liste d'emballage du dossier
     useEffect(() => {
-      axios.get(`/api/dossiers/${id}/emballages/`)
+      axios.get(`${apiUrl}/api/dossiers/${id}/emballages/`)
       .then((response) => {
           const emballagesData = response.data;
           if (typeof emballagesData === 'object' && emballagesData !== null) {
@@ -235,14 +236,14 @@ function EditDossier() {
    // Récupération des listes pour les searchable drop down dans Informations Générales
    useEffect(() => {
         
-          const clients = axios.get('/api/clients/');
-          const fournisseurs = axios.get('/api/fournisseurs/');
-          const devises = axios.get('/api/devises/');
-          const transports = axios.get('/api/moyens-transport/');
-          const compagnies = axios.get('/api/compagnies-transport/');
-          const marchandises = axios.get('/api/natures-marchandise/');
-          const entreposages = axios.get('/api/entrepots/');
-          const livraisons = axios.get('/api/lieux-livraison/');
+          const clients = axios.get(`${apiUrl}/api/clients/`);
+          const fournisseurs = axios.get(`${apiUrl}/api/fournisseurs/`);
+          const devises = axios.get(`${apiUrl}/api/devises/`);
+          const transports = axios.get(`${apiUrl}/api/moyens-transport/`);
+          const compagnies = axios.get(`${apiUrl}/api/compagnies-transport/`);
+          const marchandises = axios.get(`${apiUrl}/api/natures-marchandise/`);
+          const entreposages = axios.get(`${apiUrl}/api/entrepots/`);
+          const livraisons = axios.get(`${apiUrl}/api/lieux-livraison/`);
 
           
           Promise.all([clients, fournisseurs, devises, transports, compagnies, marchandises, entreposages, livraisons])
@@ -275,9 +276,9 @@ function EditDossier() {
     // Récupération des listes statiques dans Informations Générales
     useEffect(() => {
         
-        const etats = axios.get('/api/etats-dossier/');
-        const natures = axios.get('/api/natures-dossier/');
-        const typesTransport = axios.get('/api/types-transport/');
+        const etats = axios.get(`${apiUrl}/api/etats-dossier/`);
+        const natures = axios.get(`${apiUrl}/api/natures-dossier/`);
+        const typesTransport = axios.get(`${apiUrl}/api/types-transport/`);
         
         Promise.all([etats, natures, typesTransport])
         .then((responses) => {
@@ -313,9 +314,9 @@ function EditDossier() {
 
     // Récupérations des listes pour les searchable drop down dans Informations de déclaration
     useEffect(() => {
-      const paiements = axios.get('/api/modes-paiement/');
-      const financements = axios.get('/api/modes-financement/');
-      const operations = axios.get('/api/types-operation/');
+      const paiements = axios.get(`${apiUrl}/api/modes-paiement/`);
+      const financements = axios.get(`${apiUrl}/api/modes-financement/`);
+      const operations = axios.get(`${apiUrl}/api/types-operation/`);
 
       Promise.all([paiements, financements, operations])
       .then((responses) => {
@@ -336,10 +337,10 @@ function EditDossier() {
 
     // Récupération des listes statiques dans Informations de déclaration
      useEffect(() => {
-      const livraisons = axios.get('/api/modes-livraison/');
-      const regimes = axios.get('/api/regimes-douaniers/');
-      const pays = axios.get('/api/pays/');
-      const bureaux = axios.get('/api/bureaux-douane/');
+      const livraisons = axios.get(`${apiUrl}/api/modes-livraison/`);
+      const regimes = axios.get(`${apiUrl}/api/regimes-douaniers/`);
+      const pays = axios.get(`${apiUrl}/api/pays/`);
+      const bureaux = axios.get(`${apiUrl}/api/bureaux-douane/`);
 
       Promise.all([livraisons, regimes, pays, bureaux])
       .then((responses) => {
@@ -366,7 +367,7 @@ function EditDossier() {
     // Récupération des listes drop down dans Emballages
     useEffect(() => {
      
-      const embs = axios.get('/api/emballages/')
+      const embs = axios.get(`${apiUrl}/api/emballages/`)
 
       .then((response) => {
         const embsData = response.data;
@@ -381,9 +382,9 @@ function EditDossier() {
 
     // Récupération des listes statiques dans Emballages
     useEffect(() => {
-      const genresEmballage = axios.get('/api/genres-emballage/');
-      const typesEmballage = axios.get('/api/types-emballage/');
-      const piedsEmballage = axios.get('/api/nbr-pieds/');
+      const genresEmballage = axios.get(`${apiUrl}/api/genres-emballage/`);
+      const typesEmballage = axios.get(`${apiUrl}/api/types-emballage/`);
+      const piedsEmballage = axios.get(`${apiUrl}/api/nbr-pieds/`);
 
       Promise.all([genresEmballage, typesEmballage, piedsEmballage])
       .then((responses) => {
@@ -516,7 +517,7 @@ function EditDossier() {
         setShowDialog(false);
         setIsLoadedEmballage(false);
         axios
-         .delete(`/api/dossiers/${id}/emballages/${emballageTodelete}/`)
+         .delete(`${apiUrl}/api/dossiers/${id}/emballages/${emballageTodelete}/`)
          .then(() => {
             setShowDialog(false);
             setIsLoadedEmballage(true);
@@ -596,7 +597,7 @@ function EditDossier() {
           nbrPieds: data.pieds? data.pieds: ''
         }
 
-        const emballageEdited = await  axios.put(`/api/emballages/${data.embPk}/`, JSON.stringify(emb), {
+        const emballageEdited = await  axios.put(`${apiUrl}/api/emballages/${data.embPk}/`, JSON.stringify(emb), {
           headers: {
             'Content-Type': 'application/json',
           }
@@ -619,7 +620,7 @@ function EditDossier() {
           poidsNetDSTR: data.poidsNetDSTR? data.poidsNetDSTR : '',
         };
        
-        const emballageDossierCreated =  axios.post(`/api/dossiers/${id}/emballages/`, JSON.stringify(emballageDossier), {
+        const emballageDossierCreated =  axios.post(`${apiUrl}/api/dossiers/${id}/emballages/`, JSON.stringify(emballageDossier), {
           headers: {
             'Content-Type': 'application/json',
           }
@@ -792,12 +793,12 @@ function EditDossier() {
               observation: observation,
             };
             
-            const dossierEdited =  axios.put(`/api/dossiers/${id}/`, dossier, {
+            const dossierEdited =  axios.put(`${apiUrl}/api/dossiers/${id}/`, dossier, {
               headers: {
               'Content-Type': 'application/json',
               }
             });
-            const declarationEdited =  axios.put(`/api/dossiers/${id}/declaration/`, declaration, {
+            const declarationEdited =  axios.put(`${apiUrl}/api/dossiers/${id}/declaration/`, declaration, {
                 headers: {
                   'Content-Type': 'application/json',
                 }

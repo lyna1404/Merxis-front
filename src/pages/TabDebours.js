@@ -8,7 +8,7 @@ const TabDebours = ({onClose, onAjouter, onFileUpload, onFileUploadClick,inputFi
 
 
   const [activeTab, setActiveTab] = useState("tab1");
-  
+
   return (
     <div className={styles.container}>
         <div className={styles.sidebar}>

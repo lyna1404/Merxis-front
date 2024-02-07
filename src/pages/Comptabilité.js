@@ -14,7 +14,6 @@ import { openPageBasedOnId , reloadPage , handleFilterChange} from '../Utils/act
 
 const headers = ['N° Dossier', 'N° Rep', 'Regime douanier', 'Client', 'Nature marchandise', 'Statut dossier', 'Action'];
 
-  
 function Comptabilite() {
     const params = {
         is_declared: 'True'
@@ -37,10 +36,13 @@ function Comptabilite() {
   const handleErrorClose = () => {
     setShowError(false);
   };
+
+  const apiUrl = process.env.REACT_APP_API_URL;
+
   useEffect(() => {
     // Create axios requests for both data fetching
-    const dossiers = axios.get(`/api/dossiers/`, { params }); 
-    const etats = axios.get(`/api/etats-dossier/`);
+    const dossiers = axios.get(`${apiUrl}/api/dossiers/`, { params }, {withCredentials:false}); 
+    const etats = axios.get(`${apiUrl}/api/etats-dossier/`, {withCredentials:false});
 
     // Use Promise.all to wait for both requests to complete
     Promise.all([dossiers, etats])
@@ -80,7 +82,7 @@ function Comptabilite() {
   }, []); 
     
     const tableActions = [
-        <IconView key="view"  onClick={(event) => openPageBasedOnId(event.target.closest('tr').id, '/comptabilite/deboursComptabilite/')} />
+        <IconView key="view"  onClick={(event) => openPageBasedOnId(event.target.closest('tr').id, 'comptabilite/deboursComptabilite/')} />
       ];
 
   return (
@@ -108,7 +110,7 @@ function Comptabilite() {
       ) : (
         <ReusableTable data={filteredData} headers={headers} itemsPerPage={8} addlink={false} addactions={true} actionIcons={tableActions} />
       )}
-        {showError && <ErrorMessage onClose={handleErrorClose} errors={JSON.parse(errorMessages)} />}
+        {showError && <ErrorMessage onClose={handleErrorClose} errors={errorMessages} />}
         
 
   </>

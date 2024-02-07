@@ -16,6 +16,7 @@ const AjouterDocDossier = ({ onClose,onAjouter,onFileUpload,onFileUploadClick,in
     const [docPk, setDocPk] = useState(''); 
     const [date, setDate] = useState('');
     const [lieu, setLieu] = useState('');
+    const apiUrl = process.env.REACT_APP_API_URL;
 
     const [docs, setDocs] = useState([]);
     const [selectedDoc, setSelectedDoc] = useState({value: docPk, label: nomDocument});
@@ -34,7 +35,7 @@ const AjouterDocDossier = ({ onClose,onAjouter,onFileUpload,onFileUploadClick,in
 
   // Récupération des documents et types documents
   useEffect(() => {
-    const docs = axios.get(`/api/types-document-dossier/`)
+    const docs = axios.get(`${apiUrl}/api/types-document-dossier/`)
     .then((response) => {
       const docsData = response.data;
       setDocs(docsData);

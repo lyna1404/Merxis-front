@@ -19,6 +19,7 @@ import TabLieux from './Tabs/TabLieux';
 import TabTypesEntrepot from './Tabs/TabTypesEntrepot';
 
 function OptionsEntrepots() {
+  const apiUrl = process.env.REACT_APP_API_URL;
 
     const [isLoadedEntrepots, setIsLoadedEntrepots] = useState(false);
     const [filteredEntrepotsData, setFilteredEntrepotsData] = useState([]);
@@ -67,7 +68,7 @@ function OptionsEntrepots() {
 
     // Récupérer la liste des lieux de livraison 
     useEffect(() => {
-      axios.get('/api/lieux-livraison/')
+      axios.get(`${apiUrl}/api/lieux-livraison/`)
       .then((response) => {
           const lieuData = response.data;
           if (typeof lieuData === 'object' && lieuData !== null) {
@@ -98,7 +99,7 @@ function OptionsEntrepots() {
 
     // Récupérer la liste des Entrepots 
     useEffect(() => {
-        axios.get('/api/entrepots/')
+        axios.get(`${apiUrl}/api/entrepots/`)
         .then((response) => {
             const entrepotData = response.data;
             if (typeof entrepotData === 'object' && entrepotData !== null) {
@@ -133,7 +134,7 @@ function OptionsEntrepots() {
     // Récupération de la liste de types d'entrepots
     useEffect(() => {
     
-        const typesEntrepots = axios.get('/api/types-entrepot/')
+        const typesEntrepots = axios.get(`${apiUrl}/api/types-entrepot/`)
         
         .then((response) => {
           const typeData = response.data;
@@ -349,7 +350,7 @@ function OptionsEntrepots() {
           typeEntrepot: data.typePk
         };
        
-        const entrepotCreated =  axios.post(`/api/entrepots/`, JSON.stringify(entrepot), {
+        const entrepotCreated =  axios.post(`${apiUrl}/api/entrepots/`, JSON.stringify(entrepot), {
           headers: {
             'Content-Type': 'application/json',
           }
@@ -375,7 +376,7 @@ function OptionsEntrepots() {
           type: data.type,
         };
        
-        const lieuCreated =  axios.post(`/api/types-entrepot/`, JSON.stringify(type), {
+        const lieuCreated =  axios.post(`${apiUrl}/api/types-entrepot/`, JSON.stringify(type), {
           headers: {
             'Content-Type': 'application/json',
           }
@@ -402,7 +403,7 @@ function OptionsEntrepots() {
           wilaya: data.wilayaPk,
         };
        
-        const lieuCreated =  axios.post(`/api/lieux-livraison/`, JSON.stringify(lieu), {
+        const lieuCreated =  axios.post(`${apiUrl}/api/lieux-livraison/`, JSON.stringify(lieu), {
           headers: {
             'Content-Type': 'application/json',
           }
@@ -433,7 +434,7 @@ function OptionsEntrepots() {
           typeEntrepot: data.typePk
           };
          
-        const entrepotModified =  axios.put(`/api/entrepots/${entrepotToModify}/`, JSON.stringify(entrepot), {
+        const entrepotModified =  axios.put(`${apiUrl}/api/entrepots/${entrepotToModify}/`, JSON.stringify(entrepot), {
           headers: {
             'Content-Type': 'application/json',
           }
@@ -462,7 +463,7 @@ function OptionsEntrepots() {
                 wilaya: data.wilayaPk,
               };
                  
-            const lieuModified =  axios.put(`/api/lieux-livraison/${lieuToModify}/`, JSON.stringify(lieu), {
+            const lieuModified =  axios.put(`${apiUrl}/api/lieux-livraison/${lieuToModify}/`, JSON.stringify(lieu), {
               headers: {
                 'Content-Type': 'application/json',
               }
@@ -490,7 +491,7 @@ function OptionsEntrepots() {
               type: data.type,
             };
              
-          const typeModified =  axios.put(`/api/types-entrepot/${typeToModify}/`, JSON.stringify(type), {
+          const typeModified =  axios.put(`${apiUrl}/api/types-entrepot/${typeToModify}/`, JSON.stringify(type), {
             headers: {
               'Content-Type': 'application/json',
             }
@@ -521,7 +522,7 @@ function OptionsEntrepots() {
         setShowEntrepotsDialog(false);
         setIsLoadedEntrepots(false);
         axios
-         .delete(`/api/entrepots/${entrepotToDelete}/`)
+         .delete(`${apiUrl}/api/entrepots/${entrepotToDelete}/`)
          .then(() => {
             setShowEntrepotsDialog(false);
             setIsLoadedEntrepots(true);
@@ -548,7 +549,7 @@ function OptionsEntrepots() {
         setShowTypesDialog(false);
         setIsLoadedTypes(false);
         axios
-         .delete(`/api/types-entrepot/${typeToDelete}/`)
+         .delete(`${apiUrl}/api/types-entrepot/${typeToDelete}/`)
          .then(() => {
             setShowTypesDialog(false);
             setIsLoadedTypes(true);
@@ -575,7 +576,7 @@ function OptionsEntrepots() {
         setShowLieuxDialog(false);
         setIsLoadedLieux(false);
         axios
-         .delete(`/api/lieux-livraison/${lieuToDelete}/`)
+         .delete(`${apiUrl}/api/lieux-livraison/${lieuToDelete}/`)
          .then(() => {
             setShowLieuxDialog(false);
             setIsLoadedLieux(true);

@@ -9,7 +9,8 @@ import axios from 'axios';
 
 
 const AjouterDocBordereau = ({ onClose,onAjouter,onFileUpload,onFileUploadClick,inputFile, dossierPk }) => {
-    
+  const apiUrl = process.env.REACT_APP_API_URL;
+
     const [nomDocument, setNomDocument] = useState('');
     const [numDocument, setNumDocument] = useState('');
     const [docPk, setDocPk] = useState(''); 
@@ -40,8 +41,8 @@ const AjouterDocBordereau = ({ onClose,onAjouter,onFileUpload,onFileUploadClick,
 
   // Récupération des documents et types documents
   useEffect(() => {
-    const docs = axios.get(`/api/dossiers/${dossierPk}/documents/`);
-    const types = axios.get('/api/types-document/');
+    const docs = axios.get(`${apiUrl}/api/dossiers/${dossierPk}/documents/`);
+    const types = axios.get(`${apiUrl}/api/types-document/`);
     Promise.all([docs, types])
     .then((responses) => {
       const docsData = responses[0].data;

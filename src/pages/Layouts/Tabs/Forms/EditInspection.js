@@ -10,6 +10,7 @@ import axios from 'axios';
 const EditInspection = ({ onClose,onAjouter, toModify}) => {
     
     const [nom, setNom] = useState('');
+    const apiUrl = process.env.REACT_APP_API_URL;
 
     const [isLoaded, setIsLoaded] = useState(false);
     const [errorMessages, setErrorMessages] = useState();
@@ -32,7 +33,7 @@ const EditInspection = ({ onClose,onAjouter, toModify}) => {
     // Récupération de l'inspection
     useEffect(() => {
     
-      const inspections = axios.get(`/api/مفتشيات-الحدود/${toModify}`)
+      const inspections = axios.get(`${apiUrl}/api/مفتشيات-الحدود/${toModify}`)
       
       .then((response) => {
 

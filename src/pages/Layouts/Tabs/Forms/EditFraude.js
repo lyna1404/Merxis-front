@@ -12,7 +12,8 @@ import labelStyles from "../../../../components/inputField.module.css";
 function EditFraude({id, dossier, declaration, onAjouter, onClose}) {
 
     // Ajouter formulaire emballage
-    
+    const apiUrl = process.env.REACT_APP_API_URL;
+
     const [douanePk, setDouanePk] = useState('');
     const [douane, setDouane] = useState('');
     const [wilayaPk, setWilayaPk] = useState('');
@@ -122,7 +123,7 @@ function EditFraude({id, dossier, declaration, onAjouter, onClose}) {
 
 
     useEffect(() => {
-        const bs =  axios.get(`/api/dossiers/${dossier.dossier_pk}/fraude/`)
+        const bs =  axios.get(`${apiUrl}/api/dossiers/${dossier.dossier_pk}/fraude/`)
 
         .then((response) => {
 
@@ -179,9 +180,9 @@ function EditFraude({id, dossier, declaration, onAjouter, onClose}) {
 
     useEffect(() => {
 
-      const douanes =  axios.get(`/api/مفتشيات-الحدود/`);
-      const lieux =  axios.get(`/api/أماكن-الوصول/`);
-      const wilayas =  axios.get(`/api/wilayas/`)
+      const douanes =  axios.get(`${apiUrl}/api/مفتشيات-الحدود/`);
+      const lieux =  axios.get(`${apiUrl}/api/أماكن-الوصول/`);
+      const wilayas =  axios.get(`${apiUrl}/api/wilayas/`)
 
         Promise.all([douanes, lieux, wilayas])
         .then((responses) => {

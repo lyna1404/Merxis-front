@@ -11,12 +11,13 @@ const EditFournisseur = ({ onClose,onAjouter,toModify}) => {
     
   const [fournissData, setFournissData] = useState('');
   const [isLoaded, setIsLoaded] = useState(false);
+  const apiUrl = process.env.REACT_APP_API_URL;
 
 
     // Récupérer le fournisseur
     useEffect(() => {
 
-      axios.get(`/api/fournisseurs/${toModify}/`)
+      axios.get(`${apiUrl}/api/fournisseurs/${toModify}/`)
       .then((response) => {
         const fournissResponse = response.data;
         setFournissData(fournissResponse);

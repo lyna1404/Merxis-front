@@ -27,7 +27,8 @@ function OptionsDocuments() {
     const [showDialog, setShowDialog] = useState(false);
     const [isLoaded, setIsLoaded] = useState(false);
     const [docToDelete, setDocToDelete] = useState(false);
-    
+    const apiUrl = process.env.REACT_APP_API_URL;
+
     
     // Champs de la parties emballages
    const [docs, setDocs] = useState([]);
@@ -35,7 +36,7 @@ function OptionsDocuments() {
 
     // Récupérer la liste de devises du dossier
     useEffect(() => {
-      axios.get(`/api/types-document-dossier/`)
+      axios.get(`${apiUrl}/api/types-document-dossier/`)
       .then((response) => {
           const docsData = response.data;
 
@@ -118,7 +119,7 @@ function OptionsDocuments() {
           designation: data.designation,
         };
        
-        const docCreated =  axios.post(`/api/types-document-dossier/`, JSON.stringify(doc), {
+        const docCreated =  axios.post(`${apiUrl}/api/types-document-dossier/`, JSON.stringify(doc), {
           headers: {
             'Content-Type': 'application/json',
           }
@@ -147,7 +148,7 @@ function OptionsDocuments() {
         setShowDialog(false);
         setIsLoaded(false);
         axios
-         .delete(`/api/types-document-dossier/${docToDelete}/`)
+         .delete(`${apiUrl}/api/types-document-dossier/${docToDelete}/`)
          .then(() => {
             setShowDialog(false);
             setIsLoaded(true);

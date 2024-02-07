@@ -20,14 +20,15 @@ const EditClient = () => {
     const [showError, setShowError] = useState(false);
     const [showSuccess, setShowSuccess] = useState(false);
     const [isLoaded, setIsLoaded] = useState(false);
+    const apiUrl = process.env.REACT_APP_API_URL;
 
     
 
 
   useEffect(() => {
 
-    const client = axios.get(`/api/clients/${id}`);
-    const statuts = axios.get('/api/statuts-juridiques');
+    const client = axios.get(`${apiUrl}/api/clients/${id}`);
+    const statuts = axios.get(`${apiUrl}/api/statuts-juridiques`);
 
     Promise.all([client, statuts])
     .then((responses) => {
@@ -155,7 +156,7 @@ const handleModifierClient = () => {
     };
     
     axios
-    .put(`/api/clients/${id}/`, client, {
+    .put(`${apiUrl}/api/clients/${id}/`, client, {
     headers: {
       'Content-Type': 'application/json',
     }

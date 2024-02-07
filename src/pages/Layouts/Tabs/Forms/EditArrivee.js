@@ -9,6 +9,7 @@ import axios from 'axios';
 const EditArrivee = ({ onClose,onAjouter, toModify}) => {
     
     const [nom, setNom] = useState('');
+    const apiUrl = process.env.REACT_APP_API_URL;
 
     const [isLoaded, setIsLoaded] = useState(false);
     const [errorMessages, setErrorMessages] = useState();
@@ -32,7 +33,7 @@ const EditArrivee = ({ onClose,onAjouter, toModify}) => {
     // Récupération du lieu d'arrivée
     useEffect(() => {
     
-      const lieuxArrivées = axios.get(`/api/أماكن-الوصول/${toModify}`)
+      const lieuxArrivées = axios.get(`${apiUrl}/api/أماكن-الوصول/${toModify}`)
       
       .then((response) => {
 

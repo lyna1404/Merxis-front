@@ -18,6 +18,7 @@ import TabFournisseurs from './Tabs/TabFournisseurs';
 
 
 function OptionsFournisseurs() {
+  const apiUrl = process.env.REACT_APP_API_URL;
 
     const [filteredData, setFilteredData] = useState([]);
     const [errorMessages, setErrorMessages] = useState({});
@@ -39,7 +40,7 @@ function OptionsFournisseurs() {
 
     // Récupérer la liste des fournisseurs 
     useEffect(() => {
-      axios.get('/api/fournisseurs/')
+      axios.get(`${apiUrl}/api/fournisseurs/`)
       .then((response) => {
           const fournissData = response.data;
           if (typeof fournissData === 'object' && fournissData !== null) {
@@ -137,7 +138,7 @@ function OptionsFournisseurs() {
           raisonSocialeArabe: data.raisonSocialeArabe,
         };
        
-        const fournissCreated =  axios.post(`/api/fournisseurs/`, JSON.stringify(fourniss), {
+        const fournissCreated =  axios.post(`${apiUrl}/api/fournisseurs/`, JSON.stringify(fourniss), {
           headers: {
             'Content-Type': 'application/json',
           }
@@ -165,7 +166,7 @@ function OptionsFournisseurs() {
           raisonSocialeArabe: data.raisonSocialeArabe,
         };
        
-        const fournissCreated =  axios.put(`/api/fournisseurs/${fournisseurToModify}/`, JSON.stringify(fourniss), {
+        const fournissCreated =  axios.put(`${apiUrl}/api/fournisseurs/${fournisseurToModify}/`, JSON.stringify(fourniss), {
           headers: {
             'Content-Type': 'application/json',
           }
@@ -194,7 +195,7 @@ function OptionsFournisseurs() {
         setShowDialog(false);
         setIsLoaded(false);
         axios
-         .delete(`/api/fournisseurs/${fournisseurToDelete}/`)
+         .delete(`${apiUrl}/api/fournisseurs/${fournisseurToDelete}/`)
          .then(() => {
             setShowDialog(false);
             setIsLoaded(true);

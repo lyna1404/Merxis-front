@@ -2,7 +2,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-
+import { IconDelete } from '../components/icons';
 import styles from './gestionClients.module.css';
 import buttonStyles from '../components/button.module.css';
 import AdvancedBreadcrumb from '../components/advancedBreadcrumb'
@@ -11,6 +11,7 @@ import TableFilter from '../components/tableFilter';
 import { reloadPage , handleFilterChange} from '../Utils/actionUtils';
 import ErrorMessage from '../components/errorMessage';
 import SuccessMessage from '../components/succesMessage';
+import CustomMessage from '../components/customMessage';
 import filterStyles from '../components/tableFilter.module.css';
 import InputField from '../components/InputField';
 import TabDebours from './TabDebours';
@@ -19,12 +20,15 @@ import TabDebours from './TabDebours';
 
  
 function DeboursComptabilite() { 
+
+  const apiUrl = process.env.REACT_APP_API_URL;
+
     useEffect(() => {
         // Create axios requests for both data fetching
-        const debours = axios.get(`/api/dossiers/${id}/debours/`); 
-        const modes = axios.get(`/api/modes-paiement-debours/`);
-        const dossier = axios.get(`/api/dossiers/${id}/`); 
-        const tyoesDebours = axios.get(`/api/types-debours/`);
+        const debours = axios.get(`${apiUrl}/api/dossiers/${id}/debours/`); 
+        const modes = axios.get(`${apiUrl}/api/modes-paiement-debours/`);
+        const dossier = axios.get(`${apiUrl}/api/dossiers/${id}/`); 
+        const tyoesDebours = axios.get(`${apiUrl}/api/types-debours/`);
         // Use Promise.all to wait for both requests to complete
         Promise.all([debours, modes,dossier,tyoesDebours])
           .then((responses) => {
@@ -84,6 +88,8 @@ function DeboursComptabilite() {
     //Trouver le numero du dossier à partir de la liste des dossies existants
     const [errorMessages, setErrorMessages] = useState({});
     const [showError, setShowError] = useState(false);
+    const [showDialog, setShowDialog] = useState(false);
+    const [toDelete, setToDelete] = useState(false);
     const [showSuccess, setShowSuccess] = useState(false);
     const [isLoaded, setIsLoaded] = useState(false);
     const [debours, setDebours] = useState([]);
@@ -116,7 +122,7 @@ function DeboursComptabilite() {
     //Exemple d'une historique de debours
     
     //entete du tableau des debours
-    const headers = ['Debours/Prestation', 'Mode de paiement', 'Mont Debours'];
+    const headers = ['Debours/Prestation', 'Mode de paiement', 'Mont Debours', 'Action à faire'];
 
     //Controler le fomrulaire d'ajout de debours
     const [showForm, setShowForm] = useState(false);
@@ -151,7 +157,7 @@ function DeboursComptabilite() {
 
       setIsLoaded(false);
       axios
-          .post(`/api/dossiers/${id}/debours/`, JSON.stringify(data), {
+          .post(`${apiUrl}/api/dossiers/${id}/debours/`, JSON.stringify(data), {
               headers: {
                   'Content-Type': 'application/json'
               }
@@ -167,6 +173,41 @@ function DeboursComptabilite() {
           });
 
     };
+
+      // Suppression d'un document
+      const handleDeleteClick = (event) => {
+        const rowId = event.target.closest('tr').id;
+        setToDelete(rowId);
+        setShowDialog(true);
+      };
+    
+      const handleDelete = () => {
+        setShowDialog(false);
+        setIsLoaded(false);
+        axios
+         .delete(`${apiUrl}/api/dossiers/${id}/debours/${toDelete}/`)
+         .then(() => {
+            setShowDialog(false);
+            setIsLoaded(true);
+            handleSuccess();
+            setToDelete(null);
+         })
+         .catch((error) => {
+            setShowDialog(false);
+            setIsLoaded(true);
+            console.log('Delete request error:', error);
+            handleError(error.request.response);
+            setToDelete(null);
+         });
+      };
+
+      const handleDialogClose = () => {
+        setShowDialog(false);
+      };
+
+      const tableActions = [
+        <IconDelete key="delete" onClick={handleDeleteClick} />
+      ];
 
     return (
         <>
@@ -195,7 +236,9 @@ function DeboursComptabilite() {
             <div className={styles.loader_container}><span className={styles.loader}></span></div> // Replace with your loader component or CSS
             ) : (
             <>
-            <ReusableTable data={filteredData} headers={headers} itemsPerPage={8} addlink={false}/>
+            <ReusableTable data={filteredData} headers={headers} itemsPerPage={8} addlink={false} addactions={true} actionIcons={tableActions}/>
+            {showDialog && <CustomMessage onClose={handleDialogClose} onConfirm={handleDelete} message={"Souhaitez-vous vraiment supprimer ce debours ?"} />}
+          {showSuccess && <SuccessMessage onClose={handleSuccessClose} />}
             <span className={styles.container}>
               <span className={filterStyles.container}>
                   <InputField display="labelonleft" label="Total (DA)" size="average" type="number" value={montTotal} readOnly = {true} />

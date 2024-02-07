@@ -23,7 +23,8 @@ function OptionsDevises() {
     const [showSuccess, setShowSuccess] = useState(false);
     const [showDialog, setShowDialog] = useState(false);
     const [isLoaded, setIsLoaded] = useState(false);
-    
+    const apiUrl = process.env.REACT_APP_API_URL;
+
     
     // Champs de la parties emballages
    const [devises, setDevises] = useState([]);
@@ -31,7 +32,7 @@ function OptionsDevises() {
 
     // Récupérer la liste de devises du dossier
     useEffect(() => {
-      axios.get(`/api/devises/`)
+      axios.get(`${apiUrl}/api/devises/`)
       .then((response) => {
           const devisesData = response.data;
 
@@ -110,7 +111,7 @@ function OptionsDevises() {
 
         setMessage("Mise à jour en cours...")
 
-        await axios.get(`/api/devises/maj/`)
+        await axios.get(`${apiUrl}/api/devises/maj/`)
         .then((response) => {
             const majData = response.data;
             handleSuccess();
@@ -128,7 +129,7 @@ function OptionsDevises() {
         
         setShowDialog(true);
 
-        axios.get(`/api/devises/status/`)
+        axios.get(`${apiUrl}/api/devises/status/`)
         .then((response) => {
             const majData = response.data;
             const part1 = "Dernière mise à jour éfféctuée le : " + majData.last_update.split('T')[0];

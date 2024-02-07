@@ -10,7 +10,8 @@ import axios from 'axios';
 
 
 const EditEntrepot = ({ onClose,onAjouter, toModify}) => {
-    
+  const apiUrl = process.env.REACT_APP_API_URL;
+
     const [nom, setNom] = useState('');
     const [adresse, setAdresse] = useState('');
     const [tel, setTel] = useState('');
@@ -28,7 +29,7 @@ const EditEntrepot = ({ onClose,onAjouter, toModify}) => {
     // Récupération de la liste de types d'entrepots
     useEffect(() => {
     
-        const typesEntrepot = axios.get('/api/types-entrepot/')
+        const typesEntrepot = axios.get(`${apiUrl}/api/types-entrepot/`)
         
         .then((response) => {
 
@@ -45,7 +46,7 @@ const EditEntrepot = ({ onClose,onAjouter, toModify}) => {
     // Récupération de l'Entrepot
     useEffect(() => {
 
-      axios.get(`/api/entrepots/${toModify}/`)
+      axios.get(`${apiUrl}/api/entrepots/${toModify}/`)
       .then((response) => {
         const entResponse = response.data;
         setEntData(entResponse);

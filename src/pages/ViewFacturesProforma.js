@@ -13,6 +13,8 @@ import styles2 from './gestionClients.module.css';
 function ViewFacturesProforma() {
    
     const { id } = useParams();
+    const apiUrl = process.env.REACT_APP_API_URL;
+
     
     const [errorMessages, setErrorMessages] = useState({});
     const [showError, setShowError] = useState(false);
@@ -31,10 +33,10 @@ function ViewFacturesProforma() {
     useEffect(() => {
         // Create axios requests for both data fetching
         while(id==null){}
-        const facture = axios.get(`/api/factures-proforma/${id}/`); // Replace with your other endpoint
-        const debours = axios.get(`/api/factures-proforma/${id}/debours/`);
-        const prestations = axios.get(`/api/factures-proforma/${id}/prestations/`);
-        const calculs = axios.get(`/api/factures-proforma/${id}/calcul/`);
+        const facture = axios.get(`${apiUrl}/api/factures-proforma/${id}/`); // Replace with your other endpoint
+        const debours = axios.get(`${apiUrl}/api/factures-proforma/${id}/debours/`);
+        const prestations = axios.get(`${apiUrl}/api/factures-proforma/${id}/prestations/`);
+        const calculs = axios.get(`${apiUrl}/api/factures-proforma/${id}/calcul/`);
 
 
 
@@ -139,7 +141,7 @@ function ViewFacturesProforma() {
 
 
       const handlePrint = () =>{
-        axios.get(`/api/factures-proforma/${id}/pdf/`, { responseType: 'blob'})
+        axios.get(`${apiUrl}/api/factures-proforma/${id}/pdf/`, { responseType: 'blob'})
   
         .then((response) => {
             const facturePDF = response.data;

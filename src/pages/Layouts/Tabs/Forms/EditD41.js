@@ -8,6 +8,7 @@ import stylesLoader from '../../../gestionClients.module.css'
 
 
 function EditD41({id, dossier, declaration, onAjouter, onClose}) {
+    const apiUrl = process.env.REACT_APP_API_URL;
 
     const [isLoaded, setIsLoaded] = useState(false);
     const [date, setDate] = useState('');
@@ -37,7 +38,7 @@ function EditD41({id, dossier, declaration, onAjouter, onClose}) {
 
 
     useEffect(() => {
-        axios.get(`/api/dossiers/${dossier.dossier_pk}/d41/`)
+        axios.get(`${apiUrl}/api/dossiers/${dossier.dossier_pk}/d41/`)
 
         .then((response) => {
             const docData = response.data;

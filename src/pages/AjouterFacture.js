@@ -13,6 +13,7 @@ import {formatDateToAPI} from '../Utils/dateUtils';
 
 
 function AjouterFacture() {
+    const apiUrl = process.env.REACT_APP_API_URL;
 
     const deboursPrestations = [
     {id:"1", deboursPres:"Magasinage", modePaiement:"Liquide", montantDebours:"1000 DZD", montantPrestations:"/"}, 
@@ -150,7 +151,7 @@ function AjouterFacture() {
                 taux_tva : tauxTVA,
             }
             axios
-            .post(`/api/factures-proforma/`, JSON.stringify(facture), {
+            .post(`${apiUrl}/api/factures-proforma/`, JSON.stringify(facture), {
                 headers: {
                     'Content-Type': 'application/json'
                 }
@@ -167,8 +168,8 @@ function AjouterFacture() {
 
         }
         else{
-            const apiUrl = `/api/dossier?numDossier=${numDossier}`;
-            axios.get(apiUrl)
+            const api = `${apiUrl}/api/dossier?numDossier=${numDossier}`;
+            axios.get(api)
             .then(response => {
                 console.log('Response:', response.data);
             })
@@ -188,7 +189,7 @@ function AjouterFacture() {
                 avanceClient : avance,
             }
             axios
-            .post(`/api/factures-definitives/`, JSON.stringify(facture), {
+            .post(`${apiUrl}/api/factures-definitives/`, JSON.stringify(facture), {
                 headers: {
                     'Content-Type': 'application/json'
                 }

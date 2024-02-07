@@ -12,12 +12,13 @@ const EditRegime = ({ onClose,onAjouter,toModify}) => {
     
   const [regimeData, setRegimeData] = useState('');
   const [isLoaded, setIsLoaded] = useState(false);
+  const apiUrl = process.env.REACT_APP_API_URL;
 
 
     // Récupérer le régime
     useEffect(() => {
 
-      axios.get(`/api/regimes-douaniers/${toModify}/`)
+      axios.get(`${apiUrl}/api/regimes-douaniers/${toModify}/`)
       .then((response) => {
         const regimeResponse = response.data;
         setRegimeData(regimeResponse);

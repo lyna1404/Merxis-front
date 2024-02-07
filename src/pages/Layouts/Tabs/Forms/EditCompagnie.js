@@ -10,7 +10,8 @@ import axios from 'axios';
 
 
 const EditCompagnie = ({ onClose,onAjouter, toModify}) => {
-    
+  const apiUrl = process.env.REACT_APP_API_URL;
+
     const [nom, setNom] = useState('');
     const [adresse, setAdresse] = useState('');
     const [tel, setTel] = useState('');
@@ -28,7 +29,7 @@ const EditCompagnie = ({ onClose,onAjouter, toModify}) => {
     // Récupération de la liste de types transport
     useEffect(() => {
     
-        const typesCompagnie = axios.get('/api/types-compagnie/')
+        const typesCompagnie = axios.get(`${apiUrl}/api/types-compagnie/`)
         
         .then((response) => {
 
@@ -45,7 +46,7 @@ const EditCompagnie = ({ onClose,onAjouter, toModify}) => {
     // Récupération de la compagnie
     useEffect(() => {
 
-      axios.get(`/api/compagnies-transport/${toModify}/`)
+      axios.get(`${apiUrl}/api/compagnies-transport/${toModify}/`)
       .then((response) => {
         const compResponse = response.data;
         setCompData(compResponse);

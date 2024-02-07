@@ -45,10 +45,12 @@ const NouveauClient = () => {
     const [showError, setShowError] = useState(false);
     const [showSuccess, setShowSuccess] = useState(false);
     const [isLoaded, setIsLoaded] = useState(false);
+    const apiUrl = process.env.REACT_APP_API_URL;
+
 
     useEffect(() => {
         axios
-           .get('/api/statuts-juridiques')
+           .get(`${apiUrl}/api/statuts-juridiques`)
            .then((response) => {
               const statuts = response.data;
               setListeSJ(statuts.results);
@@ -119,7 +121,7 @@ const NouveauClient = () => {
         };
                 
         axios
-            .post('/api/clients/', JSON.stringify(client), {
+            .post(`${apiUrl}/api/clients/`, JSON.stringify(client), {
                 headers: {
                     'Content-Type': 'application/json'
                 }

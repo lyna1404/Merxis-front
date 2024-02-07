@@ -6,7 +6,6 @@ import labelStyles from "../components/inputField.module.css";
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import Select from 'react-select';
-import axios from 'axios';
 import stylesLoader from './gestionClients.module.css'
 
 const AjouterFactureProforma = ({ onClose,onAjouter, listeClients, listeMarchandises, isLoaded, onFileUpload,onFileUploadClick,inputFile }) => {

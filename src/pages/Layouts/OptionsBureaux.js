@@ -19,6 +19,7 @@ import TabRegimes from './Tabs/TabRegimes';
 
 function OptionsBureaux() {
 
+  const apiUrl = process.env.REACT_APP_API_URL;
 
     const [isLoadedBureaux, setIsLoadedBureaux] = useState(false);
     const [filteredBureauxData, setFilteredBureauxData] = useState([]);
@@ -55,7 +56,7 @@ function OptionsBureaux() {
 
     // Récupérer la liste des bureaux 
     useEffect(() => {
-        axios.get('/api/bureaux-douane/')
+        axios.get(`${apiUrl}/api/bureaux-douane/`)
         .then((response) => {
             const bureauData = response.data;
             if (typeof bureauData === 'object' && bureauData !== null) {
@@ -87,7 +88,7 @@ function OptionsBureaux() {
   
     // Récupérer la liste des régimes 
     useEffect(() => {
-        axios.get('/api/regimes-douaniers/')
+        axios.get(`${apiUrl}/api/regimes-douaniers/`)
         .then((response) => {
             const regimeData = response.data;
             if (typeof regimeData === 'object' && regimeData !== null) {
@@ -246,7 +247,7 @@ function OptionsBureaux() {
           receveurDouane: data.receveurDouane,
         };
        
-        const bureauCreated =  axios.post(`/api/bureaux-douane/`, JSON.stringify(bureau), {
+        const bureauCreated =  axios.post(`${apiUrl}/api/bureaux-douane/`, JSON.stringify(bureau), {
           headers: {
             'Content-Type': 'application/json',
           }
@@ -273,7 +274,7 @@ function OptionsBureaux() {
           designation: data.designation,
         };
        
-        const regimeCreated =  axios.post(`/api/regimes-douaniers/`, JSON.stringify(regime), {
+        const regimeCreated =  axios.post(`${apiUrl}/api/regimes-douaniers/`, JSON.stringify(regime), {
           headers: {
             'Content-Type': 'application/json',
           }
@@ -302,7 +303,7 @@ function OptionsBureaux() {
             receveurDouane: data.receveurDouane,
           };
          
-        const bureauModified =  axios.put(`/api/bureaux-douane/${bureauToModify}/`, JSON.stringify(bureau), {
+        const bureauModified =  axios.put(`${apiUrl}/api/bureaux-douane/${bureauToModify}/`, JSON.stringify(bureau), {
           headers: {
             'Content-Type': 'application/json',
           }
@@ -331,7 +332,7 @@ function OptionsBureaux() {
                 designation: data.designation,
               };
                  
-            const regimeModified =  axios.put(`/api/regimes-douaniers/${regimeToModify}/`, JSON.stringify(regime), {
+            const regimeModified =  axios.put(`${apiUrl}/api/regimes-douaniers/${regimeToModify}/`, JSON.stringify(regime), {
               headers: {
                 'Content-Type': 'application/json',
               }
@@ -362,7 +363,7 @@ function OptionsBureaux() {
         setShowBureauxDialog(false);
         setIsLoadedBureaux(false);
         axios
-         .delete(`/api/bureaux-douane/${bureauToDelete}/`)
+         .delete(`${apiUrl}/api/bureaux-douane/${bureauToDelete}/`)
          .then(() => {
             setShowBureauxDialog(false);
             setIsLoadedBureaux(true);
@@ -389,7 +390,7 @@ function OptionsBureaux() {
         setShowRegimesDialog(false);
         setIsLoadedRegimes(false);
         axios
-         .delete(`/api/regimes-douaniers/${regimeToDelete}/`)
+         .delete(`${apiUrl}/api/regimes-douaniers/${regimeToDelete}/`)
          .then(() => {
             setShowRegimesDialog(false);
             setIsLoadedRegimes(true);

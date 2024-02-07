@@ -23,6 +23,7 @@ import {formatDateToAPI} from '../Utils/dateUtils';
 
 
 function Bordereaux() {
+  const apiUrl = process.env.REACT_APP_API_URL;
 
     const [showForm, setShowForm] = useState(false);        
     const [filteredData, setFilteredData] = useState();
@@ -87,7 +88,7 @@ function Bordereaux() {
 
     // Récupérer la liste des bordereaux d'envoi
     useEffect(() => {
-    const bordereaux = axios.get(`/api/bordereaux-envoi/`)
+    const bordereaux = axios.get(`${apiUrl}/api/bordereaux-envoi/`)
 
       .then((response) => {
         const bordereauxData = response.data;
@@ -100,7 +101,6 @@ function Bordereaux() {
             client: item.dossier ? item.dossier.client.raisonSociale : null,
             etatRecuperation: item.etatRecuperation == 0? "Non Reçu" : "Reçu"
           }));
-          console.log("bordereau ici")
           setBordereaux(extractedBordereaux);
           setFilteredData(extractedBordereaux);
           setIsLoaded(true);
@@ -120,7 +120,7 @@ function Bordereaux() {
   // Récupération de la liste de dossiers
   useEffect(() => {
         
-    const dossiers = axios.get('/api/dossiers/')
+    const dossiers = axios.get(`${apiUrl}/api/dossiers/`)
 
     .then((response) => {
       const dossiersData = response.data;
@@ -129,7 +129,6 @@ function Bordereaux() {
           dossierPk: item.dossier_pk,
           numDossier: item.numDossier,
         }));
-        console.log("dossier ici")
       setListeDossiers(extractedDossier);
       setIsLoadedDossier(true)
       }
@@ -151,8 +150,6 @@ function Bordereaux() {
         
         setIsLoaded(false);
 
-        console.log("data",data);
-
         const bordereau = {
           numBordereau: data.numBE,
           date: data.date? formatDateToAPI(data.date): null,
@@ -160,8 +157,7 @@ function Bordereaux() {
           etatRecuperation: data.etatRecup ==="Reçu"? 1 : 0,
         };
        
-        console.log("to post", bordereau)
-        const bordereauCreated =  axios.post(`/api/bordereaux-envoi/`, JSON.stringify(bordereau), {
+        const bordereauCreated =  axios.post(`${apiUrl}/api/bordereaux-envoi/`, JSON.stringify(bordereau), {
           headers: {
             'Content-Type': 'application/json',
           }
@@ -180,7 +176,6 @@ function Bordereaux() {
 
   // Suppression de bordereau
   const handleDeleteClick = (event) => {
-    console.log("delete");
     const rowId = event.target.closest('tr').id;
     setBordereauToDelete(rowId);
     setShowDialog(true);
@@ -189,9 +184,8 @@ function Bordereaux() {
   const handleDelete = () => {
     setShowDialog(false);
     setIsLoaded(false);
-    console.log("delete");
     axios
-     .delete(`/api/bordereaux-envoi/${bordereauToDelete}/`)
+     .delete(`${apiUrl}/api/bordereaux-envoi/${bordereauToDelete}/`)
      .then(() => {
         setShowDialog(false);
         setIsLoaded(true);
@@ -209,8 +203,8 @@ function Bordereaux() {
   };
     
     const tableActions = [
-        <IconView key="view"  onClick={(event) => openPageBasedOnId(event.target.closest('tr').id, '/facturation/Bordereaux/ViewBordereau/')} />,
-        <IconEdit key="edit" onClick={(event) => openPageBasedOnId(event.target.closest('tr').id, '/facturation/Bordereaux/EditBordereau/')} />,
+        <IconView key="view"  onClick={(event) => openPageBasedOnId(event.target.closest('tr').id, 'facturation/Bordereaux/ViewBordereau/')} />,
+        <IconEdit key="edit" onClick={(event) => openPageBasedOnId(event.target.closest('tr').id, 'facturation/Bordereaux/EditBordereau/')} />,
         <IconDelete key="delete" onClick={handleDeleteClick} />
       ];
 

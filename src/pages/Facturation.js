@@ -19,6 +19,7 @@ import {IconView,IconEdit} from '../components/icons';
 
 
 function Facturation() {
+    const apiUrl = process.env.REACT_APP_API_URL;
 
     const [headers,setHeaders] = useState(['N° Facture', 'N° Dossier', 'Date', 'Client', 'Net à payer', 'Etat Paiement', 'Date Paiement', 'Actions']);
     const radios = [{name:'Facture Définitive'},{name:'Facture Proforma'}];
@@ -36,12 +37,12 @@ function Facturation() {
     const [showSuccess, setShowSuccess] = useState(false);
 
     const tableActions = [
-        <IconView key="view" onClick={(event) => openPageBasedOnId(event.target.closest('tr').id, '/facturation/detailsFacture/')} />,
-        <IconEdit key="edit" onClick={(event) => openPageBasedOnId(event.target.closest('tr').id, "/facturation/EditFacture/")} />,
+        <IconView key="view" onClick={(event) => openPageBasedOnId(event.target.closest('tr').id, 'facturation/detailsFacture/')} />,
+        <IconEdit key="edit" onClick={(event) => openPageBasedOnId(event.target.closest('tr').id, "facturation/EditFacture/")} />,
       ];
       const tableActions2 = [
-        <IconView key="view" onClick={(event) => openPageBasedOnId(event.target.closest('tr').id, '/facturation/detailsFactureProforma/')} />,
-        <IconEdit key="edit" onClick={(event) => openPageBasedOnId(event.target.closest('tr').id, "/facturation/EditFactureProforma/")} />,
+        <IconView key="view" onClick={(event) => openPageBasedOnId(event.target.closest('tr').id, 'facturation/detailsFactureProforma/')} />,
+        <IconEdit key="edit" onClick={(event) => openPageBasedOnId(event.target.closest('tr').id, "facturation/EditFactureProforma/")} />,
       ];
     const handleFilterChangeWrapper = (columnKey, filterValue) => {
         if(selectedRadio=="Facture Définitive"){
@@ -82,8 +83,8 @@ function Facturation() {
 
     useEffect(() => {
         // Create axios requests for both data fetching
-        const facturesdef = axios.get(`/api/factures-definitives/`); 
-        const facturesprofs = axios.get(`/api/factures-proforma/`);
+        const facturesdef = axios.get(`${apiUrl}/api/factures-definitives/`); 
+        const facturesprofs = axios.get(`${apiUrl}/api/factures-proforma/`);
 
         // Use Promise.all to wait for both requests to complete
         Promise.all([facturesdef, facturesprofs])
@@ -152,11 +153,11 @@ function Facturation() {
     };
 
     const openNewFacture = () => {
-        window.open("/facturation/NouvelleFacture", '_blank')
+        window.open("facturation/NouvelleFacture", '_blank')
     };
 
     const openBordereaux = () => {
-        window.open("/facturation/Bordereaux", '_blank')
+        window.open("facturation/Bordereaux", '_blank')
     };
 
     const handleAjouterDéfinitive = (data) => {
@@ -173,7 +174,7 @@ function Facturation() {
           numDossier:data.numDossier,
         };
        
-        const factureCreated =  axios.post(`/api/factures-definitives/`, JSON.stringify(facture), {
+        const factureCreated =  axios.post(`${apiUrl}/api/factures-definitives/`, JSON.stringify(facture), {
           headers: {
             'Content-Type': 'application/json',
           }
@@ -205,7 +206,7 @@ function Facturation() {
             taux_tva:data.taux_tva,
           };
        
-        const factureCreated =  axios.post(`/api/factures-proforma/`, JSON.stringify(facture), {
+        const factureCreated =  axios.post(`${apiUrl}/api/factures-proforma/`, JSON.stringify(facture), {
           headers: {
             'Content-Type': 'application/json',
           }

@@ -23,6 +23,8 @@ function Archivage() {
     const params = {
         is_declared: 'True'
         };
+  const apiUrl = process.env.REACT_APP_API_URL;
+
   const [errorMessages, setErrorMessages] = useState({});
   const [showDialog, setShowDialog] = useState(false);
   const [showError, setShowError] = useState(false);
@@ -63,8 +65,8 @@ function Archivage() {
   // Récupérer la liste des dossiers et états dossiers
   useEffect(() => {
     // Create axios requests for both data fetching
-    const dossiers = axios.get(`/api/dossiers/`); 
-    const etats = axios.get(`/api/etats-dossier/`);
+    const dossiers = axios.get(`${apiUrl}/api/dossiers/`); 
+    const etats = axios.get(`${apiUrl}/api/etats-dossier/`);
 
     // Use Promise.all to wait for both requests to complete
     Promise.all([dossiers, etats])
@@ -113,7 +115,7 @@ function Archivage() {
     setShowDialog(false);
     setIsLoaded(false);
     axios
-     .delete(`/api/dossiers/${dossierTodelete}/`)
+     .delete(`${apiUrl}/api/dossiers/${dossierTodelete}/`)
      .then(() => {
         setShowDialog(false);
         setIsLoaded(true);
@@ -130,8 +132,8 @@ function Archivage() {
   };
     
     const tableActions = [
-        <IconView key="view"  onClick={(event) => openPageBasedOnId(event.target.closest('tr').id, '/archivage/ViewDossier/')} />,
-        <IconEdit key="edit" onClick={(event) => openPageBasedOnId(event.target.closest('tr').id, '/archivage/EditDossier/')} />,
+        <IconView key="view"  onClick={(event) => openPageBasedOnId(event.target.closest('tr').id, 'archivage/ViewDossier/')} />,
+        <IconEdit key="edit" onClick={(event) => openPageBasedOnId(event.target.closest('tr').id, 'archivage/EditDossier/')} />,
         <IconDelete key="delete" onClick={handleDeleteClick} />
       ];
 
@@ -152,7 +154,7 @@ function Archivage() {
             ]} onFilterChange={handleFilterChangeWrapper} />
             <span className={styles.buttons_span}>
                 <button className={`${buttonStyles.secondary}`}  onClick={() => reloadPage()} children='Actualiser' />  
-                <button className={`${buttonStyles.primaryButtonY}`} children='Nouveau'  onClick={() => openPage("/archivage/NouveauDossier")}/>  
+                <button className={`${buttonStyles.primaryButtonY}`} children='Nouveau'  onClick={() => openPage("archivage/NouveauDossier")}/>  
             </span>
             
         </span>

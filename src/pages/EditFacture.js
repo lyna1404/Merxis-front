@@ -25,7 +25,8 @@ import { IconDelete } from '../components/icons';
 function EditFacture() {
 
     const { id } = useParams();
-    
+    const apiUrl = process.env.REACT_APP_API_URL;
+
     const [errorMessages, setErrorMessages] = useState({});
     const [showError, setShowError] = useState(false);
     const [showSuccess, setShowSuccess] = useState(false);
@@ -101,7 +102,7 @@ function EditFacture() {
         setShowDialog(false);
         setIsLoaded(false);
         axios
-         .delete(`/api/factures-definitives/${id}/prestations/${DebPresToDelete}`)
+         .delete(`${apiUrl}/api/factures-definitives/${id}/prestations/${DebPresToDelete}`)
          .then(() => {
             setShowDialog(false);
             setIsLoaded(true);
@@ -121,7 +122,7 @@ function EditFacture() {
         setShowDialog(false);
         setIsLoaded(false);
         axios
-         .delete(`/api/factures-definitives/${id}/debours/${DebPresToDelete}`)
+         .delete(`${apiUrl}/api/factures-definitives/${id}/debours/${DebPresToDelete}`)
          .then(() => {
             setShowDialog(false);
             setIsLoaded(true);
@@ -144,14 +145,14 @@ function EditFacture() {
     useEffect(() => {
         // Create axios requests for both data fetching
         while(id==null){}
-        const facture = axios.get(`/api/factures-definitives/${id}/`); // Replace with your other endpoint
-        const debours = axios.get(`/api/factures-definitives/${id}/debours/`);
-        const prestations = axios.get(`/api/factures-definitives/${id}/prestations/`);
-        const calculs = axios.get(`/api/factures-definitives/${id}/calcul/`);
-        const tyoesDebours = axios.get(`/api/types-debours/`);
-        const modes = axios.get(`/api/modes-paiement-debours/`);
-        const typesPres = axios.get(`/api/types-prestation/`);
-        const dossiers = axios.get('/api/dossiers/');
+        const facture = axios.get(`${apiUrl}/api/factures-definitives/${id}/`); // Replace with your other endpoint
+        const debours = axios.get(`${apiUrl}/api/factures-definitives/${id}/debours/`);
+        const prestations = axios.get(`${apiUrl}/api/factures-definitives/${id}/prestations/`);
+        const calculs = axios.get(`${apiUrl}/api/factures-definitives/${id}/calcul/`);
+        const tyoesDebours = axios.get(`${apiUrl}/api/types-debours/`);
+        const modes = axios.get(`${apiUrl}/api/modes-paiement-debours/`);
+        const typesPres = axios.get(`${apiUrl}/api/types-prestation/`);
+        const dossiers = axios.get(`${apiUrl}/api/dossiers/`);
 
 
 
@@ -335,7 +336,7 @@ function EditFacture() {
     const handleAjouterDeb = (data) => {
         setIsLoaded(false);
         axios
-            .post(`/api/factures-definitives/${id}/debours/`, JSON.stringify(data), {
+            .post(`${apiUrl}/api/factures-definitives/${id}/debours/`, JSON.stringify(data), {
                 headers: {
                     'Content-Type': 'application/json'
                 }
@@ -355,7 +356,7 @@ function EditFacture() {
     const handleAjouterPres = (data) => {
         setIsLoaded(false);
         axios
-            .post(`/api/factures-definitives/${id}/prestations/`, JSON.stringify(data), {
+            .post(`${apiUrl}/api/factures-definitives/${id}/prestations/`, JSON.stringify(data), {
                 headers: {
                     'Content-Type': 'application/json'
                 }
@@ -385,7 +386,7 @@ function EditFacture() {
         };
         
         axios
-        .put(`/api/factures-definitives/${id}/`, fact, {
+        .put(`${apiUrl}/api/factures-definitives/${id}/`, fact, {
         headers: {
           'Content-Type': 'application/json',
         }
@@ -400,7 +401,7 @@ function EditFacture() {
     };
 
     const handlePrint = () =>{
-        axios.get(`/api/factures-definitives/${id}/pdf/`, { responseType: 'blob'})
+        axios.get(`${apiUrl}/api/factures-definitives/${id}/pdf/`, { responseType: 'blob'})
 
         .then((response) => {
             const facturePDF = response.data;

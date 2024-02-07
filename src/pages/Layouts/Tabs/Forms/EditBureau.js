@@ -12,12 +12,13 @@ const EditBureau = ({ onClose,onAjouter,toModify}) => {
     
   const [bureauData, setBureauData] = useState('');
   const [isLoaded, setIsLoaded] = useState(false);
+  const apiUrl = process.env.REACT_APP_API_URL;
 
 
     // Récupérer le bureau
     useEffect(() => {
 
-      axios.get(`/api/bureaux-douane/${toModify}/`)
+      axios.get(`${apiUrl}/api/bureaux-douane/${toModify}/`)
       .then((response) => {
         const bureauResponse = response.data;
         setBureauData(bureauResponse);

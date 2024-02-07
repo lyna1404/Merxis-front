@@ -10,7 +10,8 @@ import axios from 'axios';
 
 
 const EditLieu = ({ onClose,onAjouter, toModify}) => {
-    
+  const apiUrl = process.env.REACT_APP_API_URL;
+
     const [nom, setNom] = useState('');
     const [wilayaPk, setWilayaPk] = useState('');
     const [wilaya, setWilaya] = useState('');
@@ -25,7 +26,7 @@ const EditLieu = ({ onClose,onAjouter, toModify}) => {
     // Récupération de la liste de wilayas 
     useEffect(() => {
     
-        const wilayas = axios.get('/api/wilayas/')
+        const wilayas = axios.get(`${apiUrl}/api/wilayas/`)
         
         .then((response) => {
 
@@ -42,7 +43,7 @@ const EditLieu = ({ onClose,onAjouter, toModify}) => {
     // Récupération du lieu
     useEffect(() => {
 
-        axios.get(`/api/lieux-livraison/${toModify}/`)
+        axios.get(`${apiUrl}/api/lieux-livraison/${toModify}/`)
         .then((response) => {
           const lieuResponse = response.data;
           setLieuData(lieuResponse);

@@ -50,7 +50,7 @@ const App = () => {
    }, []);
 
   return (
-    <Router>
+    <Router basename='/merxis'>
       <div>
         <Routes>
         <Route path="/" element={<HomePage />} />
