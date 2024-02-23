@@ -95,7 +95,7 @@ const AjouterFactureDefinitive = ({ onClose,onAjouter, listeDossiers, isLoaded, 
                 </label>
             </div>
             <div className={styles.many_fields}>   
-            <InputField display="labelontop" label="Taux TVA" size="small" type="text" value={taux_tva} onChange={(e) => setTauxTVA(e.target.value)} />
+            <InputField display="labelontop" label="Taux TVA" size="small" type="text" placeholder="xx.xx" value={taux_tva} onChange={(e) => setTauxTVA(e.target.value)} />
             <InputField display="labelontop" label="Droit de Timbre" size="belowaverage" type="text" value={taux_droitTimbre} onChange={(e) => setTauxDroitTimbre(e.target.value)} />
             <InputField display="labelontop" label="Avance Client" size="average" type="text" value={avanceClient} onChange={(e) => setAvanceClient(e.target.value)} />
             </div>

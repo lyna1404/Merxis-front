@@ -200,11 +200,11 @@ function Bordereaux() {
         handleError(error.request.response);
         setBordereauToDelete(null);
      });
-  };
+  }; 
     
     const tableActions = [
-        <IconView key="view"  onClick={(event) => openPageBasedOnId(event.target.closest('tr').id, 'facturation/Bordereaux/ViewBordereau/')} />,
-        <IconEdit key="edit" onClick={(event) => openPageBasedOnId(event.target.closest('tr').id, 'facturation/Bordereaux/EditBordereau/')} />,
+        <IconView key="view"  onClick={(event) => openPageBasedOnId(event.target.closest('tr').id, 'Bordereaux/ViewBordereau/')} />,
+        <IconEdit key="edit" onClick={(event) => openPageBasedOnId(event.target.closest('tr').id, 'Bordereaux/EditBordereau/')} />,
         <IconDelete key="delete" onClick={handleDeleteClick} />
       ];
 

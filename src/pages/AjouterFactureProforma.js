@@ -112,7 +112,7 @@ const AjouterFactureProforma = ({ onClose,onAjouter, listeClients, listeMarchand
 
             </div>
             <div className={styles.many_fields}>   
-            <InputField display="labelontop" label="Taux TVA" size="small" type="text" value={taux_tva} onChange={(e) => setTauxTVA(e.target.value)} />
+            <InputField display="labelontop" label="Taux TVA" size="small" type="text" placeholder="xx.xx" value={taux_tva} onChange={(e) => setTauxTVA(e.target.value)} />
             </div>
           </div>
             <span className={styles.buttonSpan}>

@@ -37,6 +37,8 @@ import OptionsEntrepots from './pages/Layouts/OptionsEntrepots';
 import OptionsFactures from './pages/Layouts/OptionsFactures';
 import OptionsDocuments from './pages/Layouts/OptionsDocuments';
 import OptionsFraudes from './pages/Layouts/OptionsFraudes';
+import Declaration from './pages/Declaration';
+import AjouterDeclaration from './pages/AjouterDeclaration';
 
 
 
@@ -87,6 +89,8 @@ const App = () => {
           <Route path="/options/factures" element={<OptionsFactures/>}/>
           <Route path="/options/documents" element={<OptionsDocuments/>}/>
           <Route path="/options/fraudes" element={<OptionsFraudes/>}/>
+          <Route path="/declaration" element={<Declaration/>}/>
+          <Route path="/declaration/NouvelleDeclaration/:id" element={<AjouterDeclaration/>}/>
         </Routes>
       </div>
     </Router>

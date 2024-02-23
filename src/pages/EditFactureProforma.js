@@ -41,6 +41,7 @@ function EditFactureProforma() {
     const [listeMarchandises, setListeMarchandises] = useState([]);
 
     const [facture, setFacture] = useState({});
+    console.log(facture)
     const [prestations, setPrestations] = useState({});
     const [debours, setDebours] = useState({});
     const [calcul, setCalculs] = useState({});

@@ -23,6 +23,8 @@ const displayNameMap = {
     EditDossier: "Modification",
     ViewDossier: "Affichage Dossier",
     NouveauDossier: "Nouveau Dossier",
+    declaration: "Déclaration",
+    NouvelleDeclaration: "Ajout déclaration",
     // Add more mappings for other pages if needed
   };
 

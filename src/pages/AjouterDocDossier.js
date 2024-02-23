@@ -3,6 +3,7 @@ import styles from './popupForm.module.css'
 import buttonStyles from '../components/button.module.css'
 import InputField from '../components/InputField'
 import labelStyles from "../components/inputField.module.css";
+import DatePicker from 'react-datepicker';
 
 
 import Select from 'react-select'
@@ -97,7 +98,10 @@ const AjouterDocDossier = ({ onClose,onAjouter,onFileUpload,onFileUploadClick,in
               </label>  
               <div className={styles.many_fields}> 
                   <InputField display="labelontop" label="N° Document" size="average" type="text" value={numDocument} onChange={(e) => setNumDocument(e.target.value)} />
-                  <InputField display="labelontop" label="Date Etablissement" size="belowaverage" placeholder="dd/mm/yyyy" type="text" value={date} onChange={(e) => setDate(e.target.value)} />
+                  <label className={styles.date_field}>
+                            <label className={labelStyles.labelonleft}>Date Etablissement</label>
+                            <DatePicker className={labelStyles.belowaverage} selected={date} onChange={(e) => setDate(e)} dateFormat="dd/MM/yyyy" placeholderText="Selectionner une date" />
+                  </label>
                   <InputField display="labelontop" label="Lieu Etablissement" size="average" type="text" value={lieu} onChange={(e) => setLieu(e.target.value)} />
 
               </div>

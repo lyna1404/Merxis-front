@@ -47,13 +47,13 @@ function ViewDossier() {
         dateAcquitement,dateArrivee,dateMainLevee,dateEchange,dateDeclaration,dateVisiteDouane,dateLiquidation,dateRecevabiliteCheque,dateRetraitBonEnlever,dateLivraison,lieuLivraison,parcAVide,observation,nomDeclarant,numDeclaration } = dossierResponse;
             setNumDossier(numDossier);
             setNomClient(client.raisonSociale);
+            setIsLoadedDossier(true);
             setEtatDossier(etatDossier);
             setNatureDossier(natureDossier);
             const dateHR2 = dateHeureReception.split(" ");
             setDateHR(dateHR2);
             setDateHeureReception1(dateHR2[0]);
             setDateHeureReception2(dateHR2[1]);
-            setIsLoadedDossier(true);
             setNomFournisseur(fournisseur.raisonSociale);
             setNumFactFournisseur(numFactureFournisseur);
             setDateFactFournisseur(dateFactureFournisseur? formatDateFromAPI(dateFactureFournisseur): '');

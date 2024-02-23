@@ -21,11 +21,12 @@ import {IconView,IconEdit} from '../components/icons';
 function Facturation() {
     const apiUrl = process.env.REACT_APP_API_URL;
 
-    const [headers,setHeaders] = useState(['N° Facture', 'N° Dossier', 'Date', 'Client', 'Net à payer', 'Etat Paiement', 'Date Paiement', 'Actions']);
+    const [headers,setHeaders] = useState(['N° Facture', 'N° Dossier', 'Date', 'Client', 'Net à payer', 'Actions']);
     const radios = [{name:'Facture Définitive'},{name:'Facture Proforma'}];
     const [selectedRadio ,setSelectedRadio] = useState(radios[0].name);
     const [data, setFilteredData] = useState([]);
     const [originalDataDef, setOriginalDataDef] = useState([]);
+    console.log(originalDataDef);
     const [originalDataPro, setOriginalDataPro] = useState([]);
     const [filteredDataDef, setFilteredDataDef] = useState([]);
     const [filteredDataPro, setFilteredDataPro] = useState([]);
@@ -99,9 +100,7 @@ function Facturation() {
                   numDossier: item.dossier.numDossier,
                   date: item.date,
                   client: item.dossier.client.raisonSociale,
-                  netPayer: item.net_payer,
-                  etatPaiement : item.etatPaiement,
-                  datePaiment: item.datePaiment
+                  netPayer: item.net_payer
                 }));
                 const extractedFactPro = Object.values(factprores).map(item => ({
                     id: item.facture_pk,
@@ -136,7 +135,7 @@ function Facturation() {
                             <>
                                 {setFilteredData(originalDataDef)}
                                 {setFilteredDataDef(originalDataDef)}
-                                {setHeaders(['N° Facture', 'N° Dossier', 'Date', 'Client', 'Net à payer', 'Etat Paiement', 'Date Paiement', 'Actions'])}
+                                {setHeaders(['N° Facture', 'N° Dossier', 'Date', 'Client', 'Net à payer', 'Actions'])}
                             </>
                             : 
                             <>
@@ -244,7 +243,6 @@ function Facturation() {
                             { key: 'numDossier', label: 'N° Dossier', inputType : 'text' },
                             { key: 'client', label: 'Client' , inputType : 'text'},
                             { key: 'netPayer', label: 'Net à Payer' , inputType : 'text'},
-                            { key: 'etatPaiement', label: 'Etat de Paiement' , inputType : 'text'},
                             ]}
                     onFilterChange={handleFilterChangeWrapper} />           
                 </>

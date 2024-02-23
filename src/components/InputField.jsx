@@ -33,6 +33,16 @@ const InputField = ({ display,label,size,type,disabled,value,onChange,readOnly, 
                                     placeholder={placeholder}
                                     dir={dir}
                               />)
+                case 'averagelarge' : 
+                    return   (<input className={styles.averagelarge}
+                                    type={type}
+                                    disabled={disabled}
+                                    value={value !== null ? value : ''}
+                                    onChange={onChange}
+                                    readOnly={readOnly}
+                                    placeholder={placeholder}
+                                    dir={dir}
+                              />)
                 case 'large' : 
                     return   (<input className={styles.large}
                                     type={type}
@@ -65,6 +75,16 @@ const InputField = ({ display,label,size,type,disabled,value,onChange,readOnly, 
                               />)
                 case 'belowaverage' : 
                     return   (<input className={styles.belowaverage}
+                                    type={type}
+                                    disabled={disabled}
+                                    value={value !== null ? value : ''}
+                                    onChange={onChange}
+                                    readOnly={readOnly}
+                                    placeholder={placeholder}
+                                    dir={dir}
+                              />)
+                case 'belowbelowaverage' : 
+                    return   (<input className={styles.belowbelowaverage}
                                     type={type}
                                     disabled={disabled}
                                     value={value !== null ? value : ''}

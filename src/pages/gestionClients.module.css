@@ -10,6 +10,16 @@
     margin-top: 12px;
     margin-bottom: 12px;
 }
+.infoTitle{
+    color: var(--dark-violet, #2E2F5B);
+    font-family: Montserrat;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    padding-top: 2px;
+    margin-bottom: -5px;
+}
 .normalText{
     color: var(--dark-violet, #2E2F5B);
     font-family: Montserrat;

@@ -37,7 +37,6 @@ function OptionsEntrepots() {
 
     const [isLoadedLieux, setIsLoadedLieux] = useState(false);
     const [filteredLieuxData, setFilteredLieuxData] = useState([]);
-
     const [errorLieuxMessages, setErrorLieuxMessages] = useState({});
     const [showLieuxDialog, setShowLieuxDialog] = useState(false);
     const [showLieuxError, setShowLieuxError] = useState(false);
@@ -75,7 +74,7 @@ function OptionsEntrepots() {
             const extractedLieu = Object.values(lieuData).map(item => ({
               id: item.lieuLivraison_pk,
               nomLieu: item.nomLieu,
-              nomWilaya: item.wilaya.nom,
+              nomWilaya: item.wilaya?item.wilaya.nom:'',
             }));
             setLieux(extractedLieu);
             setFilteredLieuxData(extractedLieu);
@@ -403,6 +402,7 @@ function OptionsEntrepots() {
           wilaya: data.wilayaPk,
         };
        
+        console.log(lieu)
         const lieuCreated =  axios.post(`${apiUrl}/api/lieux-livraison/`, JSON.stringify(lieu), {
           headers: {
             'Content-Type': 'application/json',

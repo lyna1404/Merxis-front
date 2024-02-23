@@ -24,7 +24,7 @@ const EditClient = () => {
 
     
 
-
+ 
   useEffect(() => {
 
     const client = axios.get(`${apiUrl}/api/clients/${id}`);
@@ -253,6 +253,7 @@ return (
                 
 
             </div>)}
+            <div className={styles.footerSpace}></div>
             <span className={styles.buttonSpan_downpage}>
                     <button className={buttonStyles.primaryButtonY} type="submit" onClick={handleModifierClient} >Enregistrer</button>
             </span>

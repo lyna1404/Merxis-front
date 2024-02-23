@@ -7,10 +7,10 @@ import InputField from '../components/InputField';
 import labelStyles from "../components/inputField.module.css";
 import { useState, useRef, useEffect  } from 'react';
 import axios from 'axios';
-import {formatDateHoursToAPI,formatDateToAPI} from '../Utils/dateUtils';
+import {formatDateToAPI} from '../Utils/dateUtils';
 import Select from 'react-select';
 import DatePicker from 'react-datepicker';
-
+ 
 // Date et heure reception a utilisé avec datepicker
 
 function AjouterDossier() {
@@ -22,7 +22,7 @@ function AjouterDossier() {
     const [isLoadedDeclaration, setIsLoadedDeclaration] = useState(false);
     const [activeTab, setActiveTab] = useState("tab1");
     const apiUrl = process.env.REACT_APP_API_URL;
-
+ 
   // Listes déroulantes de la partie Informations Générales
     const [listeClients, setListeClients] = useState([]);
     const  [clientPk, setClientPk] = useState(null);
@@ -389,7 +389,7 @@ useEffect(() => {
         // Controle d'envoie du dossier et déclaration 
         const handleAjouterDossier = (async () => {
 
-            const dateHR = dateHeureReception1 + " " + dateHeureReception2;
+            const dateHR = formatDateToAPI(dateHeureReception1) + " " + dateHeureReception2;
 
             setIsLoadedDeclaration(false);
             const declaration = {
@@ -417,7 +417,7 @@ useEffect(() => {
               client: selectedRaisonSocial.value, // objet
               natureDossier: natureDossier,
               etatDossier: etatDossier,
-              dateHeureReception: dateHR ? formatDateHoursToAPI(dateHR) : null,
+              dateHeureReception: dateHR ? dateHR : null,
               fournisseur: selectedRaisonSocialFournisseur.value, //objet
               numFactureFournisseur: numFactFournisseur,
               dateFactureFournisseur: dateFactFournisseur ? formatDateToAPI(dateFactFournisseur) : null,
@@ -657,8 +657,10 @@ useEffect(() => {
                             ))}
                         </select>          
                                    
-                        <InputField display="labelonleft" label="Date et heure réception *" size="average" type="texte" value={dateHeureReception1} onChange={(e) => setDateHeureReception1(e.target.value)} />
-                        <InputField size="verysmall" type="texte" value={dateHeureReception2} onChange={(e) => setDateHeureReception2(e.target.value)} />
+                        <label className={labelStyles.labelonleft}>Date et heure réception
+                            <DatePicker className={labelStyles.average} selected={dateHeureReception1} onChange={(e) => setDateHeureReception1(e)} dateFormat="dd/MM/yyyy" placeholderText="Selectionner une date" />
+                            <InputField size="verysmall" type="texte" value={dateHeureReception2} onChange={(e) => setDateHeureReception2(e.target.value)} />
+                        </label>                        
                         <label className={labelStyles.labelonleft}>Nom fournisseur</label>
                         <Select className={labelStyles.average} styles={colorStyles} options={listeRaisonsSocialFournisseurs} value={selectedRaisonSocialFournisseur} placeholder="Sélectionner un nom" onChange={(e) => handleFournisseurSelection(e)} isSearchable={true}/>
                         <InputField display="labelonleft" label="N° fact. fournisseur" size="average" type="texte" value={numFactFournisseur} onChange={(e) => setNumFactFournisseur(e.target.value)} />

@@ -11,14 +11,14 @@ import labelStyles from "../components/inputField.module.css";
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import TabDocBordereau from './TabDocBordereau';
-import {IconEdit,IconDelete} from '../components/icons';
+import {IconDelete} from '../components/icons';
 import Select from 'react-select';
-import { openPageBasedOnId , reloadPage , handleFilterChange} from '../Utils/actionUtils';
+import { reloadPage , handleFilterChange} from '../Utils/actionUtils';
 import ErrorMessage from '../components/errorMessage';
 import SuccessMessage from '../components/succesMessage';
 import CustomMessage from '../components/customMessage';
 import axios from 'axios';
-import { formatDateFromAPI } from '../Utils/dateUtils';
+import { formatDateFromAPI, formatDateToAPI } from '../Utils/dateUtils';
 
 function EditBordereau() {
 
@@ -276,7 +276,7 @@ function EditBordereau() {
     setIsLoaded(false);
     const bordereau = {
         numBordereau:numBE,
-        date:date,
+        date:formatDateToAPI(date),
         dossier:dossierPk,
         etatRecuperation: etatRecup==="Non Reçu"? 0 : 1,
     }
@@ -299,7 +299,6 @@ function EditBordereau() {
   }
   
     const tableActions = [
-        <IconEdit key="edit" onClick={(event) => openPageBasedOnId(event.target.closest('tr').id, '/facturation/Bordereaux/EditBordereau/')} />,
         <IconDelete key="delete" onClick={handleDeleteClick} />
     ];
 
@@ -380,7 +379,7 @@ function EditBordereau() {
                                                             dossierPk={dossierPk}/>} 
                         <button className={`${buttonStyles.primaryButtonY}`} children='Enregistrer' onClick={handleModifierBordereau} />
                         {showError && <ErrorMessage onClose={handleErrorClose} errors={errorMessages} />}
-                        {showDialog && <CustomMessage onClose={handleDialogClose} onConfirm={handleDelete} message={"Souhaitez-vous vraiment supprimer ce bordereau ?"}/>}
+                        {showDialog && <CustomMessage onClose={handleDialogClose} onConfirm={handleDelete} message={"Souhaitez-vous vraiment supprimer ce document ?"}/>}
                         {showSuccess && <SuccessMessage onClose={handleSuccessClose} />}
                         
                     </span>

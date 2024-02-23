@@ -36,6 +36,20 @@
     gap:16px;
   }
 
+  .labelonleftGrid {
+    display: inline-flex;
+    flex-direction: row;
+    align-items: center;
+    color: var(--dark-violet, #2E2F5B);
+    font-family: Montserrat;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    gap:16px;
+    padding-top: 2.5%;
+  }
+
   .labelonleft select {
     max-width: 150px;
   }
@@ -84,6 +98,16 @@
     border-color: var(--d-4-d-4-d-4-light-grey, #d4d4d4);
     border-width: 1px;
     width: 442px;
+    position: relative;
+  }
+
+  .averagelarge {
+    background: var(--ffffff-white, #ffffff);
+    border-radius: 4px;
+    border-style: solid;
+    border-color: var(--d-4-d-4-d-4-light-grey, #d4d4d4);
+    border-width: 1px;
+    width: 350px;
     position: relative;
   }
 

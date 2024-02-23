@@ -35,6 +35,25 @@
   .button:hover {
     background-color: #b79e44;
   }
+
+  .buttonB{
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    border-radius: 8px;
+    background: var(--light-violet, #505581);
+    color: var(--white, #FFF);
+    font-family: Roboto;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    text-decoration: none;
+  }
+
+  .buttonB:hover {
+    background: var(--light-violet, #3f436d);  
+  }
   
   .imageContainer {
     margin-top: 40px;

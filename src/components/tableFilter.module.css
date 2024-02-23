@@ -5,6 +5,14 @@
     gap:16px;
 }
 
+.containerGrid {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap:16px;
+    margin-top: -2%;
+}
+
 .label_style {
     color: var(--light-violet, #505581);
     font-family: Montserrat;
